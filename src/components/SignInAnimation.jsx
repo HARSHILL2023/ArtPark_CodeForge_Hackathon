@@ -5,7 +5,7 @@ const SignInAnimation = ({ onComplete }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (onComplete) onComplete();
-    }, 3000);
+    }, 4000);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
@@ -123,7 +123,7 @@ const SignInAnimation = ({ onComplete }) => {
   return createPortal(
     <div className="animation-overlay">
       <style>{styles}</style>
-      
+
       <div className="wrapper">
         {rings.map((size, i) => {
           const rotationOffset = i * 51;
@@ -148,7 +148,7 @@ const SignInAnimation = ({ onComplete }) => {
             />
           );
         })}
-        
+
         <div className="orb" />
       </div>
 

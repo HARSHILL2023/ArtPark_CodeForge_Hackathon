@@ -14,6 +14,7 @@ import SemanticMatcher from './lib/semanticMatcher';
 import MentorChat from './components/MentorChat';
 import InterviewPrep from './components/InterviewPrep';
 import ResumeOptimizer from './components/ResumeOptimizer';
+import AuthModal from './components/AuthModal';
 
 // Skeleton Loader Component
 function SkeletonLoader() {
@@ -79,6 +80,7 @@ export default function App() {
   const [showResults, setShowResults] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const toggleLearningStyle = (style) => setLearningStyle(style);
   const [darkMode, setDarkMode] = useState(() => {
@@ -231,6 +233,11 @@ export default function App() {
   };
 
   const handleSignIn = () => {
+    setIsAuthModalOpen(true);
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAuthModalOpen(false);
     setIsSigningIn(true);
   };
 
@@ -317,6 +324,11 @@ export default function App() {
         </div>
       </nav>
 
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
       {isSigningIn && <SignInAnimation onComplete={handleSignInComplete} />}
 
       {/* Main Content */}
