@@ -12,6 +12,8 @@ import SignInAnimation from './components/SignInAnimation';
 import { mockProfiles } from './data/mockData';
 import SemanticMatcher from './lib/semanticMatcher';
 import MentorChat from './components/MentorChat';
+import InterviewPrep from './components/InterviewPrep';
+import ResumeOptimizer from './components/ResumeOptimizer';
 
 // Skeleton Loader Component
 function SkeletonLoader() {
@@ -72,10 +74,13 @@ function SkeletonLoader() {
 export default function App() {
   const [selectedProfile, setSelectedProfile] = useState(mockProfiles[0].id);
   const [currentData, setCurrentData] = useState(null);
+  const [learningStyle, setLearningStyle] = useState('Practical'); // 'Visual', 'Practical', 'Theoretical'
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
+
+  const toggleLearningStyle = (style) => setLearningStyle(style);
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -416,6 +421,9 @@ export default function App() {
                           totalTime={displayTime}
                           roadmapProgress={progress}
                           skillConfidence={confidence}
+                          marketTrends={currentData.marketTrends}
+                          learningStyle={learningStyle}
+                          onStyleChange={toggleLearningStyle}
                         />
                       );
                     })()}
@@ -423,10 +431,23 @@ export default function App() {
                     <SkillDNA userSkills={currentData.skills} />
                     <SkillGraph skills={currentData.skills} graphData={currentData.skillGraph} />
                     <SkillTable skills={currentData.skills} />
+
+                    {/* Career Accelerator Tools */}
+                    <div className="grid gap-8 lg:grid-cols-1">
+                      <InterviewPrep
+                        skills={currentData.skills}
+                        role={currentData.targetJob || currentData.role}
+                      />
+                      <ResumeOptimizer
+                        missingSkills={currentData.missingSkills}
+                        role={currentData.targetJob || currentData.role}
+                      />
+                    </div>
                     <Roadmap
                       roadmap={currentData.roadmap}
                       onUpdate={handleRoadmapUpdate}
                       onAssessment={handleAssessment}
+                      learningStyle={learningStyle}
                     />
                     <ReasoningPanel reasoning={currentData.reasoning} />
                   </div>

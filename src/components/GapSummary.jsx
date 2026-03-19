@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { TrendingUp, Target, Shield, XCircle, Clock } from 'lucide-react';
+import { TrendingUp, Target, Shield, XCircle, Clock, Sparkles } from 'lucide-react';
 import CircularProgress from './CircularProgress';
 
 export default function GapSummary({
@@ -9,7 +9,10 @@ export default function GapSummary({
   weakSkills,
   totalTime,
   roadmapProgress,
-  skillConfidence
+  skillConfidence,
+  marketTrends,
+  learningStyle,
+  onStyleChange
 }) {
   const stats = [
     {
@@ -99,6 +102,80 @@ export default function GapSummary({
               </motion.div>
             ))}
           </div>
+        </div>
+
+        {/* New Sections: Market Intelligence and Gamification */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
+          {/* Market Intelligence */}
+          <div className="p-6 bg-slate-50 dark:bg-slate-800/30 rounded-3xl border border-slate-100 dark:border-slate-800 group hover:border-indigo-500/30 transition-all">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-indigo-100 dark:bg-indigo-500/10 rounded-xl">
+                <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Market Intelligence</span>
+            </div>
+            <div>
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-2xl font-black text-slate-900 dark:text-white">{marketTrends?.demand || 'High'}</span>
+                <span className="text-xs font-bold text-emerald-500">{marketTrends?.growth || '+18%'}</span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">{marketTrends?.insight || 'Market demand for this stack is growing rapidly in enterprise sectors.'}</p>
+            </div>
+          </div>
+
+          {/* Gamification + Learning Style */}
+          <div className="p-6 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl shadow-xl shadow-indigo-500/20 text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 -rotate-12 transition-transform group-hover:scale-110">
+              <Sparkles className="w-16 h-16" />
+            </div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="px-2 py-0.5 bg-white/20 backdrop-blur-md rounded-lg text-[8px] font-black uppercase tracking-widest border border-white/20">Learning Personalization</div>
+                <div className="text-[8px] font-black uppercase opacity-60">Architect • LVL 14</div>
+              </div>
+
+              <div className="flex items-center gap-2 mb-4">
+                {[
+                  { id: 'Visual', label: '🎥 Visual' },
+                  { id: 'Practical', label: '🛠️ Practical' },
+                  { id: 'Theoretical', label: '📚 Theory' }
+                ].map(style => (
+                  <button
+                    key={style.id}
+                    onClick={() => onStyleChange(style.id)}
+                    className={`px-3 py-1.5 rounded-xl text-[10px] font-black transition-all border 
+                       ${learningStyle === style.id ? 'bg-white text-indigo-600 border-white shadow-lg' : 'bg-indigo-500/30 text-white/70 border-white/10 hover:bg-indigo-400/50'}`}
+                  >
+                    {style.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="text-[10px] font-black uppercase opacity-60">{learningStyle} Mode Active</div>
+                <div className="text-[10px] font-black uppercase opacity-60">75% Next Lvl</div>
+              </div>
+              <div className="h-1.5 bg-white/20 rounded-full mt-2 overflow-hidden border border-white/10">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: '75%' }}
+                  className="h-full bg-white shadow-[0_0_10px_white]"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Badges for Gamification */}
+        <div className="flex flex-wrap gap-3 mt-8">
+          {['Early Adopter', 'Quiz Master', 'Fast Learner'].map((badge) => (
+            <div key={badge} className="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 group hover:bg-white dark:hover:bg-slate-700 transition-all cursor-default">
+              <div className="p-1 bg-amber-100 dark:bg-amber-500/20 rounded-md">
+                <Target className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+              </div>
+              <span className="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-tighter">{badge}</span>
+            </div>
+          ))}
         </div>
 
         {/* Learning Path Progress */}

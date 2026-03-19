@@ -1,8 +1,18 @@
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getPriorityColor } from '../data/mockData';
-import { Clock, ExternalLink, ChevronRight, Flag, CheckCircle2, XCircle, Target, Brain } from 'lucide-react';
+import { Clock, ExternalLink, ChevronRight, Flag, CheckCircle2, XCircle, Target, Brain, Sparkles } from 'lucide-react';
+import SkillQuiz from './SkillQuiz';
 
-export default function Roadmap({ roadmap, onUpdate, onAssessment }) {
+export default function Roadmap({ roadmap, onUpdate, onAssessment, learningStyle }) {
+  const [activeQuizStep, setActiveQuizStep] = useState(null);
+
+  const handleQuizComplete = (passed) => {
+    if (activeQuizStep) {
+      onAssessment(activeQuizStep.id, passed);
+      setActiveQuizStep(null);
+    }
+  };
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -126,14 +136,25 @@ export default function Roadmap({ roadmap, onUpdate, onAssessment }) {
 
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-                            <Clock className="w-3.5 h-3.5" />
+                          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono">
+                            <Clock className="w-3.5 h-3.5 text-indigo-500" />
                             <span>{step.duration}</span>
                           </div>
+
+                          {step.style && (
+                            <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-tighter
+                              ${step.style === learningStyle ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}
+                            >
+                              <Sparkles className="w-3 h-3 text-amber-500" />
+                              {step.style}
+                              {step.style === learningStyle && " • Match"}
+                            </div>
+                          )}
+
                           {step.resource && !isCompleted && !isSkipped && (
-                            <a href={step.resourceUrl} className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
+                            <a href={step.resourceUrl} className="group/resource inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl text-xs font-black text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all">
                               <ExternalLink className="w-3.5 h-3.5" />
-                              <span>{step.resource}</span>
+                              <span>Learn on {step.resource}</span>
                             </a>
                           )}
                         </div>
@@ -141,7 +162,7 @@ export default function Roadmap({ roadmap, onUpdate, onAssessment }) {
                         {isActive && (
                           <div className="flex items-center gap-2">
                             <button
-                              onClick={() => onAssessment(step)}
+                              onClick={() => setActiveQuizStep(step)}
                               className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition-colors flex items-center gap-1.5 shadow-md shadow-indigo-500/20"
                             >
                               <Target className="w-3.5 h-3.5" />
@@ -164,6 +185,16 @@ export default function Roadmap({ roadmap, onUpdate, onAssessment }) {
           })}
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {activeQuizStep && (
+          <SkillQuiz
+            step={activeQuizStep}
+            onComplete={handleQuizComplete}
+            onCancel={() => setActiveQuizStep(null)}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

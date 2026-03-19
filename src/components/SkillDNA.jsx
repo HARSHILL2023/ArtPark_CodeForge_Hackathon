@@ -184,52 +184,58 @@ const SkillDNA = ({ userSkills }) => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
-              <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-indigo-700 dark:text-indigo-300">Readiness for {simulation.name}</span>
-                  <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{simulation.readiness}%</span>
+              <div className="p-6 bg-gradient-to-br from-indigo-900 to-indigo-700/80 dark:from-indigo-900/80 dark:to-slate-900 rounded-[1.5rem] shadow-xl shadow-indigo-500/20 border border-indigo-500/30 text-white relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-10">
+                  <Target className="w-48 h-48 -rotate-12 transition-transform group-hover:scale-110 duration-700" />
                 </div>
-                <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${simulation.readiness}%` }}
-                    className="h-full bg-indigo-500"
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Clock className="w-4 h-4 text-amber-500" />
-                    <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Estimated Time</span>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="px-2.5 py-1 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-md animate-pulse">
+                      Simulation Complete
+                    </span>
                   </div>
-                  <p className="text-lg font-bold text-slate-800 dark:text-white">{simulation.timeInWeeks} Weeks</p>
-                </div>
-                <div className="p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Target className="w-4 h-4 text-emerald-500" />
-                    <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">Success Fate</span>
-                  </div>
-                  <p className="text-lg font-bold text-slate-800 dark:text-white">{simulation.probability}% Probability</p>
-                </div>
-              </div>
 
-              {simulation.missing.length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 uppercase flex items-center gap-2">
-                    <Search className="w-4 h-4" />
-                    Critical Skill Gaps to Address
+                  <h4 className="text-2xl font-black mb-2 tracking-tight">
+                    You are <span className="text-emerald-400">{simulation.readiness}%</span> ready for <br /> {simulation.name}
                   </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {simulation.missing.map(skill => (
-                      <span key={skill} className="text-xs font-medium px-2 py-1 bg-rose-500/10 text-rose-300 rounded-md border border-rose-500/20">
-                        {skill}
-                      </span>
-                    ))}
+
+                  <div className="h-2 w-full bg-indigo-950/50 rounded-full overflow-hidden mb-8 border border-indigo-500/20 shadow-inner">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${simulation.readiness}%` }}
+                      className="h-full bg-gradient-to-r from-emerald-400 to-emerald-300 shadow-[0_0_15px_#10b981]"
+                    />
                   </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center">
+                      <p className="text-[10px] uppercase font-bold text-indigo-200 tracking-widest mb-1 shadow-sm">Estimated Time</p>
+                      <p className="text-xl font-black">{simulation.timeInWeeks * 4} Days</p>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center">
+                      <p className="text-[10px] uppercase font-bold text-indigo-200 tracking-widest mb-1 shadow-sm">Success Probability</p>
+                      <p className="text-xl font-black text-amber-400">{simulation.probability}%</p>
+                    </div>
+                  </div>
+
+                  {simulation.missing.length > 0 && (
+                    <div className="pt-4 border-t border-white/10">
+                      <p className="text-xs font-bold text-indigo-200 mb-3 flex items-center gap-2">
+                        <Search className="w-4 h-4" />
+                        Missing Core Competencies
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {simulation.missing.map(skill => (
+                          <span key={skill} className="text-xs font-bold px-3 py-1.5 bg-rose-500/20 text-rose-200 rounded-lg border border-rose-500/30">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
