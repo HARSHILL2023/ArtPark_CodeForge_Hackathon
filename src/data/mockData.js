@@ -8,6 +8,7 @@ export const mockProfiles = [
     matchPercentage: 72,
     missingSkills: 2,
     weakSkills: 3,
+    userResume: "Senior Frontend Developer with 5+ years of experience. Expert in JavaScript and React. Skilled in Deep Learning and building AI-powered interfaces. Extensive experience with Tailwind CSS and TypeScript. Some exposure to Node.js and Apollo Client for GraphQL.",
     skills: [
       { name: 'JavaScript', requiredLevel: 5, yourLevel: 4, category: 'Core' },
       { name: 'React', requiredLevel: 5, yourLevel: 4, category: 'Framework' },
@@ -15,6 +16,7 @@ export const mockProfiles = [
       { name: 'CSS/Tailwind', requiredLevel: 4, yourLevel: 5, category: 'Styling' },
       { name: 'Node.js', requiredLevel: 3, yourLevel: 2, category: 'Backend' },
       { name: 'GraphQL', requiredLevel: 4, yourLevel: 1, category: 'API' },
+      { name: 'Neural Networks', requiredLevel: 4, yourLevel: 0, category: 'AI/ML' },
       { name: 'Testing (Jest)', requiredLevel: 4, yourLevel: 3, category: 'Quality' },
       { name: 'Git/Version Control', requiredLevel: 4, yourLevel: 5, category: 'Tools' },
       { name: 'Docker', requiredLevel: 3, yourLevel: 0, category: 'DevOps' },
@@ -193,6 +195,7 @@ export const mockProfiles = [
     matchPercentage: 58,
     missingSkills: 3,
     weakSkills: 3,
+    userResume: "Data Scientist with experience in building predictive models using Python and SQL. Proficient in PyTorch for deep learning and NLP tasks. Skilled in data visualization and statistical analysis. Working knowledge of Apache Spark for distributed computing.",
     skills: [
       { name: 'Python', requiredLevel: 5, yourLevel: 4, category: 'Core' },
       { name: 'SQL', requiredLevel: 5, yourLevel: 4, category: 'Database' },

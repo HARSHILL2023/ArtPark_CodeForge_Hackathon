@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { getGapStatus, getGapColor } from '../data/mockData';
-import { CheckCircle2, AlertTriangle, XCircle } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, XCircle, Sparkles } from 'lucide-react';
 
 export default function SkillTable({ skills }) {
   const container = {
@@ -114,7 +114,15 @@ export default function SkillTable({ skills }) {
                     <div className="flex items-center gap-3">
                       <div className={`w-1.5 h-8 rounded-full ${colors.dot}`} />
                       <div>
-                        <p className="font-medium text-slate-800 dark:text-slate-100">{skill.name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium text-slate-800 dark:text-slate-100">{skill.name}</p>
+                          {skill.isSemantic && (
+                            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-full">
+                              <Sparkles className="w-3 h-3 text-indigo-500 animate-pulse" />
+                              <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400">Semantic Match</span>
+                            </div>
+                          )}
+                        </div>
                         <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{skill.category}</p>
                       </div>
                     </div>

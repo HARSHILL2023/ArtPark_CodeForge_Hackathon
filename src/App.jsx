@@ -10,11 +10,32 @@ import SkillGraph from './components/SkillGraph';
 import SkillDNA from './components/SkillDNA';
 import SignInAnimation from './components/SignInAnimation';
 import { mockProfiles } from './data/mockData';
+import SemanticMatcher from './lib/semanticMatcher';
+import MentorChat from './components/MentorChat';
 
 // Skeleton Loader Component
 function SkeletonLoader() {
   return (
     <div className="space-y-6">
+      {/* Semantic AI Status Banner */}
+      <div className="bg-indigo-600 rounded-3xl p-6 flex items-center justify-between text-white overflow-hidden relative">
+        <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+        <div className="flex items-center gap-4 relative">
+          <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-md animate-pulse">
+            <Sparkles className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">Semantic AI Matching Active</h3>
+            <p className="text-sm text-indigo-100/80">Comparing skill meanings (e.g., Deep Learning ≈ Neural Networks)</p>
+          </div>
+        </div>
+        <div className="hidden sm:block">
+          <div className="px-4 py-2 bg-white/10 rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest animate-pulse">
+            Embedding Check...
+          </div>
+        </div>
+      </div>
+
       {/* Gap Summary Skeleton */}
       <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-8">
         <div className="animate-pulse flex flex-col lg:flex-row gap-8">
@@ -77,19 +98,131 @@ export default function App() {
 
   const profileOptions = mockProfiles.map((d) => ({ id: d.id, name: d.name }));
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async (resumeFile, jobDescription) => {
     setIsAnalyzing(true);
     setShowResults(false);
     setShowSkeleton(true);
 
-    // Simulate analysis with loading
+    // Simulate analysis with AI loading steps
+    const data = { ...mockProfiles.find((d) => d.id === selectedProfile) };
+
+    // Perform Semantic AI Matching
+    // In a real app we'd extract text from resumeFile. Here we use data.userResume.
+    const userText = data.userResume || "";
+    const requiredSkills = data.skills.map(s => s.name);
+
+    try {
+      // 1. Identify semantic matches (Synonym dictionary for demo)
+      const semanticMap = [
+        { resume: "Deep Learning", required: "Neural Networks" },
+        { resume: "Neural Networks", required: "Deep Learning" },
+        { resume: "PyTorch", required: "Deep Learning" },
+        { resume: "TensorFlow", required: "Deep Learning" },
+        { resume: "PostgreSQL", required: "SQL" },
+        { resume: "Tailwind", required: "CSS" },
+        { resume: "Apollo", required: "GraphQL" }
+      ];
+
+      data.skills = data.skills.map(skill => {
+        const mapping = semanticMap.find(m =>
+          skill.name.toLowerCase().includes(m.required.toLowerCase()) ||
+          m.required.toLowerCase().includes(skill.name.toLowerCase())
+        );
+
+        if (mapping && userText.toLowerCase().includes(mapping.resume.toLowerCase()) && skill.yourLevel === 0) {
+          return {
+            ...skill,
+            yourLevel: 4,
+            isSemantic: true,
+            summary: `Matched '${skill.name}' via Semantic AI (Found '${mapping.resume}' in resume)`
+          };
+        }
+        return skill;
+      });
+
+      // 2. Update reasoning for matched skills
+      data.reasoning = data.reasoning.map(r => {
+        const skillObj = data.skills.find(s => s.name === r.skill || r.reason.includes(s.name));
+        if (skillObj?.isSemantic) {
+          return {
+            ...r,
+            type: 'matched',
+            reason: `Semantic Match: '${skillObj.name}' was found through '${skillObj.summary.split("'")[3]}' expertise in your resume.`
+          };
+        }
+        return r;
+      });
+
+      // 3. Update summary counts and score
+      data.missingSkills = data.skills.filter(s => s.yourLevel === 0).length;
+      data.weakSkills = data.skills.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length;
+      const matched = data.skills.filter(s => s.yourLevel >= s.requiredLevel).length;
+      data.readinessScore = Math.floor((matched / data.skills.length) * 100);
+
+    } catch (e) {
+      console.error("Semantic matching failed:", e);
+    }
+
     setTimeout(() => {
-      const data = mockProfiles.find((d) => d.id === selectedProfile);
-      setCurrentData(data || null);
+      // Add initial status to roadmap steps
+      const enhancedData = {
+        ...data,
+        roadmap: data.roadmap.map(step => ({ ...step, status: 'todo' }))
+      };
+      setCurrentData(enhancedData);
       setIsAnalyzing(false);
       setShowSkeleton(false);
       setShowResults(true);
     }, 2500);
+  };
+
+  const handleRoadmapUpdate = (index, updates) => {
+    setCurrentData(prev => {
+      const newRoadmap = [...prev.roadmap];
+      newRoadmap[index] = { ...newRoadmap[index], ...updates };
+      return { ...prev, roadmap: newRoadmap };
+    });
+  };
+
+  const handleAssessment = (step) => {
+    const passed = window.confirm(`Take Assessment for: ${step.title}\n\n(OK = You Pass, Cancel = You Fail)`);
+
+    setCurrentData(prev => {
+      const index = prev.roadmap.findIndex(s => s.title === step.title);
+      const newRoadmap = [...prev.roadmap];
+
+      if (passed) {
+        alert("Assessment Passed! Adaptive engine is skipping related prerequisite steps...");
+        newRoadmap[index] = {
+          ...newRoadmap[index],
+          status: 'completed',
+          reason: `Assessment passed with 95% score. Verified mastery of ${step.title}.`
+        };
+        // Skip next step as an adaptive measure
+        if (newRoadmap[index + 1]) {
+          newRoadmap[index + 1] = {
+            ...newRoadmap[index + 1],
+            status: 'skipped',
+            reason: `Skipped because user demonstrated advanced knowledge in prerequisite assessment.`
+          };
+        }
+      } else {
+        alert("Assessment Failed. Adaptive engine is injecting a remedial review step...");
+        // Inject a remedial step
+        const remedialStep = {
+          step: '!',
+          title: `Remedial: ${step.title} Fundamentals`,
+          description: `Extra focus on core concepts to bridge the gap identified in the assessment.`,
+          duration: '1 week',
+          priority: 'high',
+          status: 'todo',
+          reason: 'Injected by Adaptive Engine due to assessment performance below 70% threshold.'
+        };
+        newRoadmap.splice(index, 0, remedialStep);
+      }
+
+      return { ...prev, roadmap: newRoadmap };
+    });
   };
 
   const handleSignIn = () => {
@@ -100,7 +233,6 @@ export default function App() {
     setIsSigningIn(false);
     // Simulate redirect
     console.log("Redirecting to dashboard...");
-    window.location.href = "#/dashboard"; // Example redirect
   };
 
   // Auto-load first profile for demo
@@ -260,16 +392,42 @@ export default function App() {
                   </div>
 
                   <div className="grid gap-8">
-                    <GapSummary
-                      readinessScore={currentData.readinessScore}
-                      matchPercentage={currentData.matchPercentage}
-                      missingSkills={currentData.missingSkills}
-                      weakSkills={currentData.weakSkills}
-                    />
+                    {/* Progress Dashboard */}
+                    {(() => {
+                      const roadmap = currentData.roadmap || [];
+                      const completedCount = roadmap.filter(s => s.status === 'completed' || s.status === 'skipped').length;
+                      const progress = roadmap.length > 0 ? (completedCount / roadmap.length) * 100 : 0;
+
+                      const remainingSteps = roadmap.filter(s => s.status === 'todo');
+                      const totalWeeks = remainingSteps.reduce((acc, s) => acc + parseInt(s.duration || 0), 0);
+                      const displayTime = totalWeeks > 0 ? `${totalWeeks} Weeks` : 'Ready!';
+
+                      const skills = currentData.skills || [];
+                      const confidence = Math.round(
+                        (skills.reduce((acc, s) => acc + (s.yourLevel / s.requiredLevel), 0) / (skills.length || 1)) * 100
+                      );
+
+                      return (
+                        <GapSummary
+                          readinessScore={currentData.readinessScore}
+                          matchPercentage={currentData.matchPercentage}
+                          missingSkills={currentData.missingSkills}
+                          weakSkills={currentData.weakSkills}
+                          totalTime={displayTime}
+                          roadmapProgress={progress}
+                          skillConfidence={confidence}
+                        />
+                      );
+                    })()}
+
                     <SkillDNA userSkills={currentData.skills} />
                     <SkillGraph skills={currentData.skills} graphData={currentData.skillGraph} />
                     <SkillTable skills={currentData.skills} />
-                    <Roadmap roadmap={currentData.roadmap} />
+                    <Roadmap
+                      roadmap={currentData.roadmap}
+                      onUpdate={handleRoadmapUpdate}
+                      onAssessment={handleAssessment}
+                    />
                     <ReasoningPanel reasoning={currentData.reasoning} />
                   </div>
                 </motion.div>
@@ -324,6 +482,9 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* AI Mentor Chatbot */}
+      {currentData && <MentorChat userData={currentData} />}
     </div>
   );
 }

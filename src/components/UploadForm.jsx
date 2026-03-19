@@ -164,7 +164,7 @@ export default function UploadForm({
 
         {/* Analyze Button */}
         <motion.button
-          onClick={onAnalyze}
+          onClick={() => onAnalyze(resumeFile, jobDescription)}
           disabled={!canAnalyze || isAnalyzing}
           whileHover={{ scale: canAnalyze && !isAnalyzing ? 1.01 : 1 }}
           whileTap={{ scale: canAnalyze && !isAnalyzing ? 0.99 : 1 }}

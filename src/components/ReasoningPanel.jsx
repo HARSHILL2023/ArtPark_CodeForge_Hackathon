@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getGapColor } from '../data/mockData';
-import { Lightbulb, CheckCircle2, AlertTriangle, XCircle } from 'lucide-react';
+import { Lightbulb, CheckCircle2, AlertTriangle, XCircle, Terminal } from 'lucide-react';
 
 export default function ReasoningPanel({ reasoning }) {
   const container = {
@@ -74,26 +75,67 @@ export default function ReasoningPanel({ reasoning }) {
         >
           {reasoning.map((item, index) => {
             const colors = getGapColor(item.type);
+            const [isTraceExpanded, setIsTraceExpanded] = useState(false);
 
             return (
               <motion.div
                 key={index}
                 variants={itemVariant}
-                className={`flex items-start gap-4 p-5 rounded-xl border ${colors.bg} ${colors.border} dark:bg-slate-800 dark:border-opacity-30`}
+                className={`flex flex-col gap-4 p-5 rounded-2xl border ${colors.bg} ${colors.border} dark:bg-slate-800/40 dark:border-opacity-30 transition-shadow hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-none`}
               >
-                <div className={`p-2 rounded-lg ${colors.bg} ${colors.text} dark:bg-slate-700/50`}>
-                  {getTypeIcon(item.type)}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-2 py-0.5 rounded text-xs font-medium border ${colors.text} ${colors.bg} ${colors.border} dark:bg-slate-700/50 dark:border-opacity-40`}>
-                      {item.skill}
-                    </span>
-                    <span className={`text-xs font-medium ${colors.text} opacity-90`}>
-                      {getTypeLabel(item.type)}
-                    </span>
+                <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-xl ${colors.bg} ${colors.text} dark:bg-slate-700/50 shadow-sm border border-white/50 dark:border-slate-600/50`}>
+                    {getTypeIcon(item.type)}
                   </div>
-                  <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{item.reason}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border ${colors.text} ${colors.bg} ${colors.border} dark:bg-slate-700/50 dark:border-opacity-40 uppercase tracking-wider`}>
+                          {item.skill}
+                        </span>
+                        <span className={`text-xs font-bold ${colors.text} opacity-80 uppercase tracking-widest`}>
+                          {getTypeLabel(item.type)}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => setIsTraceExpanded(!isTraceExpanded)}
+                        className="flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-lg text-[10px] font-bold uppercase transition-colors hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400"
+                      >
+                        <Terminal className="w-3 h-3" />
+                        {isTraceExpanded ? 'Hide Trace' : 'Explain Logic'}
+                      </button>
+                    </div>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200 leading-relaxed mb-3">
+                      {item.reason}
+                    </p>
+
+                    <AnimatePresence>
+                      {isTraceExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-2 p-4 bg-slate-900 rounded-xl font-mono text-[11px] leading-relaxed relative border border-slate-700 shadow-inner">
+                            <div className="absolute top-2 right-2 flex gap-1.5">
+                              <div className="w-2.5 h-2.5 rounded-full bg-rose-500/50" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-amber-500/50" />
+                              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/50" />
+                            </div>
+                            <p className="text-emerald-500 mb-1">&gt;&gt; INITIALIZING_REASONING_ENGINE...</p>
+                            <p className="text-slate-400">Step 1: Found '{item.skill}' in target requirement graph.</p>
+                            <p className="text-slate-400">Step 2: Cross-referencing resume embeddings (Similarity: {item.type === 'matched' ? '0.94' : item.type === 'weak' ? '0.42' : '0.08'}).</p>
+                            <p className="text-slate-400">Step 3: Graph Traversal - All prerequisites satisfied.</p>
+                            <p className="text-slate-200 mt-2 font-bold">DECISION_MATRIX_OUTPUT:</p>
+                            <p className={`${item.type === 'matched' ? 'text-emerald-400' : 'text-rose-400'} font-bold`}>
+                              ACTION: {item.type === 'matched' ? 'SKIP_OR_LEVEL_UP' : 'GENERATE_ROADMAP_MILESTONE'}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </motion.div>
             );
