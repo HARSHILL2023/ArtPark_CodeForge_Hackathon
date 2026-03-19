@@ -6,6 +6,8 @@ import SkillTable from './components/SkillTable';
 import GapSummary from './components/GapSummary';
 import Roadmap from './components/Roadmap';
 import ReasoningPanel from './components/ReasoningPanel';
+import SkillGraph from './components/SkillGraph';
+import SkillDNA from './components/SkillDNA';
 import SignInAnimation from './components/SignInAnimation';
 import { mockProfiles } from './data/mockData';
 
@@ -230,6 +232,8 @@ export default function App() {
                     missingSkills={currentData.missingSkills}
                     weakSkills={currentData.weakSkills}
                   />
+                  <SkillDNA userSkills={currentData.skills} />
+                  <SkillGraph skills={currentData.skills} graphData={currentData.skillGraph} />
                   <SkillTable skills={currentData.skills} />
                   <Roadmap roadmap={currentData.roadmap} />
                   <ReasoningPanel reasoning={currentData.reasoning} />
