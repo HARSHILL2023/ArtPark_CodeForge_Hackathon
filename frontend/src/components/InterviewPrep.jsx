@@ -16,7 +16,7 @@ export default function InterviewPrep({ skills, role }) {
             a: `Key strategies include code splitting, tree shaking, caching layes, and optimizing build pipelines.`
         },
         {
-            q: `What is the most challenging part of working with ${skills[0].name}?`,
+            q: `What is the most challenging part of working with ${skills[0]?.name || 'relevant frameworks'}?`,
             a: `Managing side effects and ensuring type safety at scale is often cited as the biggest challenge.`
         }
     ];
