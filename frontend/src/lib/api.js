@@ -87,3 +87,23 @@ export const sendChatMessage = async (message, context = null) => {
     body: JSON.stringify({ message, context }),
   });
 };
+
+/**
+ * Generate expert Q&A for interview prep
+ */
+export const generateQA = async (profileData) => {
+  return apiFetch('/interview/qa', {
+    method: 'POST',
+    body: JSON.stringify(profileData),
+  });
+};
+
+/**
+ * Send conversation to interview chat
+ */
+export const sendInterviewChat = async (systemPrompt, messages) => {
+  return apiFetch('/interview/chat', {
+    method: 'POST',
+    body: JSON.stringify({ systemPrompt, messages }),
+  });
+};
