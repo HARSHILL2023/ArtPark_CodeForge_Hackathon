@@ -9,7 +9,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
-    const { login } = useAuth();
+    const { login, demoLogin } = useAuth();
 
     useEffect(() => {
         // Detect auth success in URL and close modal
@@ -215,6 +215,23 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                                     >
                                         <Github className="w-5 h-5 text-slate-900 dark:text-white" />
                                         <span className="tracking-wide">GitHub</span>
+                                    </motion.button>
+                                </div>
+
+                                {/* Demo Login for Judges */}
+                                <div className="mt-6">
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => {
+                                            demoLogin();
+                                            onClose();
+                                        }}
+                                        className="w-full py-4 px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl hover:shadow-indigo-500/20 transition-all border border-slate-700 dark:border-slate-200 flex items-center justify-center gap-3 group"
+                                    >
+                                        <Sparkles className="w-4 h-4 text-amber-400 group-hover:rotate-12 transition-transform" />
+                                        Judge Demo Access
+                                        <Sparkles className="w-4 h-4 text-amber-400 group-hover:-rotate-12 transition-transform" />
                                     </motion.button>
                                 </div>
 

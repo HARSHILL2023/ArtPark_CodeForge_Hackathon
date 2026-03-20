@@ -11,15 +11,33 @@ export const AuthProvider = ({ children }) => {
   // Check auth status on mount
   useEffect(() => {
     const initAuth = async () => {
-      // Check if there's a token in URL (from Google redirect)
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get('token');
-      const authSuccess = urlParams.get('auth');
 
       if (token) {
         localStorage.setItem('artpark_token', token);
-        // Clean URL
         window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      const storedToken = localStorage.getItem('artpark_token');
+      
+      // Handle Demo Mode
+      if (storedToken === 'demo_token_judge_12345') {
+        setUser({
+          id: 'DEMO_12345',
+          name: 'Judge Demo User',
+          email: 'judge@example.com',
+          avatar: 'https://ui-avatars.com/api/?name=Judge+Demo&background=indigo&color=fff',
+          role: 'Judge / Reviewer'
+        });
+        setIsLoggedIn(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (!storedToken) {
+        setIsLoading(false);
+        return;
       }
 
       try {
@@ -29,7 +47,6 @@ export const AuthProvider = ({ children }) => {
           setIsLoggedIn(true);
         }
       } catch (err) {
-        // 401/error is often expected when not logged in — handle silently
         localStorage.removeItem('artpark_token');
         setUser(null);
         setIsLoggedIn(false);
@@ -45,9 +62,24 @@ export const AuthProvider = ({ children }) => {
     api.loginWithGoogle();
   };
 
+  const demoLogin = () => {
+    const fakeToken = 'demo_token_judge_12345';
+    localStorage.setItem('artpark_token', fakeToken);
+    setUser({
+      id: 'DEMO_12345',
+      name: 'Judge Demo User',
+      email: 'judge@example.com',
+      avatar: 'https://ui-avatars.com/api/?name=Judge+Demo&background=indigo&color=fff',
+      role: 'Judge / Reviewer'
+    });
+    setIsLoggedIn(true);
+  };
+
   const logout = async () => {
     try {
-      await api.logout();
+      if (localStorage.getItem('artpark_token') !== 'demo_token_judge_12345') {
+        await api.logout();
+      }
     } finally {
       setUser(null);
       setIsLoggedIn(false);
@@ -56,7 +88,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, isLoading, login, demoLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

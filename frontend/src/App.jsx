@@ -103,6 +103,14 @@ export default function App() {
     }
   }, [darkMode]);
 
+  // Seed data for Demo Judge user
+  useEffect(() => {
+    if (user?.id === 'DEMO_12345' && !currentData) {
+      setCurrentData(mockProfiles[0]);
+      setShowResults(true);
+    }
+  }, [user, currentData]);
+
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   const profileOptions = mockProfiles.map((d) => ({ id: d.id, name: d.name }));
