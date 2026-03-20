@@ -49,14 +49,14 @@ export default function SkillTable({ skills }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none"
+      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none hover-levitate"
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-900 px-8 py-6 border-b border-slate-200/60 dark:border-slate-800/60">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-violet-100 rounded-xl">
-              <svg className="w-5 h-5 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="p-2.5 bg-violet-100 dark:bg-violet-500/10 rounded-xl">
+              <svg className="w-5 h-5 text-violet-600 dark:text-violet-400 icon-spin-float" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
@@ -68,11 +68,11 @@ export default function SkillTable({ skills }) {
           <div className="flex items-center gap-4 text-xs">
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <span className="text-slate-500">Matched</span>
+              <span className="text-slate-500 dark:text-slate-400">Matched</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-              <span className="text-slate-500">Needs Work</span>
+              <span className="text-slate-500 dark:text-slate-400">Needs Work</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
@@ -157,10 +157,10 @@ export default function SkillTable({ skills }) {
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span className={`inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-semibold ${gap <= 0
-                      ? 'bg-emerald-100 text-emerald-700'
+                      ? 'bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
                       : gap <= 2
-                        ? 'bg-amber-100 text-amber-700'
-                        : 'bg-rose-100 text-rose-700'
+                        ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400'
+                        : 'bg-rose-100 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400'
                       }`}>
                       {gap <= 0 ? '✓' : `-${gap}`}
                     </span>

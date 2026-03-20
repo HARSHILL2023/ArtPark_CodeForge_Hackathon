@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Brain, Sparkles, Github, Twitter, Linkedin, Sun, Moon } from 'lucide-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import UploadForm from './components/UploadForm';
 import SkillTable from './components/SkillTable';
 import GapSummary from './components/GapSummary';
@@ -15,6 +16,7 @@ import InterviewPrep from './components/InterviewPrepPremium';
 import ResumeOptimizer from './components/ResumeOptimizer';
 import AuthModal from './components/AuthModal';
 import { useAuth } from './lib/AuthContext';
+import LandingPage from './pages/LandingPage';
 
 // Skeleton Loader Component
 function SkeletonLoader() {
@@ -240,7 +242,7 @@ export default function App() {
   };
 
 
-  return (
+  const appLayout = (
     <div className="min-h-screen bg-mesh-gradient selection:bg-indigo-500/30 dark:selection:bg-indigo-500/50 transition-colors duration-300 dark:bg-slate-950">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors">
@@ -281,9 +283,9 @@ export default function App() {
                 aria-label="Toggle Dark Mode"
               >
                 {darkMode ? (
-                  <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform" />
-                ) : (
                   <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform" />
+                ) : (
+                  <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform" />
                 )}
               </button>
 
@@ -331,24 +333,55 @@ export default function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* Background Drifting Blobs */}
+        <div className="absolute top-20 left-10 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none" style={{ animation: 'driftBlob 25s infinite alternate' }} />
+        <div className="absolute top-40 right-20 w-[30rem] h-[30rem] bg-violet-500/10 dark:bg-violet-500/5 blur-[120px] rounded-full pointer-events-none" style={{ animation: 'driftBlob 30s infinite alternate-reverse' }} />
+
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16"
+          className="text-center mb-16 relative"
         >
+          {/* Floating Orbs / Cards */}
+          <div className="hidden lg:flex absolute top-10 -left-12 px-4 py-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-lg text-sm font-bold text-slate-800 dark:text-slate-200 float-slow pointer-events-none">
+            ✦ Skill Match: 94%
+          </div>
+          <div className="hidden lg:flex absolute -top-4 right-0 px-4 py-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-lg text-sm font-bold text-slate-800 dark:text-slate-200 float-med pointer-events-none z-10">
+            🧬 DNA Analyzed
+          </div>
+          <div className="hidden lg:flex absolute top-28 -right-8 px-4 py-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-lg text-sm font-bold text-slate-800 dark:text-slate-200 float-fast pointer-events-none">
+            🚀 Roadmap Ready
+          </div>
+
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-indigo-500/10 to-violet-500/10 dark:from-indigo-500/20 dark:to-violet-500/20 rounded-full text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mb-6 uppercase tracking-wider ring-1 ring-indigo-500/20">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Next Generation Analysis Engine</span>
           </div>
-          <h2 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1]">
+          <h2 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1] relative z-10">
             Expert <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500">Skill Gap</span> Analysis
           </h2>
-          <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed relative z-10">
             Upload your resume and job description to get a personalized skill analysis
             and learning roadmap tailored to your career goals.
           </p>
+
+          {/* Floating Stat Numbers bottom bar */}
+          <div className="flex flex-wrap justify-center gap-6 mt-10 relative z-10">
+            <div className="px-6 py-3 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm text-center" style={{ animation: 'floatStat 3s ease-in-out infinite alternate' }}>
+              <div className="text-2xl font-black text-indigo-600 dark:text-indigo-400">10k+</div>
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Profiles</div>
+            </div>
+            <div className="px-6 py-3 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm text-center" style={{ animation: 'floatStat 4s ease-in-out infinite alternate' }}>
+              <div className="text-2xl font-black text-violet-600 dark:text-violet-400">95%</div>
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Accuracy</div>
+            </div>
+            <div className="px-6 py-3 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm text-center" style={{ animation: 'floatStat 3.5s ease-in-out infinite alternate' }}>
+              <div className="text-2xl font-black text-purple-600 dark:text-purple-400">24/7</div>
+              <div className="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Mentorship</div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Two Column Layout */}
@@ -361,6 +394,7 @@ export default function App() {
               selectedProfile={selectedProfile}
               onProfileChange={setSelectedProfile}
               profileOptions={profileOptions}
+              learningStyle={learningStyle}
             />
           </div>
 
@@ -517,5 +551,16 @@ export default function App() {
       {/* AI Mentor Chatbot */}
       <MentorChat userData={currentData} />
     </div>
+  );
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage darkMode={darkMode} toggleDark={toggleDarkMode} />} />
+        <Route path="/dashboard" element={appLayout} />
+        <Route path="/upload" element={appLayout} />
+        <Route path="*" element={appLayout} />
+      </Routes>
+    </BrowserRouter>
   );
 }

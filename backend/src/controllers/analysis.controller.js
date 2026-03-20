@@ -116,9 +116,9 @@ const analyzeSkillGapHandler = async (req, res) => {
  */
 const generateRoadmapHandler = async (req, res) => {
   try {
-    const { resumeProfile, jdProfile, skillGap } = req.body;
+    const { resumeProfile, jdProfile, skillGap, learningStyle } = req.body;
     if (!resumeProfile || !jdProfile || !skillGap) return sendError(res, 'All inputs required.', 400);
-    const roadmap = await generateAdaptivePathway(resumeProfile, jdProfile, skillGap);
+    const roadmap = await generateAdaptivePathway(resumeProfile, jdProfile, skillGap, learningStyle);
     return sendSuccess(res, { roadmap }, 'Roadmap generated');
   } catch (err) {
     return sendError(res, err.message, 500);

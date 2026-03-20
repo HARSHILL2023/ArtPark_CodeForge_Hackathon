@@ -21,53 +21,53 @@ import { getGapStatus } from '../data/mockData';
 const THEMES = {
   dark: {
     // Container
-    containerBg:     '#111111',
+    containerBg: '#111111',
     containerBorder: '#222222',
     containerShadow: '0 0 0 1px #1A1A1A, 0 24px 60px rgba(0,0,0,0.5)',
     // Canvas
-    canvasBg:        '#0D0D0D',
-    canvasBorder:    '#1E1E1E',
-    gridColor:       '#2A2A2A',
-    gridOpacity:     0.5,
+    canvasBg: '#0D0D0D',
+    canvasBorder: '#1E1E1E',
+    gridColor: '#2A2A2A',
+    gridOpacity: 0.5,
     // Text
-    titleColor:      '#EAEAEA',
-    subtitleColor:   '#6B7280',
-    footerColor:     '#374151',
+    titleColor: '#EAEAEA',
+    subtitleColor: '#6B7280',
+    footerColor: '#374151',
     // Badge / hint
-    badgeBg:         '#1A1A1A',
-    badgeBorder:     '#2A2A2A',
-    badgeText:       '#6B7280',
+    badgeBg: '#1A1A1A',
+    badgeBorder: '#2A2A2A',
+    badgeText: '#6B7280',
     // Legend pill
-    legendBg:        '#1A1A1A',
-    legendBorder:    '#2A2A2A',
-    legendItemBg:    '#0D0D0D',
-    legendItemText:  '#9CA3AF',
+    legendBg: '#1A1A1A',
+    legendBorder: '#2A2A2A',
+    legendItemBg: '#0D0D0D',
+    legendItemText: '#9CA3AF',
     // Spinner
-    spinnerTrack:    '#2A2A2A',
-    spinnerHead:     '#6366F1',
-    spinnerText:     '#4B5563',
+    spinnerTrack: '#2A2A2A',
+    spinnerHead: '#6366F1',
+    spinnerText: '#4B5563',
     // Controls
-    ctrlBg:          '#1A1A1A',
-    ctrlBorder:      '#2A2A2A',
-    ctrlShadow:      '0 4px 12px rgba(0,0,0,0.4)',
+    ctrlBg: '#1A1A1A',
+    ctrlBorder: '#2A2A2A',
+    ctrlShadow: '0 4px 12px rgba(0,0,0,0.4)',
     // Toggle button
-    toggleBg:        '#1A1A1A',
-    toggleBorder:    '#3A3A3A',
-    toggleColor:     '#9CA3AF',
-    toggleHoverBg:   '#2A2A2A',
+    toggleBg: '#1A1A1A',
+    toggleBorder: '#3A3A3A',
+    toggleColor: '#9CA3AF',
+    toggleHoverBg: '#2A2A2A',
     // Edge defaults
-    edgeDefault:     '#4A4A4A',
-    edgeActive:      '#6366F1',
+    edgeDefault: '#4A4A4A',
+    edgeActive: '#6366F1',
     edgeActiveShadow: 'drop-shadow(0 0 4px rgba(99,102,241,0.6))',
     // Tooltip
-    tooltipBg:       '#0D0D0D',
-    tooltipDivider:  '#2A2A2A',
-    tooltipArrowBg:  '#0D0D0D',
+    tooltipBg: '#0D0D0D',
+    tooltipDivider: '#2A2A2A',
+    tooltipArrowBg: '#0D0D0D',
     tooltipLvlColor: '#F59E0B',
-    tooltipGoalColor:'#10B981',
-    tooltipMutedText:'#6B7280',
+    tooltipGoalColor: '#10B981',
+    tooltipMutedText: '#6B7280',
     // Progress bar track
-    barTrack:        '#1A1A1A',
+    barTrack: '#1A1A1A',
     // Node status colors
     nodeColors: {
       matched: {
@@ -95,53 +95,53 @@ const THEMES = {
 
   light: {
     // Container
-    containerBg:     '#FFFFFF',
+    containerBg: '#FFFFFF',
     containerBorder: '#E5E7EB',
     containerShadow: '0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06)',
     // Canvas
-    canvasBg:        '#F8F9FB',
-    canvasBorder:    '#E5E7EB',
-    gridColor:       '#D1D5DB',
-    gridOpacity:     0.6,
+    canvasBg: '#F8F9FB',
+    canvasBorder: '#E5E7EB',
+    gridColor: '#D1D5DB',
+    gridOpacity: 0.6,
     // Text
-    titleColor:      '#111827',
-    subtitleColor:   '#6B7280',
-    footerColor:     '#9CA3AF',
+    titleColor: '#111827',
+    subtitleColor: '#6B7280',
+    footerColor: '#9CA3AF',
     // Badge / hint
-    badgeBg:         '#F3F4F6',
-    badgeBorder:     '#E5E7EB',
-    badgeText:       '#6B7280',
+    badgeBg: '#F3F4F6',
+    badgeBorder: '#E5E7EB',
+    badgeText: '#6B7280',
     // Legend pill
-    legendBg:        '#F3F4F6',
-    legendBorder:    '#E5E7EB',
-    legendItemBg:    '#FFFFFF',
-    legendItemText:  '#374151',
+    legendBg: '#F3F4F6',
+    legendBorder: '#E5E7EB',
+    legendItemBg: '#FFFFFF',
+    legendItemText: '#374151',
     // Spinner
-    spinnerTrack:    '#E5E7EB',
-    spinnerHead:     '#6366F1',
-    spinnerText:     '#9CA3AF',
+    spinnerTrack: '#E5E7EB',
+    spinnerHead: '#6366F1',
+    spinnerText: '#9CA3AF',
     // Controls
-    ctrlBg:          '#FFFFFF',
-    ctrlBorder:      '#E5E7EB',
-    ctrlShadow:      '0 2px 8px rgba(0,0,0,0.08)',
+    ctrlBg: '#FFFFFF',
+    ctrlBorder: '#E5E7EB',
+    ctrlShadow: '0 2px 8px rgba(0,0,0,0.08)',
     // Toggle button
-    toggleBg:        '#F3F4F6',
-    toggleBorder:    '#E5E7EB',
-    toggleColor:     '#6B7280',
-    toggleHoverBg:   '#E5E7EB',
+    toggleBg: '#F3F4F6',
+    toggleBorder: '#E5E7EB',
+    toggleColor: '#6B7280',
+    toggleHoverBg: '#E5E7EB',
     // Edge defaults
-    edgeDefault:     '#D1D5DB',
-    edgeActive:      '#6366F1',
+    edgeDefault: '#D1D5DB',
+    edgeActive: '#6366F1',
     edgeActiveShadow: 'drop-shadow(0 0 3px rgba(99,102,241,0.45))',
     // Tooltip
-    tooltipBg:       '#1F2937',
-    tooltipDivider:  '#374151',
-    tooltipArrowBg:  '#1F2937',
+    tooltipBg: '#1F2937',
+    tooltipDivider: '#374151',
+    tooltipArrowBg: '#1F2937',
     tooltipLvlColor: '#F59E0B',
-    tooltipGoalColor:'#10B981',
-    tooltipMutedText:'#9CA3AF',
+    tooltipGoalColor: '#10B981',
+    tooltipMutedText: '#9CA3AF',
     // Progress bar track
-    barTrack:        '#E5E7EB',
+    barTrack: '#E5E7EB',
     // Node status colors
     nodeColors: {
       matched: {
@@ -364,7 +364,7 @@ const SkillGraph = ({ skills, graphData }) => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved === 'light' || saved === 'dark') return saved;
-    } catch {}
+    } catch { }
     // Fall back to system preference
     return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
@@ -372,7 +372,7 @@ const SkillGraph = ({ skills, graphData }) => {
   const toggleTheme = () => {
     setGraphTheme(prev => {
       const next = prev === 'dark' ? 'light' : 'dark';
-      try { localStorage.setItem(STORAGE_KEY, next); } catch {}
+      try { localStorage.setItem(STORAGE_KEY, next); } catch { }
       return next;
     });
   };
@@ -477,13 +477,13 @@ const SkillGraph = ({ skills, graphData }) => {
 
   const legendItems = [
     { status: 'matched', label: 'Mastered' },
-    { status: 'weak',    label: 'Weak' },
+    { status: 'weak', label: 'Weak' },
     { status: 'missing', label: 'Missing' },
   ];
 
   return (
     <motion.div
-      className={`rounded-3xl p-6 mb-8 overflow-hidden relative flex flex-col sg-theme-${graphTheme}`}
+      className={`rounded-3xl p-6 mb-8 overflow-hidden relative flex flex-col hover-levitate sg-theme-${graphTheme}`}
       animate={{
         background: t.containerBg,
         borderColor: t.containerBorder,
@@ -509,7 +509,7 @@ const SkillGraph = ({ skills, graphData }) => {
                 : '0 0 12px rgba(99,102,241,0.2)',
             }}
           >
-            <Network className="w-5 h-5 text-white" />
+            <Network className="w-5 h-5 text-white icon-spin-float" />
           </div>
           <div>
             <h3 className="text-xl font-black tracking-tight" style={{ color: t.titleColor }}>

@@ -50,14 +50,14 @@ export default function GapSummary({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none"
+      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none hover-levitate"
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-900 px-8 py-6 border-b border-slate-200/60 dark:border-slate-800/60">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-emerald-100/80 dark:bg-emerald-500/10 rounded-xl">
-              <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400 icon-spin-float" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Job Readiness Dashboard</h2>

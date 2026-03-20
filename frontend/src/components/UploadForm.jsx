@@ -9,11 +9,12 @@ export default function UploadForm({
   selectedProfile,
   onProfileChange,
   profileOptions,
+  learningStyle
 }) {
   const [resumeFile, setResumeFile] = useState(null);
   const [jdText, setJdText] = useState('');
   const [dragActive, setDragActive] = useState(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false); // Can keep local if it manages its own loading
   const [status, setStatus] = useState('');
 
   const jdFileInputRef = useRef(null);
@@ -86,7 +87,7 @@ export default function UploadForm({
 
       // Step 4: Roadmap Generation
       setStatus('Architecting adaptive roadmap...');
-      const roadmapResult = await api.generateRoadmap(resumeProfile, jdProfile, skillGap);
+      const roadmapResult = await api.generateRoadmap(resumeProfile, jdProfile, skillGap, learningStyle);
       const roadmap = roadmapResult.roadmap;
 
       // Step 5: Finalize
@@ -177,13 +178,13 @@ export default function UploadForm({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none"
+      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none hover-levitate"
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-900/50 px-8 py-6 border-b border-slate-200/60 dark:border-slate-800/60">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-indigo-100 rounded-xl">
-            <Upload className="w-5 h-5 text-indigo-600" />
+          <div className="p-2.5 bg-indigo-100 dark:bg-indigo-500/10 rounded-xl">
+            <Upload className="w-5 h-5 text-indigo-600 dark:text-indigo-400 icon-spin-float" />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Upload Your Documents</h2>
@@ -295,11 +296,10 @@ export default function UploadForm({
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className={`flex items-center gap-3 p-4 rounded-xl text-sm font-medium ${
-              status.startsWith('Error') 
+            className={`flex items-center gap-3 p-4 rounded-xl text-sm font-medium ${status.startsWith('Error')
                 ? 'bg-rose-50 text-rose-600 dark:bg-rose-900/10 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50'
                 : 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/10 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900/50'
-            }`}
+              }`}
           >
             {status.startsWith('Error') ? <AlertCircle className="w-4 h-4" /> : <Loader2 className="w-4 h-4 animate-spin" />}
             <span>{status}</span>
@@ -315,7 +315,7 @@ export default function UploadForm({
             whileTap={{ scale: canAnalyze && !isAnalyzing ? 0.99 : 1 }}
             className={`w-full py-4 px-6 rounded-xl font-medium text-white transition-all flex items-center justify-center gap-3
               ${canAnalyze && !isAnalyzing
-                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-500/25 cursor-pointer'
+                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg cursor-pointer pulse-glow-btn'
                 : 'bg-slate-300 cursor-not-allowed'}`}
           >
             {isAnalyzing ? (

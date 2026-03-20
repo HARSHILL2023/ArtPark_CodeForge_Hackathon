@@ -14,6 +14,9 @@ const { callLLMStructured } = require('./llm.service');
 const { normalizeSkill } = require('../utils/skillNormalizer');
 const logger = require('../utils/logger');
 
+// DIAGNOSTIC LOG: Confirm database load
+console.log(`[DIAGNOSTIC] Course Database loaded successfully. Total courses: ${courseDatabase.courses.length}`);
+
 // ── Helper: Find course by skill name + proficiency ──────────────────────────
 
 /**
@@ -34,7 +37,10 @@ const findCourse = (skillName, targetLevel = 'beginner') => {
       c.proficiency_level === targetLevel
   );
 
-  if (course) return course;
+  if (course) {
+    console.log(`[DIAGNOSTIC] Exact match found for [${skillName}] at [${targetLevel}] -> ${course.id}`);
+    return course;
+  }
 
   // Try adjacent levels
   for (let delta = 1; delta <= 3; delta++) {
@@ -51,13 +57,19 @@ const findCourse = (skillName, targetLevel = 'beginner') => {
   }
 
   // Loose match by tags or title
-  return (
-    courseDatabase.courses.find(
-      (c) =>
-        c.tags &&
-        c.tags.some((t) => normalizeSkill(t) === normalized)
-    ) || null
-  );
+  const fallBackMatch = courseDatabase.courses.find(
+    (c) =>
+      c.tags &&
+      c.tags.some((t) => normalizeSkill(t) === normalized)
+  ) || null;
+
+  if (fallBackMatch) {
+    console.log(`[DIAGNOSTIC] Fallback tag match for [${skillName}] -> ${fallBackMatch.id}`);
+  } else {
+    console.warn(`[DIAGNOSTIC] No course match found for skill: [${skillName}]`);
+  }
+
+  return fallBackMatch;
 };
 
 // ── PHASE 1: Build Dependency Graph ─────────────────────────────────────────
@@ -263,7 +275,7 @@ const adaptToLearner = (sortedSkills, resumeProfile, skillMeta) => {
  * @param {object} jdProfile
  * @returns {Promise<object>} Enriched pathway + weekly schedule
  */
-const enrichWithLLM = async (intermediatePathway, resumeProfile, jdProfile) => {
+const enrichWithLLM = async (intermediatePathway, resumeProfile, jdProfile, learningStyle = 'Practical') => {
   const catalogSummary = courseDatabase.courses.map((c) => ({
     id: c.id,
     skill: c.skill,
@@ -276,6 +288,7 @@ const enrichWithLLM = async (intermediatePathway, resumeProfile, jdProfile) => {
 You are given an ordered learning pathway for a new hire.
 Your job is to enrich each step with personalized learning tips, success criteria, and time estimates.
 
+CRITICAL: The candidate prefers a [${learningStyle}] learning style. Adapt all tips and success criteria to favor this style (e.g., more hands-on projects for 'Practical', more diagrams for 'Visual', more whitepapers/books for 'Reading').
 CRITICAL: You MUST only reference courses from the provided catalog. NEVER invent course names.
 Return ONLY valid JSON.`;
 
@@ -372,16 +385,16 @@ const generateReasoningTrace = (pathwaySteps, graph, jdProfile, resumeProfile) =
       idx === 0
         ? 'First in sequence — no dependencies.'
         : deps.length > 0
-        ? `Placed here because it requires: ${deps.join(', ')}.`
-        : isPrereqFor.length > 0
-        ? `Must come before: ${isPrereqFor.join(', ')}.`
-        : `Ordered by priority (mandatory/gap size).`;
+          ? `Placed here because it requires: ${deps.join(', ')}.`
+          : isPrereqFor.length > 0
+            ? `Must come before: ${isPrereqFor.join(', ')}.`
+            : `Ordered by priority (mandatory/gap size).`;
 
     const adaptNote = inResume
       ? `Starting at ${step.proficiency_start} level because learner already has "${inResume.proficiency}" proficiency in ${inResume.name}.`
       : step.proficiency_start !== 'beginner'
-      ? `Starting at ${step.proficiency_start} level due to ${resumeProfile.seniority_level || 'mid'} seniority — skipping basics.`
-      : 'Starting from beginner — no prior knowledge detected.';
+        ? `Starting at ${step.proficiency_start} level due to ${resumeProfile.seniority_level || 'mid'} seniority — skipping basics.`
+        : 'Starting from beginner — no prior knowledge detected.';
 
     return {
       ...step,
@@ -402,10 +415,10 @@ const generateReasoningTrace = (pathwaySteps, graph, jdProfile, resumeProfile) =
  * Run the full 5-phase adaptive pathway algorithm.
  * @param {object} resumeProfile - From resumeParser
  * @param {object} jdProfile - From jdParser
- * @param {object} skillGap - From skillMatcher
+ * @param {string} learningStyle - User preference
  * @returns {Promise<object>} Complete pathway result
  */
-const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap) => {
+const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap, learningStyle = 'Practical') => {
   logger.info('⚙️  Starting 5-phase adaptive pathway algorithm...');
 
   // ── Known skills from resume ────────────────────────────────────────────────
@@ -478,7 +491,7 @@ const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap) => {
 
   // ── PHASE 4: LLM enrichment ─────────────────────────────────────────────────
   logger.info('Phase 4: LLM enrichment...');
-  const enrichment = await enrichWithLLM(intermediatePathway, resumeProfile, jdProfile);
+  const enrichment = await enrichWithLLM(intermediatePathway, resumeProfile, jdProfile, learningStyle);
   logger.info('Phase 4 complete');
 
   // ── PHASE 5: Reasoning trace ─────────────────────────────────────────────────
@@ -504,13 +517,14 @@ const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap) => {
       is_mandatory: step.is_mandatory,
       is_prerequisite_for: step.is_prerequisite_for || [],
       learning_modules: step.learning_objectives || [],
-      learning_tips: enriched.learning_tips || 'Focus on hands-on practice.',
+      learning_tips: enriched.learning_tips || `Focus on ${learningStyle.toLowerCase()} exercises for this module.`,
       success_criteria: enriched.success_criteria || `Demonstrate ${step.skill_name} in a real project.`,
       common_pitfalls: enriched.common_pitfalls || '',
       provider: step.provider,
       url: step.url,
       format: step.format || [],
       reasoning: step.reasoning,
+      style: learningStyle
     };
   });
 

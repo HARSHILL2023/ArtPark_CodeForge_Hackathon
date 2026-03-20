@@ -106,10 +106,10 @@ export const analyzeSkillGap = async (resumeProfile, jdProfile) => {
   });
 };
 
-export const generateRoadmap = async (resumeProfile, jdProfile, skillGap) => {
+export const generateRoadmap = async (resumeProfile, jdProfile, skillGap, learningStyle) => {
   return apiFetch('/analysis/roadmap/generate', {
     method: 'POST',
-    body: JSON.stringify({ resumeProfile, jdProfile, skillGap }),
+    body: JSON.stringify({ resumeProfile, jdProfile, skillGap, learningStyle }),
   });
 };
 

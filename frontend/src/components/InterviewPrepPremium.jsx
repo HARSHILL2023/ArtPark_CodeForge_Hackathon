@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-    Terminal, X, CheckSquare, 
-    Mic, ArrowRight, Shield, 
+import {
+    Terminal, X, CheckSquare,
+    Mic, ArrowRight, Shield,
     Cpu, Gauge, Sparkles, Bookmark,
     Layers, RefreshCw, Zap,
     Target, History
@@ -141,8 +141,8 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
         }
     ];
 
-    const filteredQuestions = activeTier === 'All' 
-        ? questions 
+    const filteredQuestions = activeTier === 'All'
+        ? questions
         : questions.filter(q => q.tier === activeTier);
 
     useEffect(() => {
@@ -169,56 +169,56 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
             className="group relative"
         >
             {/* Outer Glow */}
-            <div className="absolute inset-0 bg-violet-600/10 rounded-[2rem] blur-2xl group-hover:opacity-100 opacity-0 transition-all duration-1000 -z-10" />
-            
-            <div className="relative bg-[#020617] border border-slate-800/60 rounded-[2rem] p-0.5 shadow-2xl overflow-hidden transition-all duration-500 hover:border-violet-500/30">
-                <div className="bg-slate-900/20 backdrop-blur-xl rounded-[1.9rem] p-6 md:p-10">
+            <div className="absolute inset-0 bg-violet-400/10 rounded-[2rem] blur-2xl group-hover:opacity-100 opacity-0 transition-all duration-1000 -z-10" />
+
+            <div className="relative bg-white dark:bg-[#020617] border border-slate-200/80 dark:border-slate-800/60 rounded-[2rem] p-0.5 overflow-hidden transition-all duration-500 hover:border-violet-400/40 dark:hover:border-violet-500/30 shadow-[0_4px_24px_rgba(0,0,0,0.08)] dark:shadow-2xl hover-levitate">
+                <div className="rounded-[1.9rem] p-6 md:p-10">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-10">
                         <div className="flex-1 space-y-5 text-center md:text-left">
                             <div className="flex items-center justify-center md:justify-start gap-2">
-                                <div className="px-3 py-1 bg-violet-500/10 text-violet-400 rounded-md text-[9px] font-black uppercase tracking-[0.15em] border border-violet-500/20">
+                                <div className="px-3 py-1 bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-md text-[9px] font-black uppercase tracking-[0.15em] border border-violet-200 dark:border-violet-500/20">
                                     <Sparkles className="w-3 h-3 inline mr-1.5" />
                                     Studio Matrix 3.5
                                 </div>
-                                <div className="px-2 py-1 bg-emerald-500/10 text-emerald-400 rounded-md text-[8px] font-black uppercase border border-emerald-500/20 tracking-wider">
+                                <div className="px-2 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-md text-[8px] font-black uppercase border border-emerald-200 dark:border-emerald-500/20 tracking-wider">
                                     Production Grade
                                 </div>
                             </div>
-                            
-                            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-[1.1]">
-                                Engineering <br/>
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">Simulation Studio</span>
+
+                            <h2 className="text-3xl md:text-5xl font-black text-[#1a1a2e] dark:text-white tracking-tight leading-[1.1]">
+                                Engineering <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 dark:from-violet-400 to-purple-500 dark:to-indigo-400">Simulation Studio</span>
                             </h2>
-                            
-                            <p className="text-sm text-slate-400 font-medium max-w-lg leading-relaxed opacity-90 px-1">
+
+                            <p className="text-sm text-[#6b7280] dark:text-slate-400 font-medium max-w-lg leading-relaxed px-1">
                                 High-density technical evaluation and architectural reasoning. Select a module to begin deep-state assessment.
                             </p>
-                            
+
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
                                 <button
                                     onClick={() => { setIsActive(true); setCurrentType('questions') }}
-                                    className="group/q px-6 py-3 bg-white text-slate-950 rounded-xl text-xs font-black shadow-xl hover:shadow-violet-500/20 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-2.5"
+                                    className="group/q px-6 py-3 bg-[#1a1a2e] dark:bg-white text-white dark:text-slate-950 rounded-xl text-xs font-black shadow-lg shadow-slate-900/10 dark:shadow-xl hover:shadow-xl hover:shadow-violet-500/15 dark:hover:shadow-violet-500/20 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-2.5 pulse-glow-btn"
                                 >
-                                    <Zap className="w-4 h-4 text-violet-600" />
+                                    <Zap className="w-4 h-4 text-violet-400 dark:text-violet-600 icon-spin-float" />
                                     Launch Q&A Matrix
                                     <ArrowRight className="w-4 h-4 group-hover/q:translate-x-1 transition-transform" />
                                 </button>
                                 <button
                                     onClick={() => { setIsActive(true); setCurrentType('mock'); setIsListening(true) }}
-                                    className="px-6 py-3 bg-slate-900 border border-slate-700 text-white rounded-xl text-xs font-black hover:bg-slate-800 hover:border-slate-500 transition-all active:scale-95 flex items-center gap-2.5"
+                                    className="px-6 py-3 bg-emerald-50 dark:bg-slate-900 border border-emerald-200 dark:border-slate-700 text-emerald-700 dark:text-white rounded-xl text-xs font-black hover:bg-emerald-100 dark:hover:bg-slate-800 hover:border-emerald-300 dark:hover:border-slate-500 transition-all active:scale-95 flex items-center gap-2.5"
                                 >
-                                    <Target className="w-4 h-4 text-emerald-400" />
+                                    <Target className="w-4 h-4 text-emerald-500 dark:text-emerald-400 icon-spin-float" />
                                     Start Session
                                 </button>
                             </div>
                         </div>
 
                         <div className="hidden xl:block relative">
-                            <div className="absolute inset-0 bg-violet-600/5 rounded-full blur-[60px]" />
-                            <div className="relative w-56 h-56 bg-slate-950 border border-slate-800 rounded-[2.5rem] flex items-center justify-center shadow-xl rotate-2">
-                                <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,transparent_25%,rgba(99,102,241,0.1)_50%,transparent_75%)] [background-size:200%_200%] animate-[shimmer_5s_infinite]" />
-                                <div className="w-32 h-32 rounded-[2rem] border border-slate-700/30 flex items-center justify-center p-6">
-                                    <Cpu className="w-16 h-16 text-violet-500/80" />
+                            <div className="absolute inset-0 bg-violet-400/5 dark:bg-violet-600/5 rounded-full blur-[60px]" />
+                            <div className="relative w-56 h-56 bg-[#f3f4f6] dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] flex items-center justify-center shadow-sm dark:shadow-xl rotate-2">
+                                <div className="absolute inset-0 opacity-5 dark:opacity-10 bg-[linear-gradient(45deg,transparent_25%,rgba(99,102,241,0.15)_50%,transparent_75%)] [background-size:200%_200%] animate-[shimmer_5s_infinite] rounded-[2.5rem]" />
+                                <div className="w-32 h-32 rounded-[2rem] border border-slate-200/60 dark:border-slate-700/30 flex items-center justify-center p-6 bg-white dark:bg-slate-900/50 hover-levitate pointer-events-auto cursor-pointer">
+                                    <Cpu className="w-16 h-16 text-violet-500/80 icon-spin-float" />
                                 </div>
                             </div>
                         </div>
@@ -235,7 +235,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 backdrop-blur-3xl bg-slate-950/95"
                     >
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, scale: 0.98, y: 30 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.98, y: 30 }}
@@ -263,7 +263,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                         </div>
                                     </div>
                                 </div>
-                                <button 
+                                <button
                                     onClick={() => setIsActive(false)}
                                     className="p-3 bg-slate-900/50 border border-slate-800 rounded-xl text-slate-500 hover:text-white hover:border-slate-600 transition-all active:scale-90"
                                 >
@@ -276,14 +276,14 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                 <div className="hidden lg:flex w-64 border-r border-slate-800/50 flex-col p-6 bg-slate-950/20">
                                     <div className="space-y-2">
                                         <p className="px-4 text-[8px] font-black text-slate-600 uppercase tracking-widest mb-4">Core Modules</p>
-                                        <button 
+                                        <button
                                             onClick={() => setCurrentType('questions')}
                                             className={`w-full px-4 py-3 rounded-xl flex items-center gap-3 text-[11px] font-bold transition-all ${currentType === 'questions' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-900 border border-transparent hover:border-slate-800'}`}
                                         >
                                             <Bookmark className="w-4 h-4 shrink-0" />
                                             Knowledge Ledger
                                         </button>
-                                        <button 
+                                        <button
                                             onClick={() => setCurrentType('mock')}
                                             className={`w-full px-4 py-3 rounded-xl flex items-center gap-3 text-[11px] font-bold transition-all ${currentType === 'mock' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-900 border border-transparent hover:border-slate-800'}`}
                                         >
@@ -295,12 +295,12 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                             Trace Logs
                                         </button>
                                     </div>
-                                    
+
                                     <div className="mt-auto border border-slate-800/50 bg-slate-900/10 rounded-2xl p-4 space-y-3">
                                         <div className="w-8 h-8 bg-violet-600/10 rounded-lg flex items-center justify-center text-violet-500">
                                             <Layers className="w-4 h-4" />
                                         </div>
-                                        <p className="text-[9px] font-medium leading-relaxed text-slate-500 uppercase tracking-wider">GPT-4o Engine <br/> Enabled</p>
+                                        <p className="text-[9px] font-medium leading-relaxed text-slate-500 uppercase tracking-wider">GPT-4o Engine <br /> Enabled</p>
                                     </div>
                                 </div>
 
@@ -311,7 +311,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                             {/* Tier Filter */}
                                             <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-900/30 rounded-lg border border-slate-800/50 w-fit mx-auto md:mx-0">
                                                 {tiers.map(tier => (
-                                                    <button 
+                                                    <button
                                                         key={tier}
                                                         onClick={() => setActiveTier(tier)}
                                                         className={`px-3 py-1.5 rounded-md text-[8px] font-black uppercase tracking-wider transition-all ${activeTier === tier ? 'bg-violet-600 text-white' : 'text-slate-500 hover:text-slate-300'}`}
@@ -323,7 +323,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
 
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 {filteredQuestions.map((item, i) => (
-                                                    <motion.div 
+                                                    <motion.div
                                                         key={i}
                                                         layout
                                                         initial={{ opacity: 0, y: 10 }}
@@ -335,11 +335,10 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                                                 <div className="space-y-2">
                                                                     <div className="flex items-center gap-2">
                                                                         <span className="text-[7px] font-black text-slate-600 uppercase tracking-widest bg-slate-800/50 px-1.5 py-0.5 rounded leading-none">{item.tier}</span>
-                                                                        <span className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded leading-none ${
-                                                                            item.difficulty === 'Hard' ? 'text-rose-400 bg-rose-500/5' :
-                                                                            item.difficulty === 'Medium' ? 'text-amber-400 bg-amber-500/5' :
-                                                                            'text-emerald-400 bg-emerald-500/5'
-                                                                        }`}>{item.difficulty}</span>
+                                                                        <span className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded leading-none ${item.difficulty === 'Hard' ? 'text-rose-400 bg-rose-500/5' :
+                                                                                item.difficulty === 'Medium' ? 'text-amber-400 bg-amber-500/5' :
+                                                                                    'text-emerald-400 bg-emerald-500/5'
+                                                                            }`}>{item.difficulty}</span>
                                                                     </div>
                                                                     <h5 className="text-sm font-bold text-white leading-snug group-hover/card:text-violet-200 transition-colors">
                                                                         {item.q}
@@ -366,17 +365,17 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                             <div className="relative">
                                                 <AnimatePresence>
                                                     {isListening && (
-                                                        <motion.div 
+                                                        <motion.div
                                                             animate={pulseAnimate}
                                                             className="absolute inset-0 bg-violet-600/10 rounded-full blur-[40px]"
                                                         />
                                                     )}
                                                 </AnimatePresence>
-                                                
+
                                                 <div className="relative w-40 h-40 rounded-full bg-slate-950 border border-slate-800/50 flex items-center justify-center shadow-inner">
                                                     <div className={`absolute inset-0 rounded-full border border-violet-500/10`} />
                                                     <div className={`absolute inset-2 rounded-full border-t border-violet-500/40 ${isThinking ? 'animate-spin' : ''}`} />
-                                                    
+
                                                     <div className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-700 ${isListening ? 'bg-violet-600 shadow-xl' : 'bg-slate-900'}`}>
                                                         <Mic className={`w-10 h-10 ${isListening ? 'text-white' : 'text-slate-700'}`} />
                                                     </div>
@@ -385,7 +384,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                                     {isListening && (
                                                         <div className="absolute -bottom-6 flex gap-1 items-end h-8 w-16 justify-center">
                                                             {[...Array(10)].map((_, i) => (
-                                                                <motion.div 
+                                                                <motion.div
                                                                     key={i}
                                                                     animate={{ height: [4, Math.random() * 20 + 5, 4] }}
                                                                     transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.04 }}
@@ -414,14 +413,14 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                             </div>
 
                                             <div className="flex flex-wrap items-center justify-center gap-4">
-                                                <button 
+                                                <button
                                                     onClick={() => setIsListening(!isListening)}
                                                     className={`px-8 py-3 rounded-xl text-[10px] font-black transition-all flex items-center gap-2 shadow-lg active:scale-95 ${isListening ? 'bg-rose-600 text-white' : 'bg-violet-600 text-white'}`}
                                                 >
                                                     <X className="w-3.5 h-3.5" />
                                                     {isListening ? 'Stop Link' : 'Re-engage Studio'}
                                                 </button>
-                                                <button 
+                                                <button
                                                     onClick={() => setIsThinking(true)}
                                                     className="px-8 py-3 bg-white text-slate-950 rounded-xl text-[10px] font-black hover:bg-slate-100 transition-all active:scale-95 flex items-center gap-2 border border-transparent"
                                                 >
@@ -446,7 +445,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                                         <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Lat. 12ms</span>
                                     </div>
                                 </div>
-                                <button 
+                                <button
                                     onClick={() => setIsActive(false)}
                                     className="px-8 py-3 bg-slate-900/50 border border-slate-800 text-slate-300 rounded-xl text-[10px] font-black transition-all active:scale-95 hover:bg-slate-800 hover:text-white"
                                 >

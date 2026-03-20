@@ -33,7 +33,7 @@ export default function ResumeOptimizer({ missingSkills, role }) {
     };
 
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-10 overflow-hidden relative">
+        <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-10 overflow-hidden relative hover-levitate">
             <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
                 <FileText className="w-48 h-48" />
             </div>
@@ -42,7 +42,7 @@ export default function ResumeOptimizer({ missingSkills, role }) {
                 <div className="max-w-md">
                     <div className="flex items-center gap-3 mb-4">
                         <div className="p-3 bg-amber-100 dark:bg-amber-500/10 rounded-2xl">
-                            <Sparkles className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                            <Sparkles className="w-6 h-6 text-amber-600 dark:text-amber-400 icon-spin-float" />
                         </div>
                         <div>
                             <h3 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight">Resume Optimization AI</h3>
@@ -56,7 +56,7 @@ export default function ResumeOptimizer({ missingSkills, role }) {
                     <PDFDownloadLink
                         document={<ResumePDF data={pdfData} />}
                         fileName={`Resume_${(role || 'Developer').replace(/\s+/g, '_')}.pdf`}
-                        className="px-8 py-4 bg-slate-900 dark:bg-amber-600 hover:-translate-y-1 shadow-lg shadow-amber-500/10 text-white rounded-2xl font-black transition-all flex items-center justify-center gap-3 w-fit no-underline"
+                        className="px-8 py-4 bg-slate-900 dark:bg-amber-600 hover:-translate-y-1 shadow-lg shadow-amber-500/10 text-white rounded-2xl font-black transition-all flex items-center justify-center gap-3 w-fit no-underline pulse-glow-btn"
                     >
                         {({ loading }) => loading ? (
                             <>

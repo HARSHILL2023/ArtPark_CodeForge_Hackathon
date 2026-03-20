@@ -60,25 +60,25 @@ const SkillDNA = ({ userSkills }) => {
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-8 overflow-hidden"
+        className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm dark:shadow-xl border border-slate-200/60 dark:border-slate-700/40 p-8 overflow-hidden hover-levitate"
       >
         <div className="flex items-center gap-3 mb-8">
-          <div className="p-2 bg-indigo-50 rounded-lg">
-            <Fingerprint className="w-5 h-5 text-indigo-600" />
+          <div className="p-2 bg-indigo-50 dark:bg-indigo-500/20 rounded-lg">
+            <Fingerprint className="w-5 h-5 text-indigo-600 dark:text-indigo-400 icon-spin-float" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-900">Skill DNA Profile</h3>
-            <p className="text-sm text-slate-500">Distribution analysis based on current proficiency</p>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Skill DNA Profile</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Distribution analysis based on current proficiency</p>
           </div>
         </div>
 
         <div className="space-y-6">
           <div className="space-y-2">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded-md">Mastered Skills</span>
-              <span className="text-sm font-bold text-slate-900">{distribution.strong}%</span>
+              <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md">Mastered Skills</span>
+              <span className="text-sm font-bold text-slate-900 dark:text-white">{distribution.strong}%</span>
             </div>
-            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${distribution.strong}%` }}
@@ -89,10 +89,10 @@ const SkillDNA = ({ userSkills }) => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-amber-700 bg-amber-50 px-2 py-1 rounded-md">Emerging Skills</span>
-              <span className="text-sm font-bold text-slate-900">{distribution.moderate}%</span>
+              <span className="text-sm font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-1 rounded-md">Emerging Skills</span>
+              <span className="text-sm font-bold text-slate-900 dark:text-white">{distribution.moderate}%</span>
             </div>
-            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${distribution.moderate}%` }}
@@ -103,10 +103,10 @@ const SkillDNA = ({ userSkills }) => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-rose-700 bg-rose-50 px-2 py-1 rounded-md">Growth Opportunity</span>
-              <span className="text-sm font-bold text-slate-900">{distribution.weak}%</span>
+              <span className="text-sm font-medium text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 px-2 py-1 rounded-md">Growth Opportunity</span>
+              <span className="text-sm font-bold text-slate-900 dark:text-white">{distribution.weak}%</span>
             </div>
-            <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${distribution.weak}%` }}
@@ -116,12 +116,12 @@ const SkillDNA = ({ userSkills }) => {
           </div>
         </div>
 
-        <div className="mt-8 p-4 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center gap-4">
-          <div className="p-2 bg-white rounded-lg border border-slate-200 shadow-sm">
-            <BarChart3 className="w-4 h-4 text-slate-600" />
+        <div className="mt-8 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/50 flex items-center gap-4">
+          <div className="p-2 bg-white dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600/50 shadow-sm dark:shadow-none">
+            <BarChart3 className="w-4 h-4 text-slate-600 dark:text-slate-300" />
           </div>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            Your profile shows a <span className="font-bold text-emerald-600">{distribution.strong < 40 ? 'growing' : 'strong'}</span> technical foundation 
+          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Your profile shows a <span className="font-bold text-emerald-600 dark:text-emerald-400">{distribution.strong < 40 ? 'growing' : 'strong'}</span> technical foundation 
             with significant growth potential in emerging areas.
           </p>
         </div>
@@ -131,19 +131,19 @@ const SkillDNA = ({ userSkills }) => {
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="bg-slate-900 rounded-2xl shadow-xl p-8 text-white relative overflow-hidden"
+        className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm dark:shadow-xl border border-slate-200/60 dark:border-transparent p-8 text-slate-900 dark:text-white relative overflow-hidden hover-levitate"
       >
-        <div className="absolute top-0 right-0 p-8 opacity-10">
+        <div className="absolute top-0 right-0 p-8 opacity-5 dark:opacity-10">
           <TrendingUp className="w-32 h-32" />
         </div>
 
         <div className="relative flex items-center gap-3 mb-8">
-          <div className="p-2 bg-indigo-500/20 rounded-lg">
-            <Terminal className="w-5 h-5 text-indigo-400" />
+          <div className="p-2 bg-indigo-50 dark:bg-indigo-500/20 rounded-lg">
+            <Terminal className="w-5 h-5 text-indigo-600 dark:text-indigo-400 icon-spin-float" />
           </div>
           <div>
-            <h3 className="text-lg font-bold">Career Simulator</h3>
-            <p className="text-sm text-slate-400">Predicting your trajectory for different roles</p>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Career Simulator</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Predicting your trajectory for different roles</p>
           </div>
         </div>
 
@@ -151,14 +151,14 @@ const SkillDNA = ({ userSkills }) => {
           <select
             value={selectedRole}
             onChange={handleRoleChange}
-            className="w-full bg-slate-800 border border-slate-700 text-white p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer"
           >
             {careerPaths.map(path => (
               <option key={path.id} value={path.id}>{path.name}</option>
             ))}
           </select>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-            <ChevronRight className="w-4 h-4 text-slate-500" />
+            <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500" />
           </div>
         </div>
 
@@ -171,10 +171,10 @@ const SkillDNA = ({ userSkills }) => {
               exit={{ opacity: 0 }}
               className="space-y-4 animate-pulse"
             >
-              <div className="h-20 bg-slate-800 rounded-xl" />
+              <div className="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl" />
               <div className="grid grid-cols-2 gap-4">
-                <div className="h-16 bg-slate-800 rounded-xl" />
-                <div className="h-16 bg-slate-800 rounded-xl" />
+                <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-xl" />
+                <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-xl" />
               </div>
             </motion.div>
           ) : simulation && (
@@ -184,12 +184,12 @@ const SkillDNA = ({ userSkills }) => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-6"
             >
-              <div className="p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-xl">
+              <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-xl">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-indigo-300">Readiness for {simulation.name}</span>
-                  <span className="text-2xl font-black text-indigo-400">{simulation.readiness}%</span>
+                  <span className="text-sm text-indigo-600 dark:text-indigo-300">Readiness for {simulation.name}</span>
+                  <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{simulation.readiness}%</span>
                 </div>
-                <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${simulation.readiness}%` }}
@@ -199,31 +199,31 @@ const SkillDNA = ({ userSkills }) => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/50">
                   <div className="flex items-center gap-2 mb-1">
-                    <Clock className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs text-slate-400 uppercase tracking-wider">Estimated Time</span>
+                    <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400" />
+                    <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Estimated Time</span>
                   </div>
-                  <p className="text-lg font-bold">{simulation.timeInWeeks} Weeks</p>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">{simulation.timeInWeeks} Weeks</p>
                 </div>
-                <div className="p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/50">
                   <div className="flex items-center gap-2 mb-1">
-                    <Target className="w-4 h-4 text-emerald-400" />
-                    <span className="text-xs text-slate-400 uppercase tracking-wider">Success Fate</span>
+                    <Target className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                    <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Success Fate</span>
                   </div>
-                  <p className="text-lg font-bold">{simulation.probability}% Probability</p>
+                  <p className="text-lg font-bold text-slate-900 dark:text-white">{simulation.probability}% Probability</p>
                 </div>
               </div>
 
               {simulation.missing.length > 0 && (
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-500 uppercase flex items-center gap-2">
+                  <h4 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
                     <Search className="w-4 h-4" />
                     Critical Skill Gaps to Address
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {simulation.missing.map(skill => (
-                      <span key={skill} className="text-xs font-medium px-2 py-1 bg-rose-500/10 text-rose-300 rounded-md border border-rose-500/20">
+                      <span key={skill} className="text-xs font-medium px-2 py-1 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-300 rounded-md border border-rose-200 dark:border-rose-500/20">
                         {skill}
                       </span>
                     ))}

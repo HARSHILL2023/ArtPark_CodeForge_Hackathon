@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+/* Tailwind v4: override dark variant to use .dark class instead of media query */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -12,6 +15,98 @@
   border-radius: 4px;
 }
 
+/* Antigravity Web Effects */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-18px) rotate(1deg);
+  }
+}
+
+@keyframes floatStat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes driftBlob {
+  0% {
+    transform: translate(0, 0) scale(1);
+    border-radius: 50%;
+  }
+
+  33% {
+    transform: translate(40px, -30px) scale(1.05);
+    border-radius: 60% 40% 60% 40%;
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.97);
+    border-radius: 40% 60% 40% 60%;
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+    border-radius: 50%;
+  }
+}
+
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 8px 60px rgba(139, 92, 246, 0.75), 0 0 80px rgba(99, 102, 241, 0.3);
+  }
+}
+
+.float-slow {
+  animation: float 6s ease-in-out infinite alternate;
+}
+
+.float-med {
+  animation: float 5s ease-in-out infinite alternate;
+}
+
+.float-fast {
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+.hover-levitate {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.hover-levitate:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 24px 48px rgba(139, 92, 246, 0.25);
+}
+
+.icon-spin-float {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.icon-spin-float:hover {
+  transform: translateY(-6px) rotate(10deg) scale(1.1);
+}
+
+.pulse-glow-btn {
+  animation: pulseGlow 3s infinite;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
@@ -19,6 +114,19 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Dark scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
 }
 
 /* Smooth transitions */
@@ -38,6 +146,23 @@
   color: #3730a3;
 }
 
+.dark ::selection {
+  background-color: #4338ca;
+  color: #e0e7ff;
+}
+
+/* Theme transition */
+html,
+body,
+nav,
+main,
+footer,
+div,
+section,
+header {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
 /* Body styles */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -55,6 +180,23 @@ body {
   }
 }
 
+/* Light mode mesh gradient background */
+.bg-mesh-gradient {
+  background-color: #f5f7fa;
+  background-image:
+    radial-gradient(at 40% 20%, rgba(99, 102, 241, 0.06) 0px, transparent 60%),
+    radial-gradient(at 80% 0%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(99, 102, 241, 0.04) 0px, transparent 60%),
+    radial-gradient(at 80% 80%, rgba(236, 72, 153, 0.03) 0px, transparent 50%);
+}
+
+/* In dark mode, remove the light mesh gradient so dark:bg-slate-950 shows through */
+.dark .bg-mesh-gradient {
+  background-color: #020617 !important;
+  /* slate-950 */
+  background-image: none !important;
+}
+
 /* ── ReactFlow shared overrides ──────────────────────────────────────────────── */
 .react-flow__edge-path {
   transition: stroke 220ms ease, stroke-width 220ms ease, filter 220ms ease;
@@ -67,14 +209,17 @@ body {
   fill: #9CA3AF !important;
   transition: background 200ms ease, fill 200ms ease;
 }
+
 .sg-theme-dark .react-flow__controls-button:hover {
   background: #2A2A2A !important;
   fill: #EAEAEA !important;
 }
+
 .sg-theme-dark .react-flow__attribution {
   background: #0D0D0D !important;
   color: #374151 !important;
 }
+
 .sg-theme-dark .react-flow__attribution a {
   color: #4B5563 !important;
 }
@@ -86,17 +231,23 @@ body {
   fill: #6B7280 !important;
   transition: background 200ms ease, fill 200ms ease;
 }
+
 .sg-theme-light .react-flow__controls-button:hover {
   background: #F3F4F6 !important;
   fill: #111827 !important;
 }
+
 .sg-theme-light .react-flow__attribution {
   background: #F8F9FB !important;
   color: #9CA3AF !important;
 }
+
 .sg-theme-light .react-flow__attribution a {
   color: #6B7280 !important;
 }
+
 .react-flow__controls-button svg {
   fill: inherit;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));

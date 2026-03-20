@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI-Adaptive Onboarding Engine | CodeForge</title>
+
+  <!-- Google Fonts: Syne & DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Colors - Light Theme */
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: rgba(0,0,0,0.1);
+      --card-bg: rgba(255,255,255,0.7);
+      
+      /* Accents */
+      --accent-indigo: #6366f1;
+      --accent-violet: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      
+      /* Radii */
+      --radius-card: 24px;
+      --radius-chip: 8px;
+      --radius-btn: 12px;
+      --radius-pill: 100px;
+      
+      --glow-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    /* Dark Mode Theme */
+    html.dark {
+      --bg-primary: #07080f;
+      --bg-secondary: #0d0f1c;
+      --text-main: #ffffff;
+      --text-muted: #9ca3af;
+      --border-color: rgba(255,255,255,0.07);
+      --card-bg: rgba(13, 15, 28, 0.6);
+      --glow-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3, h4, .display-font {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    /* Background Elements */
+    .bg-noise {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; opacity: 0.04; z-index: 100;
+      background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    }
+    .grid-pattern {
+      position: absolute; inset: 0; pointer-events: none; z-index: -1;
+      background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(80px); z-index: -2; opacity: 0.15;
+    }
+    .blob-1 { top: 10%; left: 20%; width: 400px; height: 400px; background: var(--accent-indigo); animation: driftBlob 20s infinite ease-in-out; }
+    .blob-2 { top: 40%; right: 10%; width: 350px; height: 350px; background: var(--accent-violet); animation: driftBlob 25s infinite ease-in-out reverse; }
+    .blob-3 { bottom: 10%; left: 30%; width: 500px; height: 500px; background: var(--accent-emerald); animation: driftBlob 28s infinite ease-in-out 2s; }
+
+    /* Layout */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 8rem 0; position: relative; }
+    
+    /* Utilities */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      box-shadow: var(--glow-shadow);
+      padding: 2.5rem;
+    }
+    .text-gradient {
+      background: linear-gradient(to right, var(--accent-indigo), var(--accent-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; items-center; gap: 0.5rem; justify-content: center;
+      padding: 0.8rem 1.5rem; border-radius: var(--radius-btn); font-weight: 600;
+      text-decoration: none; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+      cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; border: none; outline: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet));
+      color: white;
+      animation: pulseGlow 3s infinite;
+    }
+    .btn-primary:hover { transform: translateY(-3px); }
+    .btn-ghost {
+      background: transparent; color: var(--text-main); border: 1px solid var(--border-color);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.05); transform: translateY(-3px); border-color: var(--accent-indigo); }
+
+    /* Navbar */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 50; padding: 1.5rem 0;
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      padding: 1rem 0; background: rgba(13, 15, 28, 0.7); backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-color);
+    }
+    html:not(.dark) nav.scrolled {
+      background: rgba(255, 255, 255, 0.8);
+    }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.4rem; color: var(--text-main); text-decoration: none; }
+    .nav-logo-sub { font-size: 0.65rem; font-family: 'DM Sans', sans-serif; font-weight: 500; opacity: 0.7; letter-spacing: 0.1em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text-main); }
+    .nav-actions { display: flex; align-items: center; gap: 1rem; }
+    
+    .theme-toggle { background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; transition: all 0.3s ease; }
+    .theme-toggle:hover { background: var(--border-color); }
+    .sun-icon { display: none; }
+    html.dark .sun-icon { display: block; }
+    html.dark .moon-icon { display: none; }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border-radius: var(--radius-pill); border: 1px solid var(--accent-violet); color: var(--accent-violet); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(139, 92, 246, 0.1); margin-bottom: 2rem; }
+    .hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero p { font-size: 1.15rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 3rem; }
+    .hero-ctas { display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem; z-index: 10; relative; }
+    
+    .floating-chip { position: absolute; padding: 0.6rem 1.2rem; border-radius: var(--radius-pill); background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--accent-indigo); font-size: 0.8rem; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.1); white-space: nowrap; z-index: 0; }
+    .chip-1 { top: 20%; left: 15%; animation: float 5s infinite ease-in-out; }
+    .chip-2 { top: 30%; right: 15%; animation: float 4s infinite ease-in-out 1s; border-color: var(--accent-emerald); }
+    .chip-3 { bottom: 25%; left: 18%; animation: float 6s infinite ease-in-out 0.5s; border-color: var(--accent-amber); }
+    .chip-4 { bottom: 35%; right: 12%; animation: float 4.5s infinite ease-in-out 2s; border-color: var(--accent-rose); }
+
+    .stats-bar { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+    .stat-box { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color); padding: 1.5rem 2.5rem; border-radius: var(--radius-card); animation: floatStat 3s infinite alternate ease-in-out; }
+    .stat-box:nth-child(2) { animation-duration: 4s; }
+    .stat-box:nth-child(3) { animation-duration: 3.5s; }
+    .stat-box:nth-child(4) { animation-duration: 4.2s; }
+    .stat-value { font-size: 1.5rem; font-weight: 800; font-family: 'Syne', sans-serif; background: linear-gradient(to right, var(--accent-indigo), var(--accent-violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-top: 0.2rem; letter-spacing: 0.05em; }
+
+    /* Sections Shared */
+    .section-eyebrow { display: flex; align-items: center; gap: 0.5rem; justify-content: center; color: var(--accent-indigo); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; margin-bottom: 1rem; }
+    .section-eyebrow::before { content: "—"; }
+    .section-title { text-align: center; font-size: 3rem; margin-bottom: 1.5rem; }
+    .section-subtitle { text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 4rem; font-size: 1.1rem; }
+
+    /* Problem Section */
+    .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .stat-card { position: relative; overflow: hidden; }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent-rose), var(--accent-amber)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+    .stat-card:hover::before { transform: scaleX(1); }
+    .stat-card-val { font-size: 4rem; font-family: 'Syne', sans-serif; font-weight: 800; background: linear-gradient(135deg, var(--accent-rose), var(--accent-amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; line-height: 1; }
+
+    /* Features Bento */
+    .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; grid-auto-rows: minmax(300px, auto); }
+    .bento-wide { grid-column: span 2; }
+    .feature-card { display: flex; flex-col; padding: 2.5rem; height: 100%; border-radius: var(--radius-card); border: 1px solid var(--border-color); background: var(--card-bg); backdrop-filter: blur(16px); }
+    .card-icon { width: 50px; height: 50px; background: rgba(99,102,241,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: var(--accent-indigo); font-size: 1.5rem; font-family: 'Syne'; }
+    .feature-tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); font-size: 0.65rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; color: var(--text-muted); margin-top: auto; align-self: flex-start; }
+    
+    /* Reveal and Hover global */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.65s ease, transform 0.65s ease; will-change: transform, opacity; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    .hover-card { transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.4s ease; }
+    .hover-card:hover { transform: translateY(-10px); box-shadow: 0 24px 48px rgba(139,92,246,0.25); border-color: rgba(139,92,246,0.4); }
+    
+    .hover-icon-target .card-icon { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .hover-card:hover .card-icon { transform: translateY(-6px) rotate(10deg) scale(1.15); }
+
+    /* How It Works */
+    .timeline { display: flex; position: relative; justify-content: space-between; gap: 2rem; margin-bottom: 4rem; }
+    .timeline::before { content: ''; position: absolute; top: 25px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent-indigo), var(--accent-emerald), var(--accent-violet)); opacity: 0.3; z-index: 0; }
+    .step { flex: 1; position: relative; z-index: 1; }
+    .step-number { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-secondary); border: 2px solid var(--accent-indigo); display: flex; justify-content: center; align-items: center; font-family: 'Syne'; font-weight: 800; font-size: 1.2rem; margin-bottom: 1rem; box-shadow: 0 0 15px rgba(99,102,241,0.3); }
+    .flow-diagram { background: var(--card-bg); border-radius: var(--radius-pill); padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 1rem; }
+    .flow-node { padding: 0.8rem 1.2rem; border-radius: var(--radius-pill); font-weight: 600; font-size: 0.85rem; border: 1px solid var(--border-color); }
+    .node-1 { background: rgba(99,102,241,0.1); color: var(--accent-indigo); }
+    .node-2 { background: rgba(16,185,129,0.1); color: var(--accent-emerald); }
+    .node-3 { background: rgba(245,158,11,0.1); color: var(--accent-amber); }
+    .node-4 { background: rgba(139,92,246,0.1); color: var(--accent-violet); }
+
+    /* Demo Section */
+    .demo-tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .tab-btn { background: transparent; border: 1px solid var(--border-color); padding: 0.8rem 1.5rem; border-radius: var(--radius-pill); color: var(--text-muted); cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
+    .tab-btn.active { background: rgba(255,255,255,0.1); color: var(--text-main); border-color: var(--text-main); }
+    .demo-window { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-height: 400px; display: flex; align-items: center; justify-content: center; text-align: center; }
+
+    /* Impact */
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .impact-card ul { list-style: none; margin-top: 1.5rem; padding: 0; }
+    .impact-card li { display: flex; gap: 0.8rem; margin-bottom: 1rem; color: var(--text-muted); font-size: 0.95rem; }
+    .impact-card li::before { content: '✓'; color: var(--accent-emerald); font-weight: bold; }
+
+    /* Tech Stack */
+    .tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .tech-quadrant { padding: 2rem; border-radius: var(--radius-card); border: 1px solid var(--border-color); background: var(--card-bg); }
+    .chip-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .stack-chip { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.03); }
+    .arch-strip { margin-top: 2rem; border-radius: var(--radius-card); border: 1px solid var(--border-color); overflow: hidden; }
+    .arch-row { display: flex; align-items: center; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border-color); background: var(--card-bg); }
+    .arch-row:last-child { border-bottom: none; }
+    .arch-dot { w-3; h-3; border-radius: 50%; background: var(--accent-emerald); margin-right: 1.5rem; box-shadow: 0 0 10px var(--accent-emerald); }
+
+    /* Testimonials */
+    .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+    .test-card { padding: 2.5rem; border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border-color); }
+    .stars { color: var(--accent-amber); margin-bottom: 1rem; font-size: 1.2rem; }
+    .quote { font-size: 1.1rem; font-style: italic; margin-bottom: 2rem; color: var(--text-main); }
+    .author-area { display: flex; align-items: center; gap: 1rem; }
+    .avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--border-color); }
+
+    /* Security Strip */
+    .security-strip { display: flex; justify-content: space-between; padding: 2rem 3rem; background: var(--card-bg); border-radius: var(--radius-pill); border: 1px solid var(--border-color); margin: 4rem 0; flex-wrap: wrap; gap: 2rem; }
+    .sec-item { display: flex; align-items: center; gap: 1rem; }
+    .sec-icon { font-size: 1.5rem; }
+    .sec-text strong { display: block; font-family: 'Syne'; font-size: 1rem; }
+    .sec-text span { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* Pricing */
+    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+    .price-card { padding: 3rem 2rem; border-radius: var(--radius-card); border: 1px solid var(--border-color); background: var(--card-bg); position: relative; }
+    .price-pro { border-color: rgba(139,92,246,0.5); box-shadow: 0 0 40px rgba(139,92,246,0.1); transform: scale(1.02); }
+    .price-pro::before { content: ''; position: absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(90deg, var(--accent-indigo), var(--accent-violet)); border-radius: 4px 4px 0 0; }
+    .badge-pop { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent-violet); color: white; padding: 0.2rem 1rem; font-size: 0.75rem; border-radius: 20px; font-weight: 700; uppercase; }
+    .price-card h3 { font-size: 2rem; margin-bottom: 1rem; }
+    .price-val { font-size: 2.5rem; font-family: 'Syne'; font-weight: 800; margin-bottom: 2rem; }
+    .price-features { list-style: none; margin-bottom: 2.5rem; }
+    .price-features li { padding: 0.5rem 0; border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.95rem; }
+
+    /* Final CTA */
+    .final-cta { text-align: center; padding: 10rem 0; position: relative; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border-color); padding: 3rem 0; font-size: 0.9rem; color: var(--text-muted); background: var(--bg-secondary); }
+    .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; }
+
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50% { transform: translateY(-18px) rotate(1deg); }
+    }
+    @keyframes driftBlob {
+      0% { transform: translate(0,0) scale(1); border-radius: 50%; }
+      33% { transform: translate(40px,-30px) scale(1.05); border-radius: 45% 55%; }
+      66% { transform: translate(-20px,20px) scale(0.97); border-radius: 55% 45%; }
+      100% { transform: translate(0,0) scale(1); border-radius: 50%; }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 8px 32px rgba(139,92,246,0.4); }
+      50% { box-shadow: 0 8px 60px rgba(139,92,246,0.75), 0 0 80px rgba(99,102,241,0.3); }
+    }
+    @keyframes floatStat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Mobile Responsive */
+    .hamburger { display: none; background: transparent; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
+    @media (max-width: 1024px) {
+      .bento-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento-wide { grid-column: span 1; }
+      .impact-grid, .test-grid, .price-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .hero-ctas { flex-direction: column; }
+      .floating-chip { display: none; }
+      .bento-grid, .impact-grid, .test-grid, .price-grid, .tech-grid, .timeline { grid-template-columns: 1fr; flex-direction: column; }
+      .timeline::before { display: none; }
+      .price-pro { transform: none; }
+      .security-strip { flex-direction: column; border-radius: 24px; }
+      .footer-content { flex-direction: column; text-align: center; justify-content: center; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Backgrounds -->
+  <div class="bg-noise"></div>
+  <div class="grid-pattern"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="nav-logo display-font">
+        🧠 CodeForge <span class="nav-logo-sub">AI Onboarding Engine</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#tech">Tech Stack</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle">
+          <svg class="sun-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <a href="#" class="btn btn-ghost" style="display: none;">Sign In</a>
+        <a href="#" class="btn btn-primary">✦ Launch App →</a>
+        <button class="hamburger">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container relative">
+      <div class="hero-badge reveal">⚡ CODEFORGE HACKATHON · NEXT-GEN AI ENGINE</div>
+      
+      <div class="floating-chip chip-1">✦ Skill Match: 94%</div>
+      <div class="floating-chip chip-2">🧬 DNA Analyzed</div>
+      <div class="floating-chip chip-3">🚀 Roadmap Ready</div>
+      <div class="floating-chip chip-4">⚡ AI Active · Gemini</div>
+
+      <h1 class="reveal">Intelligent Onboarding.<br/><span class="text-gradient">Accelerated Careers.</span></h1>
+      <p class="reveal">Upload your resume and job description to get a personalized skill gap analysis, AI-generated learning roadmap, and technical interview simulation — powered by Gemini, GPT, and Groq.</p>
+      
+      <div class="hero-ctas reveal">
+        <a href="#" class="btn btn-primary">🚀 Start Free Analysis →</a>
+        <a href="#" class="btn btn-ghost">View Live Demo</a>
+      </div>
+
+      <div class="stats-bar reveal">
+        <div class="stat-box">
+          <div class="stat-value">Multi-AI</div>
+          <div class="stat-label">Gemini · GPT · Groq</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">5 min</div>
+          <div class="stat-label">Full Gap Report</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">Instant</div>
+          <div class="stat-label">Roadmap + Interview</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Free to Try</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Problem Section -->
+  <section class="container reveal">
+    <div class="section-eyebrow">The Problem</div>
+    <h2 class="section-title">Traditional Onboarding Leaves Talent Behind</h2>
+    <p class="section-subtitle">The global skill mismatch is costing careers and companies — and static job descriptions don't fix it.</p>
+    
+    <div class="problem-grid">
+      <div class="glass-card stat-card hover-card">
+        <div class="stat-card-val">70%</div>
+        <p style="color:var(--text-muted); font-weight: 500;">of new hires feel undertrained within their first 90 days after joining a company.</p>
+      </div>
+      <div class="glass-card stat-card hover-card">
+        <div class="stat-card-val">3×</div>
+        <p style="color:var(--text-muted); font-weight: 500;">longer time-to-productivity when skill gaps aren't identified early in onboarding.</p>
+      </div>
+      <div class="glass-card stat-card hover-card">
+        <div class="stat-card-val">$240B</div>
+        <p style="color:var(--text-muted); font-weight: 500;">lost annually globally from skill mismatches and early employee attrition.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Bento -->
+  <section id="features" class="container reveal hover-icon-target">
+    <div class="section-eyebrow">Platform Features</div>
+    <h2 class="section-title">Every Tool to Close Your Skill Gap</h2>
+    
+    <div class="bento-grid">
+      <div class="feature-card bento-wide hover-card">
+        <div class="card-icon">🧬</div>
+        <h3 style="font-size:1.5rem; margin-bottom: 0.5rem;" class="display-font">Skill DNA Profile</h3>
+        <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Deep AI analysis of your resume extracts mastered skills (green), emerging skills (amber), and growth opportunities (red). Displays as a visual distribution with progress bars and percentages. Powered by multi-provider AI.</p>
+        <div style="font-weight:700; font-size: 0.85rem; display: flex; gap: 1rem; margin-bottom: 1rem; color: var(--text-main);">
+          <span style="color:var(--accent-emerald);">Mastered 33%</span>
+          <span style="color:var(--accent-amber);">Emerging 50%</span>
+          <span style="color:var(--accent-rose);">Growth 17%</span>
+        </div>
+        <div class="feature-tag">AI POWERED</div>
+      </div>
+      
+      <div class="feature-card hover-card">
+        <div class="card-icon">🎯</div>
+        <h3 style="font-size:1.5rem; margin-bottom: 0.5rem;" class="display-font">Career Simulator</h3>
+        <p style="color:var(--text-muted); font-size: 0.95rem;">Predicts your readiness % for any target role (e.g. "Frontend Developer — 25% Ready"). Identifies Critical Skill Gaps.</p>
+        <div class="feature-tag">PREDICTIVE</div>
+      </div>
+
+      <div class="feature-card hover-card">
+        <div class="card-icon">🗺️</div>
+        <h3 style="font-size:1.5rem; margin-bottom: 0.5rem;" class="display-font">AI Learning Roadmap</h3>
+        <p style="color:var(--text-muted); font-size: 0.95rem;">Week-by-week personalized learning paths generated by Gemini/GPT/Groq, rendered as interactive dependency graphs.</p>
+        <div class="feature-tag">MULTI-AI</div>
+      </div>
+
+      <div class="feature-card hover-card">
+        <div class="card-icon">📄</div>
+        <h3 style="font-size:1.5rem; margin-bottom: 0.5rem;" class="display-font">Parser & Analyzer</h3>
+        <p style="color:var(--text-muted); font-size: 0.95rem;">Drag-and-drop upload for PDF, TXT files. Server-side parsing via pdf-parse extracts skills to feed the AI pipeline.</p>
+        <div class="feature-tag">BACKEND</div>
+      </div>
+
+      <div class="feature-card bento-wide hover-card">
+        <div class="card-icon">🏗️</div>
+        <h3 style="font-size:1.5rem; margin-bottom: 0.5rem;" class="display-font">Engineering Sim Studio</h3>
+        <p style="color:var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Full mock interview engine: "Launch Q&A Matrix" and "Start Session" modes. Deep-state architecture assessments with high-density technical evaluation encompassing architectural reasoning, system design, and behavioral rounds.</p>
+        <div style="display:flex; gap:0.5rem; margin-bottom: 1rem;">
+          <span style="font-size:0.7rem; padding: 0.2rem 0.5rem; border: 1px solid var(--accent-violet); color: var(--accent-violet); border-radius: 4px; font-weight:700;">STUDIO MATRIX 3.5</span>
+          <span style="font-size:0.7rem; padding: 0.2rem 0.5rem; border: 1px solid var(--accent-emerald); color: var(--accent-emerald); border-radius: 4px; font-weight:700;">PRODUCTION GRADE</span>
+        </div>
+        <div class="feature-tag">INTERVIEW PREP</div>
+      </div>
+
+      <div class="feature-card hover-card">
+        <div class="card-icon">📊</div>
+        <h3 style="font-size:1.5rem; margin-bottom: 0.5rem;" class="display-font">Readiness Dashboard</h3>
+        <p style="color:var(--text-muted); font-size: 0.95rem;">Real-time: Match Rate 72%, Skill Confidence 65%, ETA Ready badge. Circular progress indicator included.</p>
+        <div class="feature-tag">REAL-TIME</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="container reveal">
+    <div class="section-eyebrow">How It Works</div>
+    <h2 class="section-title">From Resume to Roadmap in Under 5 Minutes</h2>
+    
+    <div class="timeline">
+      <div class="step hover-card">
+        <div class="step-number">01</div>
+        <h3 class="display-font" style="margin-bottom:0.5rem;">Upload Resume</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Drag and drop your PDF, TXT, or DOC. The Node.js parser extracts every skill instantly.</p>
+      </div>
+      <div class="step hover-card">
+        <div class="step-number">02</div>
+        <h3 class="display-font" style="margin-bottom:0.5rem;">Select Target Role</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Choose from preset roles or type a custom job title that matches your aspiration.</p>
+      </div>
+      <div class="step hover-card">
+        <div class="step-number">03</div>
+        <h3 class="display-font" style="margin-bottom:0.5rem;">AI Gap Analysis</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Multi-provider AI analyzes your profile against the role requirements in real-time.</p>
+      </div>
+      <div class="step hover-card">
+        <div class="step-number">04</div>
+        <h3 class="display-font" style="margin-bottom:0.5rem;">Get Your Full Plan</h3>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Receive your Skill DNA, Roadmap, Career Readiness Score, and Interview Simulation access.</p>
+      </div>
+    </div>
+
+    <div class="flow-diagram hover-card">
+      <span class="flow-node node-1">Resume Upload</span>
+      <span style="color:var(--text-muted);">→</span>
+      <span class="flow-node node-2">PDF Parse Extract</span>
+      <span style="color:var(--text-muted);">→</span>
+      <span class="flow-node node-3">AI Analysis Engine</span>
+      <span style="color:var(--text-muted);">→</span>
+      <span class="flow-node node-4">Roadmap + Dashboard</span>
+    </div>
+  </section>
+
+  <!-- Live Demo Preview -->
+  <section id="demo" class="container reveal">
+    <div class="section-eyebrow">See It In Action</div>
+    <h2 class="section-title">A Glimpse of Your Intelligence Dashboard</h2>
+    
+    <div class="demo-tabs">
+      <button class="tab-btn active">Skill DNA Profile</button>
+      <button class="tab-btn">Readiness Dashboard</button>
+      <button class="tab-btn">Simulation Studio</button>
+    </div>
+
+    <div class="demo-window glass-card" style="padding: 0;">
+      <!-- Simplified interactive mockup visual -->
+      <div style="width: 100%; height: 100%; background: var(--bg-secondary); position: relative;">
+        <div style="height: 40px; background: rgba(0,0,0,0.1); display: flex; align-items: center; padding: 0 1rem; gap: 0.5rem;">
+          <div style="width:12px; height:12px; border-radius:50%; background:#f43f5e;"></div>
+          <div style="width:12px; height:12px; border-radius:50%; background:#f59e0b;"></div>
+          <div style="width:12px; height:12px; border-radius:50%; background:#10b981;"></div>
+        </div>
+        <div style="padding: 4rem; text-align: center;">
+          <h3 class="display-font text-gradient" style="font-size: 2.5rem; margin-bottom: 1rem;">Senior Frontend Engineer — 67% Ready</h3>
+          <p style="color:var(--text-muted); max-width: 500px; margin: 0 auto 2rem;">ETA to readiness: 9 Weeks. Missing Key Tech: TypeScript Advanced, Webpack, Testing Library.</p>
+          <div style="display:inline-flex; gap:1rem;">
+             <div style="width:100px; height:100px; border-radius:50%; border: 8px solid var(--accent-emerald); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem;">67%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Section -->
+  <section class="container reveal">
+    <div class="section-eyebrow">Impact</div>
+    <h2 class="section-title">Built for Every Stage of the Journey</h2>
+    
+    <div class="impact-grid">
+      <div class="glass-card impact-card hover-card">
+        <h3 class="display-font" style="font-size:1.4rem;">🎓 For Job Seekers & Students</h3>
+        <ul>
+          <li>Know exact skill gaps instantly</li>
+          <li>Personalized AI learning roadmap</li>
+          <li>Practice via Sim Studio sessions</li>
+          <li>Track quantitative readiness scores</li>
+          <li>Auto-generate custom PDF resumes</li>
+        </ul>
+      </div>
+      <div class="glass-card impact-card hover-card">
+        <h3 class="display-font" style="font-size:1.4rem;">🏢 For Recruiters & Companies</h3>
+        <ul>
+          <li>See verified Skill DNA at a glance</li>
+          <li>Predict time-to-productivity</li>
+          <li>Reduce skill mismatches early</li>
+          <li>Faster onboarding with pre-mapped plans</li>
+        </ul>
+      </div>
+      <div class="glass-card impact-card hover-card">
+        <h3 class="display-font" style="font-size:1.4rem;">🏫 For Institutions & Bootcamps</h3>
+        <ul>
+          <li>Identify broad curriculum gaps</li>
+          <li>Track graduate employability rates</li>
+          <li>Generate cohort career reports</li>
+          <li>Prove program ROI with hard data</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section id="tech" class="container reveal">
+    <div class="section-eyebrow">Tech Stack</div>
+    <h2 class="section-title">Built on a Serious Modern Stack</h2>
+    
+    <div class="tech-grid">
+      <div class="tech-quadrant hover-card">
+        <h3 class="display-font" style="margin-bottom: 0.5rem;">Frontend</h3>
+        <div class="chip-container">
+          <span class="stack-chip" style="color:#6366f1; border-color:#6366f1;">⚛️ React 19</span>
+          <span class="stack-chip" style="color:#6366f1; border-color:#6366f1;">⚡ Vite</span>
+          <span class="stack-chip" style="color:#6366f1; border-color:#6366f1;">🎨 Tailwind v4</span>
+          <span class="stack-chip" style="color:#6366f1; border-color:#6366f1;">🎞 Framer Motion</span>
+        </div>
+      </div>
+      <div class="tech-quadrant hover-card">
+        <h3 class="display-font" style="margin-bottom: 0.5rem;">Backend</h3>
+        <div class="chip-container">
+          <span class="stack-chip" style="color:#10b981; border-color:#10b981;">🟢 Node.js</span>
+          <span class="stack-chip" style="color:#10b981; border-color:#10b981;">🚂 Express</span>
+          <span class="stack-chip" style="color:#10b981; border-color:#10b981;">🍃 MongoDB</span>
+          <span class="stack-chip" style="color:#10b981; border-color:#10b981;">🔐 Passport OAuth</span>
+        </div>
+      </div>
+      <div class="tech-quadrant hover-card">
+        <h3 class="display-font" style="margin-bottom: 0.5rem;">AI Providers</h3>
+        <div class="chip-container">
+          <span class="stack-chip" style="color:#f59e0b; border-color:#f59e0b;">✨ Gemini API</span>
+          <span class="stack-chip" style="color:#f59e0b; border-color:#f59e0b;">🤖 OpenAI GPT</span>
+          <span class="stack-chip" style="color:#f59e0b; border-color:#f59e0b;">⚡ Groq Llama</span>
+          <span class="stack-chip" style="color:#f59e0b; border-color:#f59e0b;">🔄 AI Fallback Link</span>
+        </div>
+      </div>
+      <div class="tech-quadrant hover-card">
+        <h3 class="display-font" style="margin-bottom: 0.5rem;">Infrastructure</h3>
+        <div class="chip-container">
+          <span class="stack-chip" style="color:#f43f5e; border-color:#f43f5e;">☁️ Vercel Deploy</span>
+          <span class="stack-chip" style="color:#f43f5e; border-color:#f43f5e;">🔒 JWT Auth</span>
+          <span class="stack-chip" style="color:#f43f5e; border-color:#f43f5e;">🌙 LocalStorage Theme</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="arch-strip hover-card">
+      <div class="arch-row">
+        <div class="arch-dot"></div>
+        <div>
+          <strong class="display-font">JWT Authentication</strong>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Google OAuth2 + token-based session management with Passport.js</p>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-dot"></div>
+        <div>
+          <strong class="display-font">Multi-AI Orchestration</strong>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Gemini primary → GPT fallback → Groq fallback for 100% SLA uptime</p>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-dot"></div>
+        <div>
+          <strong class="display-font">Dark / Light Mode Architecture</strong>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Full theme toggle via .dark class on root, persisted instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="container reveal">
+    <div class="section-eyebrow">Early Feedback</div>
+    <h2 class="section-title">What People Are Saying</h2>
+    
+    <div class="test-grid">
+      <div class="test-card hover-card" style="animation: float 6s infinite ease-in-out;">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Finally an onboarding tool that actually understands what I'm missing — not just what I have."</p>
+        <div class="author-area">
+          <div class="avatar" style="background:#6366f1;"></div>
+          <div>
+            <strong style="display:block;">Alex Rivera</strong>
+            <span style="font-size:0.8rem; color:var(--text-muted);">CS Final Year Student</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-card hover-card" style="animation: float 5.5s infinite ease-in-out 1s;">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"The Career Simulator told me I needed 9 weeks to be Frontend-ready. It was exactly right."</p>
+        <div class="author-area">
+          <div class="avatar" style="background:#10b981;"></div>
+          <div>
+            <strong style="display:block;">Sam Taylor</strong>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Bootcamp Graduate</span>
+          </div>
+        </div>
+      </div>
+      <div class="test-card hover-card" style="animation: float 6.5s infinite ease-in-out 0.5s;">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"The Engineering Simulation Studio is the closest thing to a real technical interview I've ever found."</p>
+        <div class="author-area">
+          <div class="avatar" style="background:#f59e0b;"></div>
+          <div>
+            <strong style="display:block;">Jordan Lee</strong>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Junior Developer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security Strip -->
+  <section class="container reveal">
+    <div class="security-strip hover-card">
+      <div class="sec-item">
+        <div class="sec-icon">🔐</div>
+        <div class="sec-text"><strong>Google OAuth2</strong><span>Secure login pipeline</span></div>
+      </div>
+      <div class="sec-item">
+        <div class="sec-icon">🛡️</div>
+        <div class="sec-text"><strong>JWT Protected</strong><span>All routes auth-guarded</span></div>
+      </div>
+      <div class="sec-item">
+        <div class="sec-icon">🍃</div>
+        <div class="sec-text"><strong>MongoDB Atlas</strong><span>Encrypted cloud DB</span></div>
+      </div>
+      <div class="sec-item">
+        <div class="sec-icon">⚡</div>
+        <div class="sec-text"><strong>Multi-AI Fallback</strong><span>99.9% availability</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="container reveal">
+    <div class="section-eyebrow">Pricing</div>
+    <h2 class="section-title">Simple, Transparent Access</h2>
+    
+    <div class="price-grid">
+      <div class="price-card hover-card">
+        <h3 class="display-font">Free</h3>
+        <div class="price-val">$0</div>
+        <ul class="price-features">
+          <li>Full Skill Gap Analysis (1 resume)</li>
+          <li>Career Simulator (1 role)</li>
+          <li>Basic Roadmap generation</li>
+          <li>Job Readiness Score</li>
+        </ul>
+        <a href="#" class="btn btn-ghost" style="width:100%;">Get Started Free</a>
+      </div>
+      
+      <div class="price-card price-pro hover-card">
+        <div class="badge-pop">MOST POPULAR</div>
+        <h3 class="display-font text-gradient">Pro</h3>
+        <div class="price-val">$12<span style="font-size:1rem; color:var(--text-muted); font-weight:400;">/mo</span></div>
+        <ul class="price-features">
+          <li>Unlimited Resume Analysis</li>
+          <li>All Career Simulator Roles</li>
+          <li>Full AI Roadmap graph export</li>
+          <li>Sim Studio (unlimited)</li>
+          <li>Priority AI Models</li>
+        </ul>
+        <a href="#" class="btn btn-primary" style="width:100%;">Start Pro Trial</a>
+      </div>
+      
+      <div class="price-card hover-card">
+        <h3 class="display-font">Enterprise</h3>
+        <div class="price-val">Custom</div>
+        <ul class="price-features">
+          <li>Everything in Pro package</li>
+          <li>Team/cohort management</li>
+          <li>Custom role definitions</li>
+          <li>Analytics dashboard</li>
+          <li>Dedicated support SLA</li>
+        </ul>
+        <a href="#" class="btn btn-ghost" style="width:100%;">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta reveal">
+    <div class="container relative">
+      <h2 class="section-title" style="margin-bottom: 1rem;">Ready to Close Your Skill Gap?</h2>
+      <p class="section-subtitle">Join job seekers, students, and teams already using the AI-Adaptive Onboarding Engine.</p>
+      
+      <div class="hero-ctas" style="margin-bottom: 0;">
+        <a href="#" class="btn btn-primary">🚀 Start Free Analysis →</a>
+        <a href="#" class="btn btn-ghost">View Live Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-content">
+      <div style="font-weight:700; color:var(--text-main);" class="display-font">AI-Adaptive Onboarding Engine · CodeForge Platform</div>
+      <div class="footer-links">
+        <a href="#">Features</a>
+        <a href="#">How It Works</a>
+        <a href="#">GitHub</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      <div>Built with ⚡ React + AI · &copy; 2026 CodeForge</div>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Theme Toggle System
+    const htmlEl = document.documentElement;
+    const themeBtn = document.getElementById('themeToggle');
+    
+    // Check localStorage OR system preference on load
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      htmlEl.classList.add('dark');
+    } else {
+      htmlEl.classList.remove('dark');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      htmlEl.classList.toggle('dark');
+      if (htmlEl.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // 2. Navbar Scroll Effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // 3. IntersectionObserver for Reveal Animations
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Calculate an index to stagger elements appearing together
+          const siblings = Array.from(entry.target.parentNode.children).filter(el => el.classList.contains('reveal'));
+          const index = siblings.indexOf(entry.target);
+          if (index > -1) {
+            entry.target.style.transitionDelay = `${index * 80}ms`;
+          }
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/hackathon
+      - LLM_PROVIDER=groq
+      - GROQ_API_KEY=your_groq_api_key_here
+      # Add other envs as needed (using .env in the backend folder by default)
+    depends_on:
+      - mongodb
+    networks:
+      - hackathon_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - hackathon_network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - hackathon_network
+
+networks:
+  hackathon_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
