@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, Github, Chrome, Brain, ArrowRight, Sparkles } from 'lucide-react';
+import { useAuth } from '../lib/AuthContext';
 
 export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
     const [mode, setMode] = useState('login'); // 'login' or 'signup'
@@ -8,18 +9,25 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (email && password) {
+    const { login } = useAuth();
+
+    useEffect(() => {
+        // Detect auth success in URL and close modal
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('auth') === 'success') {
             onLoginSuccess();
         }
+    }, [onLoginSuccess]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // For now, let's just trigger Google login for everything or keep mock for email
+        // but for the sake of the task, let's keep it simple
+        login();
     };
 
-    const socialLogin = () => {
-        // Simulate social login delay then success
-        setTimeout(() => {
-            onLoginSuccess();
-        }, 400);
+    const handleGoogleLogin = () => {
+        login();
     };
 
     return (
@@ -193,7 +201,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                                     <motion.button
                                         whileHover={{ y: -2 }}
                                         whileTap={{ scale: 0.95 }}
-                                        onClick={socialLogin}
+                                        onClick={handleGoogleLogin}
                                         className="flex items-center justify-center gap-2.5 px-4 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700/50 rounded-2xl hover:border-indigo-500/30 dark:hover:border-indigo-500/30 hover:shadow-md hover:shadow-indigo-500/10 transition-all font-bold text-sm text-slate-700 dark:text-slate-300"
                                     >
                                         <Chrome className="w-5 h-5 text-[#4285F4]" />
@@ -202,7 +210,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                                     <motion.button
                                         whileHover={{ y: -2 }}
                                         whileTap={{ scale: 0.95 }}
-                                        onClick={socialLogin}
+                                        onClick={handleGoogleLogin}
                                         className="flex items-center justify-center gap-2.5 px-4 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700/50 rounded-2xl hover:border-slate-900 dark:hover:border-white/30 hover:shadow-md transition-all font-bold text-sm text-slate-700 dark:text-slate-300"
                                     >
                                         <Github className="w-5 h-5 text-slate-900 dark:text-white" />

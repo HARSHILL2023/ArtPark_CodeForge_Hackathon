@@ -4,6 +4,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
 const fs = require('fs');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('./config/passport');
 
 const connectDB = require('./config/db');
 const logger = require('./utils/logger');
@@ -42,6 +45,23 @@ app.use(cors({
   preflightContinue: false,
   optionsSuccessStatus: 204,
 }));
+
+// ── Auth Middleware ──────────────────────────────────────────────────────────
+app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'artpark_session_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ── Body Parsing ─────────────────────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));

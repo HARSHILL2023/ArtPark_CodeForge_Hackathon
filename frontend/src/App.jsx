@@ -15,6 +15,7 @@ import MentorChat from './components/MentorChat';
 import InterviewPrep from './components/InterviewPrep';
 import ResumeOptimizer from './components/ResumeOptimizer';
 import AuthModal from './components/AuthModal';
+import { useAuth } from './lib/AuthContext';
 
 // Skeleton Loader Component
 function SkeletonLoader() {
@@ -79,8 +80,9 @@ export default function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
-  const [isSigningIn, setIsSigningIn] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const { user, isLoggedIn, logout: authLogout } = useAuth();
 
   const toggleLearningStyle = (style) => setLearningStyle(style);
   const [darkMode, setDarkMode] = useState(() => {
@@ -105,82 +107,28 @@ export default function App() {
 
   const profileOptions = mockProfiles.map((d) => ({ id: d.id, name: d.name }));
 
-  const handleAnalyze = async (resumeFile, jobDescription) => {
-    setIsAnalyzing(true);
-    setShowResults(false);
-    setShowSkeleton(true);
+  const handleAnalyze = (finalResult) => {
+    setIsAnalyzing(false);
+    setShowSkeleton(false);
 
-    // Simulate analysis with AI loading steps
-    const data = { ...mockProfiles.find((d) => d.id === selectedProfile) };
+    // Map backend data to frontend state
+    const mappedData = {
+      role: finalResult.jdProfile?.role || finalResult.jdProfile?.title || "Target Role",
+      company: finalResult.jdProfile?.company || "Target Company",
+      readinessScore: finalResult.skillGap?.overall_readiness_score || 0,
+      matchPercentage: finalResult.skillGap?.overall_readiness_score || 0,
+      missingSkills: (finalResult.skillGap?.missing_skills || []).length,
+      weakSkills: (finalResult.skillGap?.proficiency_gaps || []).length,
+      skills: finalResult.skillGap?.skills || [],
+      reasoning: finalResult.skillGap?.reasoning || [],
+      roadmap: (finalResult.pathway || []).map(step => ({ ...step, status: 'todo' })),
+      marketTrends: finalResult.skillGap?.market_trends || [],
+      skillGraph: finalResult.skillGap?.skill_graph || [],
+      targetJob: finalResult.jdProfile?.role || finalResult.jdProfile?.title
+    };
 
-    // Perform Semantic AI Matching
-    // In a real app we'd extract text from resumeFile. Here we use data.userResume.
-    const userText = data.userResume || "";
-    const requiredSkills = data.skills.map(s => s.name);
-
-    try {
-      // 1. Identify semantic matches (Synonym dictionary for demo)
-      const semanticMap = [
-        { resume: "Deep Learning", required: "Neural Networks" },
-        { resume: "Neural Networks", required: "Deep Learning" },
-        { resume: "PyTorch", required: "Deep Learning" },
-        { resume: "TensorFlow", required: "Deep Learning" },
-        { resume: "PostgreSQL", required: "SQL" },
-        { resume: "Tailwind", required: "CSS" },
-        { resume: "Apollo", required: "GraphQL" }
-      ];
-
-      data.skills = data.skills.map(skill => {
-        const mapping = semanticMap.find(m =>
-          skill.name.toLowerCase().includes(m.required.toLowerCase()) ||
-          m.required.toLowerCase().includes(skill.name.toLowerCase())
-        );
-
-        if (mapping && userText.toLowerCase().includes(mapping.resume.toLowerCase()) && skill.yourLevel === 0) {
-          return {
-            ...skill,
-            yourLevel: 4,
-            isSemantic: true,
-            summary: `Matched '${skill.name}' via Semantic AI (Found '${mapping.resume}' in resume)`
-          };
-        }
-        return skill;
-      });
-
-      // 2. Update reasoning for matched skills
-      data.reasoning = data.reasoning.map(r => {
-        const skillObj = data.skills.find(s => s.name === r.skill || r.reason.includes(s.name));
-        if (skillObj?.isSemantic) {
-          return {
-            ...r,
-            type: 'matched',
-            reason: `Semantic Match: '${skillObj.name}' was found through '${skillObj.summary.split("'")[3]}' expertise in your resume.`
-          };
-        }
-        return r;
-      });
-
-      // 3. Update summary counts and score
-      data.missingSkills = data.skills.filter(s => s.yourLevel === 0).length;
-      data.weakSkills = data.skills.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length;
-      const matched = data.skills.filter(s => s.yourLevel >= s.requiredLevel).length;
-      data.readinessScore = Math.floor((matched / data.skills.length) * 100);
-
-    } catch (e) {
-      console.error("Semantic matching failed:", e);
-    }
-
-    setTimeout(() => {
-      // Add initial status to roadmap steps
-      const enhancedData = {
-        ...data,
-        roadmap: data.roadmap.map(step => ({ ...step, status: 'todo' }))
-      };
-      setCurrentData(enhancedData);
-      setIsAnalyzing(false);
-      setShowSkeleton(false);
-      setShowResults(true);
-    }, 2500);
+    setCurrentData(mappedData);
+    setShowResults(true);
   };
 
   const handleRoadmapUpdate = (index, updates) => {
@@ -247,10 +195,10 @@ export default function App() {
     console.log("Redirecting to dashboard...");
   };
 
-  // Auto-load first profile for demo
+  // Initial demo data loading removed to prefer real logic
   useEffect(() => {
-    setCurrentData(mockProfiles[0]);
-    setShowResults(true);
+    // If we want a demo state, we could set a flag or just keep it empty
+    // For this task, we want real API data
   }, []);
 
   return (
@@ -300,25 +248,36 @@ export default function App() {
                 )}
               </button>
 
-              <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block" />
-
               <div className="hidden sm:flex items-center gap-1">
-                <a href="#" className="p-2 text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
                   <Github className="w-5 h-5" />
-                </a>
-                <a href="#" className="p-2 text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
-                  <Twitter className="w-5 h-5" />
                 </a>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleSignIn}
-                className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-full font-medium shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-shadow"
-              >
-                Sign In
-              </motion.button>
+              {isLoggedIn ? (
+                <div className="flex items-center gap-3">
+                  <div className="text-right hidden sm:block">
+                    <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{user?.name}</p>
+                    <button onClick={authLogout} className="text-[10px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-600 transition-colors">Sign Out</button>
+                  </div>
+                  <div className="w-10 h-10 rounded-full border-2 border-indigo-500/20 overflow-hidden bg-indigo-100 flex items-center justify-center">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <Brain className="w-5 h-5 text-indigo-500" />
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleSignIn}
+                  className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-full font-medium shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-shadow"
+                >
+                  Sign In
+                </motion.button>
+              )}
             </motion.div>
           </div>
         </div>
@@ -517,7 +476,7 @@ export default function App() {
       </footer>
 
       {/* AI Mentor Chatbot */}
-      {currentData && <MentorChat userData={currentData} />}
+      <MentorChat userData={currentData} />
     </div>
   );
 }

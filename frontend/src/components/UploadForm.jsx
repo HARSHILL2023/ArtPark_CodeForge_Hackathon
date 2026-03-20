@@ -1,18 +1,22 @@
-import { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, FileText, CheckCircle2, Sparkles, Loader2 } from 'lucide-react';
+import { Upload, FileText, CheckCircle2, AlertCircle, Loader2, Sparkles, Brain, Code, Target, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import * as api from '../lib/api';
 import ProfileSelector from './ProfileSelector';
 
 export default function UploadForm({
   onAnalyze,
-  isAnalyzing,
   selectedProfile,
   onProfileChange,
   profileOptions,
 }) {
   const [resumeFile, setResumeFile] = useState(null);
-  const [jobDescription, setJobDescription] = useState('');
+  const [jdText, setJdText] = useState('');
   const [dragActive, setDragActive] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [status, setStatus] = useState('');
+
+  const jdFileInputRef = useRef(null);
 
   const handleDrag = useCallback((e, type) => {
     e.preventDefault();
@@ -30,19 +34,76 @@ export default function UploadForm({
     setDragActive(null);
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
       if (type === 'resume') {
-        setResumeFile(e.dataTransfer.files[0]);
+        setResumeFile(file);
+      } else if (type === 'jobDescriptionFile') {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setJdText(event.target.result);
+        };
+        reader.readAsText(file);
       }
     }
   }, []);
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, type) => {
     if (e.target.files && e.target.files[0]) {
-      setResumeFile(e.target.files[0]);
+      const file = e.target.files[0];
+      if (type === 'resume') {
+        setResumeFile(file);
+      } else if (type === 'jobDescriptionFile') {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setJdText(event.target.result);
+        };
+        reader.readAsText(file);
+      }
     }
   };
 
-  const canAnalyze = resumeFile && jobDescription.trim().length > 0;
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!resumeFile || jdText.trim().length === 0) return;
+
+    setIsAnalyzing(true);
+    setStatus('Uploading documents...');
+
+    try {
+      // Step 1: Upload
+      const { sessionId } = await api.uploadDocuments(resumeFile, jdText);
+
+      // Step 2: Analyze
+      setStatus('Extracting intelligence...');
+      const analysisData = await api.runAnalysis(sessionId);
+
+      // Step 3: Generate Pathway
+      setStatus('Generating adaptive roadmap...');
+      const pathwayData = await api.generatePathway(sessionId);
+
+      // Step 4: Finalize
+      setStatus('Syncing profiles...');
+      const finalResult = {
+        ...analysisData,
+        ...pathwayData,
+        sessionId
+      };
+
+      onAnalyze(finalResult);
+      setIsAnalyzing(false);
+      setStatus('');
+    } catch (err) {
+      console.error('Analysis failed:', err);
+      setStatus('Error: ' + err.message);
+      // reset after 3s
+      setTimeout(() => {
+        setIsAnalyzing(false);
+        setStatus('');
+      }, 3000);
+    }
+  };
+
+  const canAnalyze = resumeFile && jdText.trim().length > 0;
 
   return (
     <motion.div
@@ -97,7 +158,7 @@ export default function UploadForm({
                 <input
                   type="file"
                   accept=".pdf,.txt,.doc,.docx"
-                  onChange={handleFileChange}
+                  onChange={(e) => handleFileChange(e, 'resume')}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
                 <div className="space-y-3">
@@ -144,13 +205,13 @@ export default function UploadForm({
             Job Description
           </label>
           <textarea
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
+            value={jdText}
+            onChange={(e) => setJdText(e.target.value)}
             placeholder="Paste the job description here..."
             rows={5}
             className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all resize-none"
           />
-          {jobDescription.length > 0 && (
+          {jdText.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -162,9 +223,25 @@ export default function UploadForm({
           )}
         </div>
 
+        {/* Status Message */}
+        {status && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className={`flex items-center gap-3 p-4 rounded-xl text-sm font-medium ${
+              status.startsWith('Error') 
+                ? 'bg-rose-50 text-rose-600 dark:bg-rose-900/10 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50'
+                : 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/10 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900/50'
+            }`}
+          >
+            {status.startsWith('Error') ? <AlertCircle className="w-4 h-4" /> : <Loader2 className="w-4 h-4 animate-spin" />}
+            <span>{status}</span>
+          </motion.div>
+        )}
+
         {/* Analyze Button */}
         <motion.button
-          onClick={() => onAnalyze(resumeFile, jobDescription)}
+          onClick={handleSubmit}
           disabled={!canAnalyze || isAnalyzing}
           whileHover={{ scale: canAnalyze && !isAnalyzing ? 1.01 : 1 }}
           whileTap={{ scale: canAnalyze && !isAnalyzing ? 0.99 : 1 }}
@@ -176,7 +253,7 @@ export default function UploadForm({
           {isAnalyzing ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Analyzing Your Skills...</span>
+              <span>Processing...</span>
             </>
           ) : (
             <>
