@@ -34,29 +34,26 @@ router.get(
         return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?auth=failed`);
       }
 
-      // Create JWT
+      // Create JWT with essential user info
       const token = jwt.sign(
-        { id: req.user._id, role: req.user.role },
+        { 
+          id: req.user._id, 
+          email: req.user.email, 
+          name: req.user.name, 
+          avatar: req.user.avatar,
+          role: req.user.role 
+        },
         process.env.JWT_SECRET,
         { expiresIn: '7d' }
       );
 
-      // Set cookie (helpful for some flows)
-      res.cookie('jwt', token, {
-        httpOnly: true,
-        secure: true, // Recommended for production
-        sameSite: 'none', // Required for cross-site cookies
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      // Redirect to frontend with token
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      const redirectUrl = `${frontendUrl.replace(/\/$/, '')}/?auth=success&token=${token}`;
-      res.redirect(redirectUrl);
+      // Redirect to frontend callback route with token
+      const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+      res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
     } catch (err) {
       console.error('Auth callback error:', err);
-      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-      res.redirect(`${frontendUrl.replace(/\/$/, '')}/login?auth=failed`);
+      const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+      res.redirect(`${frontendUrl}/login?auth=failed`);
     }
   }
 );
