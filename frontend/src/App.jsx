@@ -17,30 +17,7 @@ import ResumeOptimizer from './components/ResumeOptimizer';
 import AuthModal from './components/AuthModal';
 import { useAuth } from './lib/AuthContext';
 import LandingPage from './pages/LandingPage';
-import AuthCallback from './pages/AuthCallback';
-import { Navigate, useLocation } from 'react-router-dom';
 
-// Protected Route Component
-function ProtectedRoute({ children }) {
-  const { isLoggedIn, isLoading } = useAuth();
-  const location = useLocation();
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#07080f] text-white">
-        <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-indigo-500 animate-spin mb-4" />
-        <p className="text-sm font-bold text-slate-400">Verifying session...</p>
-      </div>
-    );
-  }
-
-  if (!isLoggedIn) {
-    // Redirect to landing page but save the attempt location
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
-
-  return children;
-}
 // Skeleton Loader Component
 function SkeletonLoader() {
   return (
@@ -113,7 +90,7 @@ export default function App() {
     }
     return false;
   });
-  const { user, isLoggedIn, isLoading, logout: authLogout } = useAuth();
+  const { user, isLoggedIn, logout: authLogout } = useAuth();
 
   const toggleLearningStyle = (style) => setLearningStyle(style);
 
@@ -579,9 +556,8 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage darkMode={darkMode} toggleDark={toggleDarkMode} />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/dashboard" element={<ProtectedRoute>{appLayout}</ProtectedRoute>} />
-        <Route path="/upload" element={<ProtectedRoute>{appLayout}</ProtectedRoute>} />
+        <Route path="/dashboard" element={appLayout} />
+        <Route path="/upload" element={appLayout} />
         <Route path="*" element={appLayout} />
       </Routes>
     </BrowserRouter>
