@@ -39,9 +39,31 @@ export default function TiltCard3D({
     y.set(0.5);
   };
 
-  // Specular sheen position
-  const glareX = useTransform(x, [0, 1], ['0%', '100%']);
-  const glareY = useTransform(y, [0, 1], ['0%', '100%']);
+  const handleTouchStart = (e) => {
+    setIsHovered(true);
+    if (e.touches && e.touches[0] && cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      const clientX = (e.touches[0].clientX - rect.left) / rect.width;
+      const clientY = (e.touches[0].clientY - rect.top) / rect.height;
+      x.set(Math.max(0, Math.min(1, clientX)));
+      y.set(Math.max(0, Math.min(1, clientY)));
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!cardRef.current || !e.touches || !e.touches[0]) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const clientX = (e.touches[0].clientX - rect.left) / rect.width;
+    const clientY = (e.touches[0].clientY - rect.top) / rect.height;
+    x.set(Math.max(0, Math.min(1, clientX)));
+    y.set(Math.max(0, Math.min(1, clientY)));
+  };
+
+  const handleTouchEnd = () => {
+    setIsHovered(false);
+    x.set(0.5);
+    y.set(0.5);
+  };
 
   return (
     <div
@@ -53,6 +75,9 @@ export default function TiltCard3D({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onClick={onClick}
         style={{
           rotateX,

@@ -126,15 +126,16 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
         </div>
       </div>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Navigation Drawer with 3D Fold Animation */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.15 }}
-            className="md:hidden bg-[#FCFBF8] dark:bg-[#0C0D0F] border-b border-[#DCD9D1] dark:border-[#292D33] px-6 py-5 overflow-hidden"
+            initial={{ opacity: 0, height: 0, rotateX: -15 }}
+            animate={{ opacity: 1, height: 'auto', rotateX: 0 }}
+            exit={{ opacity: 0, height: 0, rotateX: -15 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: 'top center', perspective: 800 }}
+            className="md:hidden bg-[#FCFBF8]/98 dark:bg-[#0C0D0F]/98 backdrop-blur-lg border-b border-[#DCD9D1] dark:border-[#292D33] px-6 py-5 overflow-hidden shadow-md"
           >
             <ul className="space-y-3">
               {navLinks.map((link) => (

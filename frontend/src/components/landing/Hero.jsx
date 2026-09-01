@@ -17,12 +17,14 @@ export default function Hero({ onOpenAuth }) {
         <Hero3DVisual />
       </div>
 
-      {/* Floating 3D Geometric Ornaments */}
-      <div className="absolute top-28 left-8 sm:left-20 hidden lg:block opacity-60 dark:opacity-75 pointer-events-none z-0">
-        <FloatingCube3D size={44} />
+      {/* Floating 3D Geometric Ornaments (Responsive for Mobile & Desktop) */}
+      <div className="absolute top-20 sm:top-28 left-4 sm:left-20 opacity-50 sm:opacity-75 pointer-events-none z-0">
+        <FloatingCube3D size={32} className="sm:hidden" />
+        <FloatingCube3D size={44} className="hidden sm:inline-block" />
       </div>
-      <div className="absolute bottom-20 right-8 sm:right-24 hidden lg:block opacity-60 dark:opacity-75 pointer-events-none z-0">
-        <FloatingCube3D size={52} />
+      <div className="absolute bottom-12 sm:bottom-20 right-4 sm:right-24 opacity-50 sm:opacity-75 pointer-events-none z-0">
+        <FloatingCube3D size={34} className="sm:hidden" />
+        <FloatingCube3D size={52} className="hidden sm:inline-block" />
       </div>
 
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10 w-full">

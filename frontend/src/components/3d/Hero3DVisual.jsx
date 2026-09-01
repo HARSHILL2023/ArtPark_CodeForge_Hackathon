@@ -36,6 +36,41 @@ export default function Hero3DVisual({ className = '' }) {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
+    // Mobile Touch Gesture & Gyroscope Handlers
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const handleTouchStart = (e) => {
+      if (e.touches && e.touches[0]) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        const deltaX = (e.touches[0].clientX - touchStartX) / (window.innerWidth || 360);
+        const deltaY = (e.touches[0].clientY - touchStartY) / (window.innerHeight || 600);
+        targetRotY += deltaX * 1.8;
+        targetRotX -= deltaY * 1.8;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    // Device orientation gyroscope for mobile devices
+    const handleOrientation = (e) => {
+      if (e.gamma !== null && e.beta !== null) {
+        targetRotY = (e.gamma / 45) * 0.8;
+        targetRotX = ((e.beta - 45) / 45) * 0.8;
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    }
+
     // 3D Nodes generation (Fibonacci sphere algorithm for even topological distribution)
     const numNodes = 42;
     const radius = Math.min(width, height) * 0.28;
@@ -196,6 +231,11 @@ export default function Hero3DVisual({ className = '' }) {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      if (window.DeviceOrientationEvent) {
+        window.removeEventListener('deviceorientation', handleOrientation);
+      }
     };
   }, []);
 

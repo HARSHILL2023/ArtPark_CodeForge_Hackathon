@@ -76,6 +76,18 @@ const SignInAnimation = ({ onComplete }) => {
       align-items: center;
       justify-content: center;
       transform-style: preserve-3d;
+      transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 640px) {
+      .gyro-container {
+        width: 290px;
+        height: 290px;
+        transform: scale(0.78);
+      }
+      .label-container {
+        margin-top: 10px !important;
+      }
     }
 
     .ring-3d {
