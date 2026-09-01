@@ -82,7 +82,7 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-[#DCD9D1] dark:border-[#292D33] pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
                   <Brain className="w-4 h-4" />
                 </div>
                 <div>
@@ -116,7 +116,7 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
                   const isSelected = selectedAnswer === i;
                   const isCorrect = i === mockQuiz[currentQuestion].correct;
                   
-                  let btnStyle = 'bg-[#FCFBF8] dark:bg-[#181B1F] border-[#DCD9D1] dark:border-[#292D33] text-[#1B1B19] dark:text-[#F2F0EA] hover:border-[#B88916]/50 dark:hover:border-[#D4A72C]/50';
+                  let btnStyle = 'bg-[#FCFBF8] dark:bg-[#181B1F] border-[#DCD9D1] dark:border-[#292D33] text-[#1B1B19] dark:text-[#F2F0EA] hover:border-[#2563EB]/50 dark:hover:border-[#3B82F6]/50';
                   if (isSelected) {
                     btnStyle = isCorrect
                       ? 'bg-[#237A4B]/10 dark:bg-[#4CAF7A]/10 border-[#237A4B] dark:border-[#4CAF7A] text-[#237A4B] dark:text-[#4CAF7A]'
@@ -151,7 +151,7 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${((currentQuestion + 1) / mockQuiz.length) * 100}%` }}
-                  className="h-full bg-[#B88916] dark:bg-[#D4A72C] rounded-full"
+                  className="h-full bg-[#2563EB] dark:bg-[#3B82F6] rounded-full"
                 />
               </div>
             </div>

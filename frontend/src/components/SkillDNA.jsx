@@ -65,7 +65,7 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
       <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden flex flex-col justify-between">
         <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
               <Fingerprint className="w-4 h-4" />
             </div>
             <div>
@@ -134,7 +134,7 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
           </div>
 
           <div className="p-3 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center gap-2.5 mt-3">
-            <BarChart3 className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C] flex-shrink-0" />
+            <BarChart3 className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6] flex-shrink-0" />
             <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] leading-snug">
               Candidate shows {distribution.strong >= 50 ? 'solid core strength' : 'strong growth velocity'} with high leverage in modular skill acquisition.
             </p>
@@ -146,7 +146,7 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
       <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden flex flex-col justify-between">
         <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
               <TrendingUp className="w-4 h-4" />
             </div>
             <div>
@@ -164,7 +164,7 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
             <select
               value={selectedRole}
               onChange={handleRoleChange}
-              className="w-full bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#1B1B19] dark:text-[#F2F0EA] px-3 py-2 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C] cursor-pointer"
+              className="w-full bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#1B1B19] dark:text-[#F2F0EA] px-3 py-2 rounded-lg text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6] cursor-pointer"
             >
               {careerPaths.map(path => (
                 <option key={path.id} value={path.id}>{path.name}</option>
@@ -183,11 +183,11 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
                 className="space-y-2.5 pt-0.5"
               >
                 {/* Readiness Result */}
-                <div className="p-3 bg-[#B88916]/10 dark:bg-[#D4A72C]/10 border border-[#B88916]/20 dark:border-[#D4A72C]/25 rounded-xl flex items-center justify-between">
+                <div className="p-3 bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 border border-[#2563EB]/20 dark:border-[#3B82F6]/25 rounded-xl flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
                     Fit for {simulation.name}
                   </span>
-                  <span className="text-base font-bold text-[#B88916] dark:text-[#D4A72C] font-mono">
+                  <span className="text-base font-bold text-[#2563EB] dark:text-[#3B82F6] font-mono">
                     {simulation.readiness}%
                   </span>
                 </div>

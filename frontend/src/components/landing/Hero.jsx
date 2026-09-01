@@ -17,7 +17,7 @@ export default function Hero({ onOpenAuth }) {
           transition={{ duration: 0.25 }}
           className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-xs font-medium mb-6"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
+          <Sparkles className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
           <span>AI-Adaptive Career Intelligence OS</span>
         </motion.div>
 
@@ -29,7 +29,7 @@ export default function Hero({ onOpenAuth }) {
           className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#1B1B19] dark:text-[#F2F0EA] leading-[1.12] tracking-tight mb-5"
         >
           Topological Skill Intelligence.{' '}
-          <span className="block mt-1 text-[#B88916] dark:text-[#D4A72C]">
+          <span className="block mt-1 text-[#2563EB] dark:text-[#3B82F6]">
             Deterministic Career Readiness.
           </span>
         </motion.h1>
@@ -97,7 +97,7 @@ export default function Hero({ onOpenAuth }) {
               key={idx}
               className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-left"
             >
-              <item.icon className="w-4 h-4 text-[#B88916] dark:text-[#D4A72C] mb-2" />
+              <item.icon className="w-4 h-4 text-[#2563EB] dark:text-[#3B82F6] mb-2" />
               <div className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] tracking-tight">
                 {item.metric}
               </div>

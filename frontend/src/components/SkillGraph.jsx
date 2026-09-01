@@ -44,7 +44,7 @@ const THEMES = {
     legendItemText: '#B4B1A9',
     // Spinner
     spinnerTrack: '#292D33',
-    spinnerHead: '#D4A72C',
+    spinnerHead: '#3B82F6',
     spinnerText: '#7E7C77',
     // Controls
     ctrlBg: '#181B1F',
@@ -57,8 +57,8 @@ const THEMES = {
     toggleHoverBg: '#1D2025',
     // Edge defaults
     edgeDefault: '#363B43',
-    edgeActive: '#D4A72C',
-    edgeActiveShadow: 'drop-shadow(0 0 3px rgba(212,167,44,0.4))',
+    edgeActive: '#3B82F6',
+    edgeActiveShadow: 'drop-shadow(0 0 4px rgba(59,130,246,0.5))',
     // Tooltip
     tooltipBg: '#181B1F',
     tooltipDivider: '#292D33',
@@ -118,7 +118,7 @@ const THEMES = {
     legendItemText: '#5E5C56',
     // Spinner
     spinnerTrack: '#DCD9D1',
-    spinnerHead: '#B88916',
+    spinnerHead: '#2563EB',
     spinnerText: '#85827A',
     // Controls
     ctrlBg: '#FCFBF8',
@@ -131,8 +131,8 @@ const THEMES = {
     toggleHoverBg: '#E2DFD7',
     // Edge defaults
     edgeDefault: '#C9C5BB',
-    edgeActive: '#B88916',
-    edgeActiveShadow: 'drop-shadow(0 0 2px rgba(184,137,22,0.3))',
+    edgeActive: '#2563EB',
+    edgeActiveShadow: 'drop-shadow(0 0 3px rgba(37,99,235,0.4))',
     // Tooltip
     tooltipBg: '#FCFBF8',
     tooltipDivider: '#DCD9D1',

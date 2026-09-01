@@ -61,7 +61,7 @@ export default function SkillTable({ skills = [] }) {
       <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
               <Layers className="w-4 h-4" />
             </div>
             <div>
@@ -78,8 +78,8 @@ export default function SkillTable({ skills = [] }) {
               <div className="w-1.5 h-1.5 rounded-full bg-[#237A4B] dark:bg-[#4CAF7A]" />
               <span>Matched</span>
             </div>
-            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-[#9A6B00]/10 dark:bg-[#D6A84F]/10 text-[#9A6B00] dark:text-[#D6A84F] border border-[#9A6B00]/20 dark:border-[#D6A84F]/25 text-[11px]">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#9A6B00] dark:bg-[#D6A84F]" />
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-[#D97706]/10 dark:bg-[#F59E0B]/10 text-[#D97706] dark:text-[#F59E0B] border border-[#D97706]/20 dark:border-[#F59E0B]/25 text-[11px]">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#D97706] dark:bg-[#F59E0B]" />
               <span>Needs Work</span>
             </div>
             <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-[#B33A3A]/10 dark:bg-[#D96565]/10 text-[#B33A3A] dark:text-[#D96565] border border-[#B33A3A]/20 dark:border-[#D96565]/25 text-[11px]">
@@ -98,7 +98,7 @@ export default function SkillTable({ skills = [] }) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search skills or categories..."
-              className="w-full bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg pl-8 pr-3 py-1.5 text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
+              className="w-full bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg pl-8 pr-3 py-1.5 text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6]"
             />
           </div>
 
@@ -110,7 +110,7 @@ export default function SkillTable({ skills = [] }) {
                 onClick={() => setSelectedCategory(cat)}
                 className={`px-2.5 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] border-transparent'
+                    ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent'
                     : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
                 }`}
               >
@@ -160,7 +160,7 @@ export default function SkillTable({ skills = [] }) {
                               {skill.name}
                             </span>
                             {skill.isSemantic && (
-                              <span className="px-1.5 py-0.2 rounded bg-[#B88916]/10 dark:bg-[#D4A72C]/10 text-[9px] font-bold text-[#B88916] dark:text-[#D4A72C] border border-[#B88916]/20 dark:border-[#D4A72C]/25 flex items-center gap-1">
+                              <span className="px-1.5 py-0.2 rounded bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 text-[9px] font-bold text-[#2563EB] dark:text-[#3B82F6] border border-[#2563EB]/20 dark:border-[#3B82F6]/25 flex items-center gap-1">
                                 <Sparkles className="w-2.5 h-2.5" /> Semantic
                               </span>
                             )}
@@ -266,7 +266,7 @@ export default function SkillTable({ skills = [] }) {
               <div className="flex items-center justify-between text-xs pt-1 border-t border-[#DCD9D1] dark:border-[#292D33]">
                 <span className="text-[#5E5C56] dark:text-[#B4B1A9] text-[11px]">Required: {skill.requiredLevel}/5</span>
                 <span className="text-[#5E5C56] dark:text-[#B4B1A9] text-[11px]">Your Level: {skill.yourLevel}/5</span>
-                <span className="font-bold text-[#B88916] dark:text-[#D4A72C] text-[11px] font-mono">
+                <span className="font-bold text-[#2563EB] dark:text-[#3B82F6] text-[11px] font-mono">
                   {gap <= 0 ? '✓ Met' : `Gap: -${gap}`}
                 </span>
               </div>

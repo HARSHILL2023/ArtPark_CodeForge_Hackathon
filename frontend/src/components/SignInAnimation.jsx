@@ -32,11 +32,11 @@ const SignInAnimation = ({ onComplete }) => {
     @keyframes orbPulse {
       0% { 
         transform: scale(1);
-        box-shadow: 0 0 12px 3px rgba(212, 167, 44, 0.6), 0 0 24px 6px rgba(184, 137, 22, 0.4);
+        box-shadow: 0 0 12px 3px rgba(59, 130, 246, 0.7), 0 0 24px 6px rgba(37, 99, 235, 0.5);
       }
       100% { 
         transform: scale(1.4);
-        box-shadow: 0 0 20px 6px rgba(212, 167, 44, 0.9), 0 0 40px 14px rgba(184, 137, 22, 0.6);
+        box-shadow: 0 0 20px 6px rgba(96, 165, 250, 0.95), 0 0 40px 14px rgba(37, 99, 235, 0.7);
       }
     }
 
@@ -89,7 +89,7 @@ const SignInAnimation = ({ onComplete }) => {
       position: absolute;
       width: 20px;
       height: 20px;
-      background: radial-gradient(circle, #ffffff, #fce4a6, #d4a72c);
+      background: radial-gradient(circle, #ffffff, #93c5fd, #3b82f6);
       border-radius: 50%;
       z-index: 100;
       animation: orbPulse 1.4s ease-in-out alternate infinite;
@@ -106,8 +106,8 @@ const SignInAnimation = ({ onComplete }) => {
     .spinner {
       width: 18px;
       height: 18px;
-      border: 2px solid rgba(212, 167, 44, 0.2);
-      border-top-color: #d4a72c;
+      border: 2px solid rgba(59, 130, 246, 0.25);
+      border-top-color: #3b82f6;
       border-radius: 50%;
       animation: labelSpinner 0.8s linear infinite;
     }
@@ -140,10 +140,10 @@ const SignInAnimation = ({ onComplete }) => {
                 animationDelay: `${delay}s`,
                 animationDuration: `2.2s, ${spinDuration}s`,
                 animationName: 'morph, ringSpin',
-                backgroundImage: `linear-gradient(rgba(12, 13, 15, 0.97), rgba(12, 13, 15, 0.97)), conic-gradient(from ${rotationOffset}deg, #9a6b00, #fce4a6, #d4a72c, #b88916, #9a6b00)`,
+                backgroundImage: `linear-gradient(rgba(12, 13, 15, 0.97), rgba(12, 13, 15, 0.97)), conic-gradient(from ${rotationOffset}deg, #1d4ed8, #93c5fd, #3b82f6, #2563eb, #1d4ed8)`,
                 backgroundOrigin: 'border-box',
                 backgroundClip: 'content-box, border-box',
-                boxShadow: `0 0 14px 2px rgba(212, 167, 44, ${0.4 - i * 0.04})`,
+                boxShadow: `0 0 14px 2px rgba(59, 130, 246, ${0.4 - i * 0.04})`,
               }}
             />
           );

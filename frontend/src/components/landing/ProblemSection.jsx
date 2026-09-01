@@ -36,7 +36,7 @@ export default function ProblemSection() {
             variants={item}
             className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-left space-y-2.5"
           >
-            <div className="text-3xl sm:text-4xl font-bold text-[#B88916] dark:text-[#D4A72C] font-mono">
+            <div className="text-3xl sm:text-4xl font-bold text-[#2563EB] dark:text-[#3B82F6] font-mono">
               {stat.v}
             </div>
             <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">

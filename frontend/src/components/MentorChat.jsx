@@ -82,7 +82,7 @@ export default function MentorChat({ userData }) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Close AI Mentor Chat' : 'Open AI Mentor Chat'}
-        className="fixed bottom-6 right-6 w-11 h-11 bg-[#B88916] dark:bg-[#D4A72C] hover:bg-[#9E7510] dark:hover:bg-[#E0B63D] text-white dark:text-[#0C0D0F] rounded-xl shadow-md flex items-center justify-center z-50 transition-colors cursor-pointer"
+        className="fixed bottom-6 right-6 w-11 h-11 bg-[#2563EB] dark:bg-[#3B82F6] hover:bg-[#1D4ED8] dark:hover:bg-[#60A5FA] text-white rounded-xl shadow-md flex items-center justify-center z-50 transition-colors cursor-pointer"
       >
         {isOpen ? <X className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
       </button>
@@ -100,7 +100,7 @@ export default function MentorChat({ userData }) {
             {/* Header */}
             <div className="p-3.5 bg-[#EEECE6] dark:bg-[#181B1F] border-b border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                <div className="w-7 h-7 bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
@@ -127,7 +127,7 @@ export default function MentorChat({ userData }) {
                   className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#2563EB] dark:text-[#3B82F6] flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Bot className="w-3 h-3" />
                     </div>
                   )}
@@ -135,7 +135,7 @@ export default function MentorChat({ userData }) {
                   <div
                     className={`p-2.5 rounded-xl max-w-[85%] text-xs ${
                       msg.role === 'user'
-                        ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                        ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white'
                         : 'bg-[#FCFBF8] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] border border-[#DCD9D1] dark:border-[#292D33]'
                     }`}
                   >
@@ -152,7 +152,7 @@ export default function MentorChat({ userData }) {
 
               {isTyping && (
                 <div className="flex items-center gap-2 text-[#85827A] dark:text-[#7E7C77] py-0.5">
-                  <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center">
+                  <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] text-[#2563EB] dark:text-[#3B82F6] flex items-center justify-center">
                     <Bot className="w-3 h-3" />
                   </div>
                   <div className="px-2 py-1 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-md text-[10px]">
@@ -190,7 +190,7 @@ export default function MentorChat({ userData }) {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask career guidance question..."
-                className="flex-1 px-2.5 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
+                className="flex-1 px-2.5 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6]"
               />
               <button
                 type="submit"

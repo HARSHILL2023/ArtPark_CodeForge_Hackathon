@@ -223,7 +223,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
             <div className="h-4 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
 
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-md bg-[#B88916] dark:bg-[#D4A72C] flex items-center justify-center text-white dark:text-[#0C0D0F] shadow-xs">
+              <div className="w-7 h-7 rounded-md bg-[#2563EB] dark:bg-[#3B82F6] flex items-center justify-center text-white shadow-xs">
                 <Brain className="w-4 h-4" />
               </div>
               <span className="text-xs sm:text-sm font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
@@ -243,7 +243,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
               aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               className="p-1.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white transition-colors cursor-pointer"
             >
-              {darkMode ? <Sun className="w-3.5 h-3.5 text-[#D6A84F]" /> : <Moon className="w-3.5 h-3.5 text-[#B88916]" />}
+              {darkMode ? <Sun className="w-3.5 h-3.5 text-[#60A5FA]" /> : <Moon className="w-3.5 h-3.5 text-[#2563EB]" />}
             </button>
 
             {isLoggedIn ? (
@@ -286,7 +286,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
           /* Authentication Required Gateway */
           <div className="max-w-xl mx-auto py-8 sm:py-12 space-y-6">
             <div className="text-center space-y-2.5">
-              <div className="w-10 h-10 rounded-xl bg-[#B88916]/10 dark:bg-[#D4A72C]/10 text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center mx-auto border border-[#B88916]/20 dark:border-[#D4A72C]/25 shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 text-[#2563EB] dark:text-[#3B82F6] flex items-center justify-center mx-auto border border-[#2563EB]/20 dark:border-[#3B82F6]/25 shadow-xs">
                 <Brain className="w-5 h-5" />
               </div>
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
@@ -374,7 +374,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                     <div className="space-y-3.5">
                       <div className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
                         <div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B88916] dark:text-[#D4A72C]">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#2563EB] dark:text-[#3B82F6]">
                             Evaluated Target Role
                           </span>
                           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA] mt-0.5">
@@ -388,7 +388,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                             <span className="text-[9px] uppercase font-bold text-[#85827A] dark:text-[#7E7C77] block">
                               Readiness Score
                             </span>
-                            <span className="text-xl font-bold text-[#B88916] dark:text-[#D4A72C] font-mono">{currentData.readinessScore}%</span>
+                            <span className="text-xl font-bold text-[#2563EB] dark:text-[#3B82F6] font-mono">{currentData.readinessScore}%</span>
                           </div>
                         </div>
                       </div>
@@ -396,18 +396,18 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                       {/* Next Best Action & Readiness Triad */}
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
                         <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-3">
-                          <div className="w-7 h-7 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <div className="w-7 h-7 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#2563EB] dark:text-[#3B82F6] flex items-center justify-center flex-shrink-0 mt-0.5">
                             <Target className="w-3.5 h-3.5" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-bold text-[#B88916] dark:text-[#D4A72C] uppercase tracking-wider">
+                              <span className="text-[10px] font-bold text-[#2563EB] dark:text-[#3B82F6] uppercase tracking-wider">
                                 Next Best Action
                               </span>
                               <button
                                 type="button"
                                 onClick={() => setActiveTab('roadmap')}
-                                className="text-[10px] font-semibold text-[#B88916] dark:text-[#D4A72C] hover:underline flex items-center gap-0.5 cursor-pointer"
+                                className="text-[10px] font-semibold text-[#2563EB] dark:text-[#3B82F6] hover:underline flex items-center gap-0.5 cursor-pointer"
                               >
                                 Jump to Path &rarr;
                               </button>
@@ -432,7 +432,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                           </div>
                           <div className="h-6 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
                           <div>
-                            <span className="text-sm font-bold text-[#9A6B00] dark:text-[#D6A84F] block font-mono">
+                            <span className="text-sm font-bold text-[#D97706] dark:text-[#F59E0B] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length || 0}
                             </span>
                             <span className="text-[10px] font-semibold uppercase tracking-wider text-[#85827A] dark:text-[#7E7C77]">
@@ -467,7 +467,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                             onClick={() => setActiveTab(tab.id)}
                             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                               isActive
-                                ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] shadow-xs'
+                                ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white shadow-xs'
                                 : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border border-[#DCD9D1] dark:border-[#292D33] hover:bg-[#EEECE6] dark:hover:bg-[#181B1F]'
                             }`}
                           >

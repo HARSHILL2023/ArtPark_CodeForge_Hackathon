@@ -28,11 +28,11 @@
   --border-medium: #C9C5BB;
   --border-strong: #A8A398;
 
-  /* Brand Primary Accent (Warm Amber / Muted Gold in Light Mode) */
-  --brand-primary: #B88916;
-  --brand-primary-hover: #9E7510;
-  --brand-primary-subtle: rgba(184, 137, 22, 0.08);
-  --brand-primary-border: rgba(184, 137, 22, 0.22);
+  /* Brand Primary Accent (Vibrant Blue in Light Mode) */
+  --brand-primary: #2563EB;
+  --brand-primary-hover: #1D4ED8;
+  --brand-primary-subtle: rgba(37, 99, 235, 0.08);
+  --brand-primary-border: rgba(37, 99, 235, 0.22);
   --brand-primary-text: #FFFFFF;
 
   /* Semantic State Colors */
@@ -41,20 +41,20 @@
   --color-success-border: rgba(35, 122, 75, 0.22);
   --color-success-text: #1B5E39;
 
-  --color-warning: #9A6B00;
-  --color-warning-subtle: rgba(154, 107, 0, 0.08);
-  --color-warning-border: rgba(154, 107, 0, 0.22);
-  --color-warning-text: #7A5400;
+  --color-warning: #D97706;
+  --color-warning-subtle: rgba(217, 119, 6, 0.08);
+  --color-warning-border: rgba(217, 119, 6, 0.22);
+  --color-warning-text: #B45309;
 
   --color-danger: #B33A3A;
   --color-danger-subtle: rgba(179, 58, 58, 0.08);
   --color-danger-border: rgba(179, 58, 58, 0.22);
   --color-danger-text: #8E2B2B;
 
-  --color-info: #5A6B7C;
-  --color-info-subtle: rgba(90, 107, 124, 0.08);
-  --color-info-border: rgba(90, 107, 124, 0.22);
-  --color-info-text: #44515E;
+  --color-info: #2563EB;
+  --color-info-subtle: rgba(37, 99, 235, 0.08);
+  --color-info-border: rgba(37, 99, 235, 0.22);
+  --color-info-text: #1D4ED8;
 
   /* Restrained Neutral Shadows */
   --shadow-xs: 0 1px 2px 0 rgba(27, 27, 25, 0.03);
@@ -82,12 +82,12 @@
   --border-medium: #363B43;
   --border-strong: #4A515C;
 
-  /* Brand Primary Accent (Warm Amber / Muted Gold in Dark Mode) */
-  --brand-primary: #D4A72C;
-  --brand-primary-hover: #E0B63D;
-  --brand-primary-subtle: rgba(212, 167, 44, 0.10);
-  --brand-primary-border: rgba(212, 167, 44, 0.25);
-  --brand-primary-text: #0C0D0F;
+  /* Brand Primary Accent (Electric Blue in Dark Mode) */
+  --brand-primary: #3B82F6;
+  --brand-primary-hover: #60A5FA;
+  --brand-primary-subtle: rgba(59, 130, 246, 0.12);
+  --brand-primary-border: rgba(59, 130, 246, 0.28);
+  --brand-primary-text: #FFFFFF;
 
   /* Semantic State Colors (Dark Mode) */
   --color-success: #4CAF7A;

@@ -90,7 +90,7 @@ export default function FeaturesSection() {
                 f.wide ? 'md:col-span-2' : ''
               }`}
             >
-              <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center mb-3.5 text-[#B88916] dark:text-[#D4A72C]">
+              <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center mb-3.5 text-[#2563EB] dark:text-[#3B82F6]">
                 <Icon className="w-4 h-4" />
               </div>
               <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1.5 tracking-tight">

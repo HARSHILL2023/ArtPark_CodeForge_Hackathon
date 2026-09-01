@@ -50,7 +50,7 @@ export default function ResumeOptimizer({
       {/* Header */}
       <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+          <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -76,7 +76,7 @@ export default function ResumeOptimizer({
       <div className="p-4 sm:p-5">
         {loading ? (
           <div className="py-12 flex flex-col items-center justify-center space-y-2.5">
-            <Loader2 className="w-6 h-6 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#2563EB] dark:text-[#3B82F6]" />
             <h3 className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA]">AI is Surgically Optimizing Your Resume...</h3>
             <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] max-w-sm text-center">
               Analyzing weak phrases, injecting quantified metrics, and matching target JD keywords.
@@ -102,7 +102,7 @@ export default function ResumeOptimizer({
                 Transform Generic Bullet Points into High-Impact Quantified Achievements
               </h3>
               <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">
-                Our surgical AI engine rewrites weak resume lines into STAR-format impact statements (Situation, Task, Action, Result) calibrated to pass corporate ATS screens for <span className="font-semibold text-[#B88916] dark:text-[#D4A72C]">{targetRole}</span>.
+                Our surgical AI engine rewrites weak resume lines into STAR-format impact statements (Situation, Task, Action, Result) calibrated to pass corporate ATS screens for <span className="font-semibold text-[#2563EB] dark:text-[#3B82F6]">{targetRole}</span>.
               </p>
             </div>
             <button
@@ -120,7 +120,7 @@ export default function ResumeOptimizer({
             {/* Top Score + Breakdown Bar */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center p-4 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33]">
               <div className="md:col-span-4 flex items-center gap-3">
-                <div className="w-14 h-14 rounded-xl bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] flex flex-col items-center justify-center font-bold shadow-xs">
+                <div className="w-14 h-14 rounded-xl bg-[#2563EB] dark:bg-[#3B82F6] text-white flex flex-col items-center justify-center font-bold shadow-xs">
                   <span className="text-xl leading-none font-mono">{result.optimizedScore || 85}</span>
                   <span className="text-[8px] opacity-80 uppercase tracking-widest mt-0.5 font-mono">/ 100</span>
                 </div>
@@ -157,7 +157,7 @@ export default function ResumeOptimizer({
             {/* STAR Rewritten Bullets Comparison */}
             <div className="space-y-2.5">
               <h4 className="text-[11px] font-semibold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider flex items-center gap-1.5">
-                <Award className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
+                <Award className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
                 Surgical STAR Bullet Transformations
               </h4>
 

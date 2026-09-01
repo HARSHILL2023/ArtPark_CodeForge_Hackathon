@@ -23,7 +23,7 @@ export default function DemoPreview() {
             onClick={() => setActiveTab(tab)}
             className={`px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === tab 
-                ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] border-transparent' 
+                ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent' 
                 : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
             }`}
           >
@@ -80,7 +80,7 @@ export default function DemoPreview() {
               <div className="text-base sm:text-lg font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-3">
                 Senior Systems Engineer Target Alignment
               </div>
-              <div className="w-24 h-24 rounded-full border-4 border-[#B88916] dark:border-[#D4A72C] mx-auto flex flex-col items-center justify-center mb-3">
+              <div className="w-24 h-24 rounded-full border-4 border-[#2563EB] dark:border-[#3B82F6] mx-auto flex flex-col items-center justify-center mb-3">
                 <div className="text-xl font-bold text-[#1B1B19] dark:text-[#F2F0EA] font-mono">82%</div>
                 <div className="text-[8px] font-bold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider">Score</div>
               </div>
@@ -92,7 +92,7 @@ export default function DemoPreview() {
 
           {activeTab === 'Simulation Studio' && (
             <div className="text-center max-w-md mx-auto space-y-3">
-              <div className="inline-flex text-[10px] font-bold uppercase tracking-wider text-[#B88916] dark:text-[#D4A72C] border border-[#B88916]/25 bg-[#B88916]/10 px-2 py-0.5 rounded">
+              <div className="inline-flex text-[10px] font-bold uppercase tracking-wider text-[#2563EB] dark:text-[#3B82F6] border border-[#2563EB]/25 bg-[#2563EB]/10 px-2 py-0.5 rounded">
                 STUDIO ENGINE 3.5
               </div>
               <h3 className="text-base sm:text-lg font-bold text-[#1B1B19] dark:text-[#F2F0EA]">

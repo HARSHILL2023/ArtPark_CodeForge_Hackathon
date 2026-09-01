@@ -43,8 +43,8 @@ export default function PricingSection({ onOpenAuth }) {
           </button>
         </motion.div>
 
-        <motion.div variants={item} className="p-6 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#B88916] dark:border-[#D4A72C] flex flex-col justify-between relative space-y-4 shadow-xs">
-          <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-[#B88916] dark:bg-[#D4A72C] rounded-md text-[9px] font-bold uppercase tracking-widest text-white dark:text-[#0C0D0F] whitespace-nowrap">
+        <motion.div variants={item} className="p-6 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#2563EB] dark:border-[#3B82F6] flex flex-col justify-between relative space-y-4 shadow-xs">
+          <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-[#2563EB] dark:bg-[#3B82F6] rounded-md text-[9px] font-bold uppercase tracking-widest text-white whitespace-nowrap">
             MOST POPULAR
           </div>
           <div>

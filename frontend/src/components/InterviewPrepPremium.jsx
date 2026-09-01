@@ -136,7 +136,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
       {/* Launch Card */}
       <div className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+          <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -176,7 +176,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
               {/* Studio Header */}
               <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                  <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
                     <Target className="w-4 h-4" />
                   </div>
                   <div>
@@ -196,7 +196,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                       onClick={() => setCurrentType('questions')}
                       className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                         currentType === 'questions'
-                          ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                          ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white'
                           : 'text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white'
                       }`}
                     >
@@ -207,7 +207,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                       onClick={() => setCurrentType('mock')}
                       className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                         currentType === 'mock'
-                          ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                          ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white'
                           : 'text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white'
                       }`}
                     >
@@ -240,7 +240,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                             onClick={() => setActiveTier(cat)}
                             className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors border cursor-pointer ${
                               activeTier === cat
-                                ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] border-transparent'
+                                ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent'
                                 : 'bg-[#FCFBF8] dark:bg-[#181B1F] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
                             }`}
                           >
@@ -262,7 +262,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
 
                     {isLoadingQA ? (
                       <div className="flex flex-col items-center justify-center py-12 space-y-2.5">
-                        <Loader2 className="w-6 h-6 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
+                        <Loader2 className="w-6 h-6 animate-spin text-[#2563EB] dark:text-[#3B82F6]" />
                         <p className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
                           Generating tailored interview questions...
                         </p>
@@ -275,7 +275,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                             className="p-4 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] space-y-2.5"
                           >
                             <div className="flex items-center justify-between">
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#B88916]/10 dark:bg-[#D4A72C]/10 text-[#B88916] dark:text-[#D4A72C] border border-[#B88916]/20 uppercase tracking-wider">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 text-[#2563EB] dark:text-[#3B82F6] border border-[#2563EB]/20 uppercase tracking-wider">
                                 {item.category}
                               </span>
                               <span
@@ -320,8 +320,8 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                             <div
                               className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs ${
                                 isUser
-                                  ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
-                                  : 'bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#B88916] dark:text-[#D4A72C]'
+                                  ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white'
+                                  : 'bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#2563EB] dark:text-[#3B82F6]'
                               }`}
                             >
                               {isUser ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
@@ -330,7 +330,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                             <div
                               className={`max-w-[78%] p-3 rounded-xl text-xs leading-relaxed ${
                                 isUser
-                                  ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                                  ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white'
                                   : 'bg-[#EEECE6] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] border border-[#DCD9D1] dark:border-[#292D33]'
                               }`}
                             >
@@ -342,7 +342,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
 
                       {isAiThinking && (
                         <div className="flex items-center gap-2 text-xs text-[#85827A] dark:text-[#7E7C77] pl-9">
-                          <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-[#2563EB] dark:text-[#3B82F6]" />
                           <span>Interviewer is evaluating your response...</span>
                         </div>
                       )}
@@ -354,7 +354,7 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
                         placeholder={`Explain your approach for ${role}...`}
-                        className="flex-1 px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
+                        className="flex-1 px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6]"
                       />
                       <button
                         type="submit"

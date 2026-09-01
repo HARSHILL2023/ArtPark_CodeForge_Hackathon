@@ -70,7 +70,7 @@ export default function TechStack() {
             { title: 'Isolated Sandbox Access', desc: 'Judge Demo sandbox tokens operate with zero persistence leaks while regular sessions authenticate with JWT.' }
           ].map((arch, i) => (
             <div key={i} className="flex items-start gap-3.5 p-4 sm:p-5">
-              <div className="mt-1 w-2 h-2 flex-shrink-0 rounded-full bg-[#B88916] dark:bg-[#D4A72C]"></div>
+              <div className="mt-1 w-2 h-2 flex-shrink-0 rounded-full bg-[#2563EB] dark:bg-[#3B82F6]"></div>
               <div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-0.5">{arch.title}</h4>
                 <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">{arch.desc}</p>

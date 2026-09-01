@@ -20,8 +20,8 @@ export default function GapSummary({
       value: `${matchPercentage}%`,
       sublabel: 'Requirements Met',
       icon: TrendingUp,
-      iconColor: 'text-[#B88916] dark:text-[#D4A72C]',
-      badgeBg: 'bg-[#B88916]/10 dark:bg-[#D4A72C]/10 text-[#B88916] dark:text-[#D4A72C] border-[#B88916]/20 dark:border-[#D4A72C]/25',
+      iconColor: 'text-[#2563EB] dark:text-[#3B82F6]',
+      badgeBg: 'bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 text-[#2563EB] dark:text-[#3B82F6] border-[#2563EB]/20 dark:border-[#3B82F6]/25',
     },
     {
       label: 'Skill Confidence',
@@ -64,7 +64,7 @@ export default function GapSummary({
         </div>
 
         <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-xs font-semibold text-[#5E5C56] dark:text-[#B4B1A9] self-start sm:self-auto">
-          <Clock className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
+          <Clock className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
           <span>Est. Completion: {totalTime}</span>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function GapSummary({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-center">
           {/* Circular Progress Gauge */}
           <div className="lg:col-span-4 p-4 bg-[#FCFBF8] dark:bg-[#181B1F] rounded-xl border border-[#DCD9D1] dark:border-[#292D33] flex flex-col items-center justify-center">
-            <CircularProgress score={readinessScore} size={130} strokeWidth={8} color="#D4A72C" />
+            <CircularProgress score={readinessScore} size={130} strokeWidth={8} color="#3B82F6" />
             <span className="text-[10px] font-semibold uppercase tracking-wider text-[#85827A] dark:text-[#7E7C77] mt-2.5">
               Overall Match Score
             </span>
@@ -133,7 +133,7 @@ export default function GapSummary({
                   onClick={() => onStyleChange(style.id)}
                   className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 border cursor-pointer ${
                     isSelected
-                      ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] border-transparent'
+                      ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent'
                       : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
                   }`}
                 >
@@ -149,14 +149,14 @@ export default function GapSummary({
         <div>
           <div className="flex items-center justify-between text-xs font-medium mb-1">
             <span className="text-[#5E5C56] dark:text-[#B4B1A9]">Curriculum Milestone Progress</span>
-            <span className="text-[#B88916] dark:text-[#D4A72C] font-bold font-mono">{Math.round(roadmapProgress)}% Completed</span>
+            <span className="text-[#2563EB] dark:text-[#3B82F6] font-bold font-mono">{Math.round(roadmapProgress)}% Completed</span>
           </div>
           <div className="w-full h-1.5 bg-[#EEECE6] dark:bg-[#292D33] rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${roadmapProgress}%` }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="h-full bg-[#B88916] dark:bg-[#D4A72C] rounded-full"
+              className="h-full bg-[#2563EB] dark:bg-[#3B82F6] rounded-full"
             />
           </div>
         </div>

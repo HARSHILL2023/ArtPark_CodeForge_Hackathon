@@ -45,7 +45,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
           className="flex items-center gap-2.5 text-[#1B1B19] dark:text-[#F2F0EA] font-bold text-base tracking-tight"
           aria-label="CodeForge Home"
         >
-          <div className="w-7 h-7 rounded-md bg-[#B88916] dark:bg-[#D4A72C] flex items-center justify-center text-white dark:text-[#0C0D0F] shadow-xs">
+          <div className="w-7 h-7 rounded-md bg-[#2563EB] dark:bg-[#3B82F6] flex items-center justify-center text-white shadow-xs">
             <BrainCircuit className="w-4 h-4" />
           </div>
           <div>
@@ -81,7 +81,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             className="p-1.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white transition-colors cursor-pointer"
           >
-            {darkMode ? <Sun className="w-3.5 h-3.5 text-[#D6A84F]" /> : <Moon className="w-3.5 h-3.5 text-[#B88916]" />}
+            {darkMode ? <Sun className="w-3.5 h-3.5 text-[#60A5FA]" /> : <Moon className="w-3.5 h-3.5 text-[#2563EB]" />}
           </button>
 
           {isLoggedIn ? (
@@ -142,7 +142,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
                   <a
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA] hover:text-[#B88916] dark:hover:text-[#D4A72C] py-1 transition-colors"
+                    className="block text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA] hover:text-[#2563EB] dark:hover:text-[#3B82F6] py-1 transition-colors"
                   >
                     {link.label}
                   </a>

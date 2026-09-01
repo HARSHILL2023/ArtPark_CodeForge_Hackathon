@@ -24,7 +24,7 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
       {/* Header */}
       <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+          <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
             <Flag className="w-4 h-4" />
           </div>
           <div>
@@ -73,7 +73,7 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
                         : isRemedial
                         ? 'bg-[#9A6B00] dark:bg-[#D6A84F] border-[#9A6B00] dark:border-[#D6A84F] text-white'
                         : isActive
-                        ? 'bg-[#B88916] dark:bg-[#D4A72C] border-[#B88916] dark:border-[#D4A72C] text-white dark:text-[#0C0D0F] shadow-xs'
+                        ? 'bg-[#2563EB] dark:bg-[#3B82F6] border-[#2563EB] dark:border-[#3B82F6] text-white shadow-xs'
                         : 'bg-[#FCFBF8] dark:bg-[#121416] border-[#DCD9D1] dark:border-[#292D33] text-[#85827A]'
                     }`}
                   >
@@ -96,7 +96,7 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
                         : isRemedial
                         ? 'bg-[#9A6B00]/5 dark:bg-[#D6A84F]/5 border-[#9A6B00]/20 dark:border-[#D6A84F]/25'
                         : isActive
-                        ? 'bg-[#FCFBF8] dark:bg-[#181B1F] border-[#B88916] dark:border-[#D4A72C]'
+                        ? 'bg-[#FCFBF8] dark:bg-[#181B1F] border-[#2563EB] dark:border-[#3B82F6]'
                         : 'bg-[#FCFBF8] dark:bg-[#121416] border-[#DCD9D1] dark:border-[#292D33]'
                     }`}
                   >
@@ -120,7 +120,7 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
                       </div>
 
                       <div className="flex items-center gap-1 text-[11px] text-[#85827A] dark:text-[#7E7C77] font-mono">
-                        <Clock className="w-3 h-3 text-[#B88916] dark:text-[#D4A72C]" />
+                        <Clock className="w-3 h-3 text-[#2563EB] dark:text-[#3B82F6]" />
                         <span>{step.duration ? `${step.duration} Weeks` : '2 Weeks'}</span>
                       </div>
                     </div>
@@ -141,7 +141,7 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
 
                     {/* AI Reasoning Trace */}
                     <div className="p-2.5 rounded-lg bg-[#EEECE6]/60 dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-2 mb-3">
-                      <Brain className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C] flex-shrink-0 mt-0.5" />
+                      <Brain className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6] flex-shrink-0 mt-0.5" />
                       <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9] leading-normal">
                         <span className="font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">Algorithmic Trace: </span>
                         {step.reason ||

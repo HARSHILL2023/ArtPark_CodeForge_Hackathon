@@ -227,7 +227,7 @@ export default function UploadForm({
       <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
               <UploadCloud className="w-4 h-4" />
             </div>
             <div>
@@ -241,7 +241,7 @@ export default function UploadForm({
             type="button"
             className="cf-btn-secondary py-1 px-2 text-xs"
           >
-            <Zap className="w-3 h-3 text-[#B88916] dark:text-[#D4A72C]" />
+            <Zap className="w-3 h-3 text-[#2563EB] dark:text-[#3B82F6]" />
             <span>Load Demo</span>
           </button>
         </div>
@@ -259,7 +259,7 @@ export default function UploadForm({
         <div className="space-y-1.5">
           <label className="flex items-center justify-between text-[11px] font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
             <span className="flex items-center gap-1.5">
-              <FileText className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
+              <FileText className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
               1. Candidate Resume
             </span>
             <span className="text-[10px] font-normal text-[#85827A] dark:text-[#7E7C77]">PDF, TXT, DOCX</span>
@@ -273,7 +273,7 @@ export default function UploadForm({
               onDrop={(e) => handleDrop(e, 'resume')}
               className={`relative border border-dashed rounded-xl p-5 text-center transition-colors cursor-pointer ${
                 dragActive === 'resume'
-                  ? 'border-[#B88916] dark:border-[#D4A72C] bg-[#B88916]/5 dark:bg-[#D4A72C]/10'
+                  ? 'border-[#2563EB] dark:border-[#3B82F6] bg-[#2563EB]/5 dark:bg-[#3B82F6]/10'
                   : 'border-[#DCD9D1] dark:border-[#292D33] hover:border-[#C9C5BB] dark:hover:border-[#363B43] bg-[#FCFBF8] dark:bg-[#181B1F]'
               }`}
             >
@@ -285,11 +285,11 @@ export default function UploadForm({
                 aria-label="Upload Resume"
               />
               <div className="space-y-1.5">
-                <div className="mx-auto w-8 h-8 bg-[#EEECE6] dark:bg-[#121416] rounded-lg border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                <div className="mx-auto w-8 h-8 bg-[#EEECE6] dark:bg-[#121416] rounded-lg border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
                   <UploadCloud className="w-4 h-4" />
                 </div>
                 <p className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
-                  Drag & drop resume or <span className="text-[#B88916] dark:text-[#D4A72C] underline">browse</span>
+                  Drag & drop resume or <span className="text-[#2563EB] dark:text-[#3B82F6] underline">browse</span>
                 </p>
                 <p className="text-[10px] text-[#85827A] dark:text-[#7E7C77]">Max size 10MB</p>
               </div>
@@ -325,13 +325,13 @@ export default function UploadForm({
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-1.5 text-[11px] font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
-              <FileText className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
+              <FileText className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
               2. Target Job Description
             </label>
             <button
               type="button"
               onClick={handlePasteSampleJD}
-              className="text-[10px] font-semibold text-[#B88916] dark:text-[#D4A72C] hover:underline cursor-pointer"
+              className="text-[10px] font-semibold text-[#2563EB] dark:text-[#3B82F6] hover:underline cursor-pointer"
             >
               Paste Sample JD
             </button>
@@ -342,7 +342,7 @@ export default function UploadForm({
             onChange={(e) => setJdText(e.target.value)}
             placeholder="Paste complete role description, responsibilities, and required qualifications..."
             rows={4}
-            className="w-full px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C] transition-colors resize-none font-sans leading-relaxed"
+            className="w-full px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6] transition-colors resize-none font-sans leading-relaxed"
           />
 
           <div className="flex justify-between items-center text-[10px] text-[#85827A] dark:text-[#7E7C77]">
@@ -356,7 +356,7 @@ export default function UploadForm({
           <div className="p-3 rounded-xl bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
               <span className="flex items-center gap-2">
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#2563EB] dark:text-[#3B82F6]" />
                 <span>AI Pipeline Active</span>
               </span>
               <span className="font-mono text-[11px]">Step {currentStepIndex + 1} of 5</span>
@@ -367,7 +367,7 @@ export default function UploadForm({
                 initial={{ width: '10%' }}
                 animate={{ width: `${((currentStepIndex + 1) / 5) * 100}%` }}
                 transition={{ duration: 0.2 }}
-                className="h-full bg-[#B88916] dark:bg-[#D4A72C] rounded-full"
+                className="h-full bg-[#2563EB] dark:bg-[#3B82F6] rounded-full"
               />
             </div>
             <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9] font-medium">

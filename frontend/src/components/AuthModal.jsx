@@ -78,7 +78,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, redirectTo 
             <div className="p-6">
               {/* Header Icon */}
               <div className="flex justify-center mb-3.5">
-                <div className="w-8 h-8 rounded-lg bg-[#B88916] dark:bg-[#D4A72C] flex items-center justify-center text-white dark:text-[#0C0D0F] shadow-xs">
+                <div className="w-8 h-8 rounded-lg bg-[#2563EB] dark:bg-[#3B82F6] flex items-center justify-center text-white shadow-xs">
                   <BrainCircuit className="w-4 h-4" />
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, redirectTo 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Alex Rivera"
-                        className="w-full pl-8 pr-3 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
+                        className="w-full pl-8 pr-3 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6]"
                       />
                     </div>
                   </div>
@@ -151,7 +151,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, redirectTo 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.com"
-                      className="w-full pl-8 pr-3 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
+                      className="w-full pl-8 pr-3 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6]"
                     />
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, redirectTo 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-8 pr-3 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
+                      className="w-full pl-8 pr-3 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#2563EB] dark:focus:ring-[#3B82F6]"
                     />
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, redirectTo 
                 <button
                   type="button"
                   onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-                  className="font-semibold text-[#B88916] dark:text-[#D4A72C] hover:underline"
+                  className="font-semibold text-[#2563EB] dark:text-[#3B82F6] hover:underline"
                 >
                   {mode === 'login' ? 'Create one' : 'Sign in'}
                 </button>
@@ -202,7 +202,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, redirectTo 
                   onClick={handleJudgeDemo}
                   className="cf-btn-secondary w-full justify-center py-2 text-xs"
                 >
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
                   <span>Judge Demo Sandbox Access</span>
                 </button>
                 <p className="text-[10px] text-[#85827A] dark:text-[#7E7C77] mt-1.5 font-normal">

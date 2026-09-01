@@ -348,6 +348,6 @@ export const getPriorityColor = (priority) => {
 
 export const getScoreColor = (score) => {
   if (score >= 80) return { text: 'text-[#237A4B] dark:text-[#4CAF7A]', stroke: '#4CAF7A', bg: 'from-[#4CAF7A]/20' };
-  if (score >= 60) return { text: 'text-[#B88916] dark:text-[#D4A72C]', stroke: '#D4A72C', bg: 'from-[#D4A72C]/20' };
+  if (score >= 60) return { text: 'text-[#2563EB] dark:text-[#3B82F6]', stroke: '#3B82F6', bg: 'from-[#3B82F6]/20' };
   return { text: 'text-[#B33A3A] dark:text-[#D96565]', stroke: '#D96565', bg: 'from-[#D96565]/20' };
 };

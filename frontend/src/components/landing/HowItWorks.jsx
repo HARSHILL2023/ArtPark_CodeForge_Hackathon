@@ -88,8 +88,8 @@ export default function HowItWorks() {
             >
               <div>
                 <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-base font-bold text-[#B88916] dark:text-[#D4A72C] font-mono">{p.step}</span>
-                  <div className="w-7 h-7 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                  <span className="text-base font-bold text-[#2563EB] dark:text-[#3B82F6] font-mono">{p.step}</span>
+                  <div className="w-7 h-7 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
                     <Icon className="w-3.5 h-3.5" />
                   </div>
                 </div>
