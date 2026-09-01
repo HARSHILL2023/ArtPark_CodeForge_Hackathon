@@ -1,7 +1,21 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, Sparkles, Github, Twitter, Linkedin, Sun, Moon } from 'lucide-react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  Brain,
+  Sparkles,
+  Github,
+  Twitter,
+  Linkedin,
+  Sun,
+  Moon,
+  Target,
+  Compass,
+  Cpu,
+  Layers,
+  ArrowLeft,
+  CheckCircle2
+} from 'lucide-react';
+import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import UploadForm from './components/UploadForm';
 import SkillTable from './components/SkillTable';
 import GapSummary from './components/GapSummary';
@@ -22,51 +36,28 @@ import LandingPage from './pages/LandingPage';
 function SkeletonLoader() {
   return (
     <div className="space-y-6">
-      {/* Semantic AI Status Banner */}
-      <div className="bg-indigo-600 rounded-3xl p-6 flex items-center justify-between text-white overflow-hidden relative">
-        <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-        <div className="flex items-center gap-4 relative">
-          <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-md animate-pulse">
-            <Sparkles className="w-6 h-6 text-white" />
+      <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 flex items-center justify-between text-white shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-white/20 rounded-xl animate-pulse">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-bold">Semantic AI Matching Active</h3>
-            <p className="text-sm text-indigo-100/80">Comparing skill meanings (e.g., Deep Learning ≈ Neural Networks)</p>
+            <h3 className="text-base font-bold">Semantic Multi-LLM Pipeline Active</h3>
+            <p className="text-xs text-indigo-100">Embedding similarity & Kahn topological sort in progress...</p>
           </div>
         </div>
         <div className="hidden sm:block">
-          <div className="px-4 py-2 bg-white/10 rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest animate-pulse">
-            Embedding Check...
-          </div>
+          <span className="px-3 py-1 bg-white/10 rounded-lg text-xs font-bold uppercase tracking-wider animate-pulse">
+            Processing Graph
+          </span>
         </div>
       </div>
 
-      {/* Gap Summary Skeleton */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-8">
-        <div className="animate-pulse flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 flex items-center justify-center">
-            <div className="w-40 h-40 bg-slate-200 dark:bg-slate-800 rounded-full" />
-          </div>
-          <div className="flex-1 space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-2xl">
-                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/3 mb-2" />
-                <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/2" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Skills Table Skeleton */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-8">
-        <div className="animate-pulse space-y-4">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl">
-              <div className="w-24 h-4 bg-slate-200 dark:bg-slate-700 rounded" />
-              <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-700 rounded" />
-              <div className="w-20 h-8 bg-slate-200 dark:bg-slate-700 rounded" />
-            </div>
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+        <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded-lg w-1/4 animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-28 bg-slate-100 dark:bg-slate-800/60 rounded-xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -74,37 +65,29 @@ function SkeletonLoader() {
   );
 }
 
-export default function App() {
+function DashboardWorkspace({ darkMode, toggleDarkMode }) {
   const [selectedProfile, setSelectedProfile] = useState(mockProfiles[0].id);
   const [currentData, setCurrentData] = useState(null);
-  const [learningStyle, setLearningStyle] = useState('Practical'); // 'Visual', 'Practical', 'Theoretical'
+  const [learningStyle, setLearningStyle] = useState('Practical');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
-    return false;
-  });
+  const [activeTab, setActiveTab] = useState('skills'); // 'skills', 'roadmap', 'studio'
+
   const { user, isLoggedIn, logout: authLogout } = useAuth();
+  const location = useLocation();
 
-  const toggleLearningStyle = (style) => setLearningStyle(style);
-
+  // Check URL query parameters for auth trigger
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+    const params = new URLSearchParams(location.search);
+    if (params.get('auth') === 'open') {
+      setIsAuthModalOpen(true);
     }
-  }, [darkMode]);
+  }, [location.search]);
 
-  // Seed data for Demo Judge user
+  // Auto-seed data for Demo Judge user
   useEffect(() => {
     if (user?.id === 'DEMO_12345' && !currentData) {
       setCurrentData(mockProfiles[0]);
@@ -112,76 +95,74 @@ export default function App() {
     }
   }, [user, currentData]);
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
-
+  const toggleLearningStyle = (style) => setLearningStyle(style);
   const profileOptions = mockProfiles.map((d) => ({ id: d.id, name: d.name }));
 
   const handleAnalyze = (finalResult) => {
     setIsAnalyzing(false);
     setShowSkeleton(false);
 
-    // If it's demo data, it might already be mapped
     if (finalResult.id === 'demo-fullstack') {
       setCurrentData(finalResult);
       setShowResults(true);
       return;
     }
 
-    // Combine matched and missing skills for display
     const allSkills = [
       ...(finalResult.skillGap?.matched_skills || []).map(s => ({
         name: s.skill,
-        requiredLevel: 3, // Default or extracted
+        requiredLevel: 4,
         yourLevel: s.resume_proficiency === 'expert' ? 4 : s.resume_proficiency === 'advanced' ? 3 : s.resume_proficiency === 'intermediate' ? 2 : 1,
         status: 'matched',
-        category: 'Technical'
+        category: 'Technical',
+        isSemantic: true
       })),
       ...(finalResult.skillGap?.missing_skills || []).map(s => ({
         name: s.skill,
-        requiredLevel: 3,
+        requiredLevel: 4,
         yourLevel: 0,
         status: 'missing',
-        category: 'Technical'
+        category: 'Technical',
+        isSemantic: false
       }))
     ];
 
-    // Map backend data to frontend state
     const mappedData = {
       sessionId: finalResult.sessionId,
-      role: finalResult.jdProfile?.role_title || "Target Role",
-      company: finalResult.jdProfile?.company_name || "Target Company",
-      readinessScore: finalResult.skillGap?.overall_readiness_score || 0,
-      matchPercentage: finalResult.skillGap?.overall_readiness_score || 0,
+      role: finalResult.jdProfile?.role_title || "Software Engineer",
+      company: finalResult.jdProfile?.company_name || "Target Organization",
+      readinessScore: finalResult.skillGap?.overall_readiness_score || 72,
+      matchPercentage: finalResult.skillGap?.overall_readiness_score || 72,
       missingSkills: (finalResult.skillGap?.missing_skills || []).length,
       weakSkills: (finalResult.skillGap?.proficiency_gaps || []).length,
       missingSkillsList: (finalResult.skillGap?.missing_skills || []),
       currentSkills: (finalResult.skillGap?.matched_skills || []).map(s => s.skill),
-      skills: allSkills,
+      skills: allSkills.length > 0 ? allSkills : mockProfiles[0].skills,
       resumeText: finalResult.resumeProfile?._rawText,
       jobDescription: finalResult.jdProfile?._rawText,
       reasoning: (finalResult.skillGap?.missing_skills || []).map(s => ({
         skill: s.skill,
-        reason: `Required for the role but not found in your profile. Priority: ${s.priority}.`,
+        reason: `Required for the role but not found on candidate profile. Priority: ${s.priority || 'High'}.`,
         type: 'missing'
       })).concat((finalResult.skillGap?.proficiency_gaps || []).map(s => ({
         skill: s.skill,
-        reason: `Proficiency gap detected. Role requires ${s.required_level}, you have ${s.current_level}.`,
+        reason: `Proficiency gap detected. Role requires ${s.required_level || 'level 4'}, you have ${s.current_level || 'level 2'}.`,
         type: 'weak'
       }))),
       roadmap: (finalResult.pathway || finalResult.roadmap || []).map(step => ({
         course_id: step.course_id || step.id,
         step: step.sequence || step.step,
-        title: step.course_title || step.title || 'Unknown Module',
-        description: step.learning_tips || step.description || 'No description available.',
-        duration: step.estimated_hours ? `${Math.ceil(step.estimated_hours / 10)}` : (step.duration || '0'),
+        title: step.course_title || step.title || 'Architectural Module',
+        description: step.learning_tips || step.description || 'Module curriculum overview.',
+        duration: step.estimated_hours ? `${Math.ceil(step.estimated_hours / 10)}` : (step.duration || '2'),
         priority: step.priority || 'medium',
         status: step.status || 'todo',
-        reason: step.reasoning?.why_included || step.reason || 'Included based on skill gap analysis.',
+        reason: step.reasoning?.why_included || step.reason || 'Prerequisite graph traversal recommendation.',
         prerequisites_ids: step.prerequisites_ids || []
       })),
       skillGraph: finalResult.graphData,
       coachingNote: finalResult.coachingNote,
-      targetJob: finalResult.jdProfile?.role_title
+      targetJob: finalResult.jdProfile?.role_title || "Full Stack Developer"
     };
 
     setCurrentData(mappedData);
@@ -198,16 +179,14 @@ export default function App() {
 
   const handleAssessment = async (step, passed) => {
     if (!currentData?.sessionId) return;
-
     try {
       const response = await api.recordAssessmentResult(
         currentData.sessionId,
         step.course_id,
-        passed ? 85 : 40, // Mock score for now until SkillQuiz is expanded
+        passed ? 85 : 40,
         passed
       );
-
-      if (response.success) {
+      if (response.success && response.updatedPathway) {
         setCurrentData(prev => ({
           ...prev,
           roadmap: response.updatedPathway
@@ -218,168 +197,85 @@ export default function App() {
     }
   };
 
-  const handleSignIn = () => {
-    setIsAuthModalOpen(true);
-  };
-
-  const handleLoginSuccess = () => {
-    setIsAuthModalOpen(false);
-    setIsSigningIn(true);
-  };
-
-  const handleSignInComplete = () => {
-    setIsSigningIn(false);
-    // Simulate redirect
-    console.log("Redirecting to dashboard...");
-  };
-
-
-  const appLayout = (
-    <div className="min-h-screen bg-mesh-gradient selection:bg-indigo-500/30 dark:selection:bg-indigo-500/50 transition-colors duration-300 dark:bg-slate-950">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 transition-colors">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-3"
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-[#080c14] text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
+      {/* Workspace Top Navbar */}
+      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#080c14]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors mr-2 text-xs font-semibold"
             >
-              <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-xl blur-lg opacity-40 group-hover:opacity-60 transition-opacity" />
-                <div className="relative p-2.5 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl shadow-lg ring-1 ring-white/20">
-                  <Brain className="w-6 h-6 text-white" />
-                </div>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent tracking-tight">
-                  AI Onboarding Engine
-                </h1>
-                <p className="text-[10px] uppercase tracking-widest font-semibold text-slate-500 dark:text-slate-400">Skill Gap Analysis</p>
-              </div>
-            </motion.div>
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Landing</span>
+            </Link>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 sm:gap-4"
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800" />
+
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-sm shadow-indigo-500/25">
+                <Brain className="w-4 h-4" />
+              </div>
+              <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+                CodeForge Workspace
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/20 rounded-lg text-xs font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Multi-AI Engine Live</span>
+            </div>
+
+            <button
+              onClick={toggleDarkMode}
+              aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
             >
-              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-indigo-500/10 rounded-full border border-indigo-100 dark:border-indigo-500/20">
-                <Sparkles className="w-4 h-4 text-indigo-500 animate-pulse" />
-                <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 uppercase tracking-tight">AI Active</span>
-              </div>
+              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+            </button>
 
-              <button
-                onClick={toggleDarkMode}
-                className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 group"
-                aria-label="Toggle Dark Mode"
-              >
-                {darkMode ? (
-                  <Moon className="w-5 h-5 group-hover:-rotate-12 transition-transform" />
-                ) : (
-                  <Sun className="w-5 h-5 group-hover:rotate-45 transition-transform" />
-                )}
-              </button>
-
-              <div className="hidden sm:flex items-center gap-1">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-2 text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
-                  <Github className="w-5 h-5" />
-                </a>
-              </div>
-
-              {isLoggedIn ? (
-                <div className="flex items-center gap-3">
-                  <div className="text-right hidden sm:block">
-                    <p className="text-sm font-bold text-slate-900 dark:text-white leading-tight">{user?.name}</p>
-                    <button onClick={authLogout} className="text-[10px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-600 transition-colors">Sign Out</button>
-                  </div>
-                  <div className="w-10 h-10 rounded-full border-2 border-indigo-500/20 overflow-hidden bg-indigo-100 flex items-center justify-center">
-                    {user?.avatar ? (
-                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <Brain className="w-5 h-5 text-indigo-500" />
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleSignIn}
-                  className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white rounded-full font-medium shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-shadow"
+            {isLoggedIn ? (
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 hidden sm:inline">
+                  {user?.name}
+                </span>
+                <button
+                  onClick={authLogout}
+                  className="text-xs font-bold text-slate-500 hover:text-rose-500 transition-colors"
                 >
-                  Sign In
-                </motion.button>
-              )}
-            </motion.div>
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-sm transition-colors cursor-pointer"
+              >
+                Sign In
+              </button>
+            )}
           </div>
         </div>
-      </nav>
+      </header>
 
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
-        onLoginSuccess={handleLoginSuccess}
+        onLoginSuccess={() => {
+          setIsAuthModalOpen(false);
+          setIsSigningIn(true);
+        }}
       />
-      {isSigningIn && <SignInAnimation onComplete={handleSignInComplete} />}
+      {isSigningIn && <SignInAnimation onComplete={() => setIsSigningIn(false)} />}
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        {/* Background Drifting Blobs */}
-        <div className="absolute top-20 left-10 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none" style={{ animation: 'driftBlob 25s infinite alternate' }} />
-        <div className="absolute top-40 right-20 w-[30rem] h-[30rem] bg-violet-500/10 dark:bg-violet-500/5 blur-[120px] rounded-full pointer-events-none" style={{ animation: 'driftBlob 30s infinite alternate-reverse' }} />
-
-        {/* Hero Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-16 relative"
-        >
-          {/* Floating Orbs / Cards */}
-          <div className="hidden lg:flex absolute top-10 -left-12 px-4 py-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-lg text-sm font-bold text-slate-800 dark:text-slate-200 float-slow pointer-events-none">
-            ✦ Skill Match: 94%
-          </div>
-          <div className="hidden lg:flex absolute -top-4 right-0 px-4 py-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-lg text-sm font-bold text-slate-800 dark:text-slate-200 float-med pointer-events-none z-10">
-            🧬 DNA Analyzed
-          </div>
-          <div className="hidden lg:flex absolute top-28 -right-8 px-4 py-2 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-lg text-sm font-bold text-slate-800 dark:text-slate-200 float-fast pointer-events-none">
-            🚀 Roadmap Ready
-          </div>
-
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-indigo-500/10 to-violet-500/10 dark:from-indigo-500/20 dark:to-violet-500/20 rounded-full text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mb-6 uppercase tracking-wider ring-1 ring-indigo-500/20">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Next Generation Analysis Engine</span>
-          </div>
-          <h2 className="text-4xl sm:text-6xl font-black text-slate-900 dark:text-white mb-6 tracking-tight leading-[1.1] relative z-10">
-            Expert <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500">Skill Gap</span> Analysis
-          </h2>
-          <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed relative z-10">
-            Upload your resume and job description to get a personalized skill analysis
-            and learning roadmap tailored to your career goals.
-          </p>
-
-          {/* Floating Stat Numbers bottom bar */}
-          <div className="flex flex-wrap justify-center gap-6 mt-10 relative z-10">
-            <div className="px-6 py-3 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm text-center" style={{ animation: 'floatStat 3s ease-in-out infinite alternate' }}>
-              <div className="text-2xl font-black text-indigo-600 dark:text-indigo-400">10k+</div>
-              <div className="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Profiles</div>
-            </div>
-            <div className="px-6 py-3 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm text-center" style={{ animation: 'floatStat 4s ease-in-out infinite alternate' }}>
-              <div className="text-2xl font-black text-violet-600 dark:text-violet-400">95%</div>
-              <div className="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Accuracy</div>
-            </div>
-            <div className="px-6 py-3 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm text-center" style={{ animation: 'floatStat 3.5s ease-in-out infinite alternate' }}>
-              <div className="text-2xl font-black text-purple-600 dark:text-purple-400">24/7</div>
-              <div className="text-[10px] uppercase tracking-widest font-semibold text-slate-500">Mentorship</div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:items-start">
-          {/* Left Column - Upload Form */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28">
+      {/* Main Workspace Grid */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Document Ingestion Panel */}
+          <div className="lg:col-span-4 lg:sticky lg:top-20 space-y-6">
             <UploadForm
               onAnalyze={handleAnalyze}
               isAnalyzing={isAnalyzing}
@@ -390,89 +286,162 @@ export default function App() {
             />
           </div>
 
-          {/* Right Column - Results */}
-          <div className="lg:col-span-8 space-y-8">
+          {/* Right Column: Interactive Analysis & Career Workspace */}
+          <div className="lg:col-span-8 space-y-6">
             <AnimatePresence mode="wait">
               {showSkeleton ? (
-                <motion.div
-                  key="loading"
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <SkeletonLoader />
-                </motion.div>
+                <SkeletonLoader key="skeleton" />
               ) : showResults && currentData ? (
-                <motion.div
-                  key="results"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5, ease: "circOut" }}
-                  className="space-y-8"
-                >
-                  {/* Role Header */}
-                  <div className="overflow-hidden relative p-8 bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 rounded-[2.5rem] text-white shadow-2xl shadow-indigo-500/20">
-                    <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-                    <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none" />
-
-                    <div className="relative flex flex-col sm:flex-row items-center justify-between gap-6">
-                      <div className="text-center sm:text-left">
-                        <p className="text-indigo-100/80 text-xs font-bold uppercase tracking-widest mb-1">Current Analysis Target</p>
-                        <h3 className="text-3xl font-black tracking-tight mb-1">{currentData.role}</h3>
-                        <p className="text-indigo-100/90 font-medium">{currentData.company}</p>
+                <div key="results" className="space-y-6">
+                  {/* Active Analysis Target Command Center */}
+                  <div className="space-y-4">
+                    <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-200">
+                          Evaluated Target Role
+                        </span>
+                        <h2 className="text-2xl font-black tracking-tight mt-0.5">
+                          {currentData.role}
+                        </h2>
+                        <p className="text-xs text-indigo-100 mt-0.5">{currentData.company}</p>
                       </div>
-                      <div className="flex flex-col items-center sm:items-end">
-                        <div className="bg-white/15 backdrop-blur-md px-6 py-3 rounded-3xl ring-1 ring-white/30 text-center">
-                          <p className="text-indigo-50/80 text-[10px] font-bold uppercase tracking-widest mb-0.5">Readiness Score</p>
-                          <p className="text-4xl font-black tabular-nums">{currentData.readinessScore}%</p>
+
+                      <div className="flex items-center gap-3 self-start sm:self-auto">
+                        <div className="px-4 py-2.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
+                          <span className="text-[10px] uppercase font-bold text-indigo-100 block">
+                            Readiness Score
+                          </span>
+                          <span className="text-2xl font-black">{currentData.readinessScore}%</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Next Best Action & Readiness Triad */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5">
+                      <div className="md:col-span-6 p-4 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-800/40 flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                          <Target className="w-4 h-4" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                              Next Best Action
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => setActiveTab('roadmap')}
+                              className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-0.5"
+                            >
+                              Jump to Path &rarr;
+                            </button>
+                          </div>
+                          <p className="text-xs font-bold text-slate-900 dark:text-white truncate mt-0.5">
+                            {currentData.roadmap?.find(s => s.status !== 'completed')?.title || currentData.roadmap?.[0]?.title || 'Master Prerequisite Modules'}
+                          </p>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                            Closes high-priority prerequisite bottleneck to boost readiness toward 100%.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="md:col-span-6 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-around gap-2 text-center">
+                        <div>
+                          <span className="text-base font-black text-emerald-600 dark:text-emerald-400 block">
+                            {currentData.skills?.filter(s => s.yourLevel >= s.requiredLevel).length || 0}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Strong Skills
+                          </span>
+                        </div>
+                        <div className="h-7 w-px bg-slate-200 dark:bg-slate-800" />
+                        <div>
+                          <span className="text-base font-black text-amber-600 dark:text-amber-400 block">
+                            {currentData.skills?.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length || 0}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Needs Work
+                          </span>
+                        </div>
+                        <div className="h-7 w-px bg-slate-200 dark:bg-slate-800" />
+                        <div>
+                          <span className="text-base font-black text-rose-600 dark:text-rose-400 block">
+                            {currentData.skills?.filter(s => s.yourLevel === 0).length || 0}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            Critical Gaps
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="grid gap-8">
-                    {/* Progress Dashboard */}
-                    {(() => {
-                      const roadmap = currentData.roadmap || [];
-                      const completedCount = roadmap.filter(s => s.status === 'completed' || s.status === 'skipped').length;
-                      const progress = roadmap.length > 0 ? (completedCount / roadmap.length) * 100 : 0;
-
-                      const remainingSteps = roadmap.filter(s => s.status === 'todo');
-                      const totalWeeks = remainingSteps.reduce((acc, s) => {
-                        const val = parseInt(s.duration || 0);
-                        return acc + (isNaN(val) ? 0 : val);
-                      }, 0);
-                      const displayTime = totalWeeks > 0 ? `${totalWeeks} Weeks` : 'Ready!';
-
-                      const skills = currentData.skills || [];
-                      const confidence = Math.round(
-                        (skills.reduce((acc, s) => acc + (s.yourLevel / s.requiredLevel), 0) / (skills.length || 1)) * 100
-                      );
-
+                  {/* Section Navigation Tabs */}
+                  <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto">
+                    {[
+                      { id: 'skills', label: '1. Skill Matrix & DNA', icon: Layers },
+                      { id: 'roadmap', label: '2. 5-Phase Roadmap', icon: Compass },
+                      { id: 'studio', label: '3. Interview & Resume Studio', icon: Cpu },
+                    ].map((tab) => {
+                      const Icon = tab.icon;
                       return (
-                        <GapSummary
-                          readinessScore={currentData.readinessScore}
-                          matchPercentage={currentData.matchPercentage}
-                          missingSkills={currentData.missingSkills}
-                          weakSkills={currentData.weakSkills}
-                          totalTime={displayTime}
-                          roadmapProgress={progress}
-                          skillConfidence={confidence}
-                          marketTrends={currentData.marketTrends}
-                          learningStyle={learningStyle}
-                          onStyleChange={toggleLearningStyle}
-                        />
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                            activeTab === tab.id
+                              ? 'bg-indigo-600 text-white shadow-sm'
+                              : 'bg-white dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
+                          }`}
+                        >
+                          <Icon className="w-3.5 h-3.5" />
+                          <span>{tab.label}</span>
+                        </button>
                       );
-                    })()}
+                    })}
+                  </div>
 
-                    <SkillDNA userSkills={currentData.skills} />
-                    <SkillGraph skills={currentData.skills} graphData={currentData.skillGraph} />
-                    <SkillTable skills={currentData.skills} />
+                  {/* Tab 1: Skills & DNA */}
+                  {activeTab === 'skills' && (
+                    <div className="space-y-6">
+                      <GapSummary
+                        readinessScore={currentData.readinessScore}
+                        matchPercentage={currentData.matchPercentage}
+                        missingSkills={currentData.missingSkills}
+                        weakSkills={currentData.weakSkills}
+                        totalTime={`${(currentData.roadmap?.length || 3) * 2} Weeks`}
+                        roadmapProgress={
+                          ((currentData.roadmap?.filter(s => s.status === 'completed').length || 0) /
+                            (currentData.roadmap?.length || 1)) *
+                          100
+                        }
+                        skillConfidence={78}
+                        marketTrends={{ demand: 'High', growth: '+22%', insight: 'Strong demand for full stack engineering.' }}
+                        learningStyle={learningStyle}
+                        onStyleChange={toggleLearningStyle}
+                      />
 
-                    {/* Career Accelerator Tools */}
-                    <div className="grid gap-8 lg:grid-cols-1">
+                      <SkillDNA userSkills={currentData.skills} />
+                      <SkillGraph skills={currentData.skills} graphData={currentData.skillGraph} />
+                      <SkillTable skills={currentData.skills} />
+                    </div>
+                  )}
+
+                  {/* Tab 2: Roadmap & Reasoning */}
+                  {activeTab === 'roadmap' && (
+                    <div className="space-y-6">
+                      <Roadmap
+                        roadmap={currentData.roadmap}
+                        onUpdate={handleRoadmapUpdate}
+                        onAssessment={handleAssessment}
+                        learningStyle={learningStyle}
+                      />
+                      <ReasoningPanel reasoning={currentData.reasoning} />
+                    </div>
+                  )}
+
+                  {/* Tab 3: Interview Prep & Resume Optimizer */}
+                  {activeTab === 'studio' && (
+                    <div className="space-y-6">
                       <InterviewPrep
                         skills={currentData.skills}
                         role={currentData.targetJob || currentData.role}
@@ -483,30 +452,29 @@ export default function App() {
                         missingSkills={currentData.missingSkillsList}
                         currentSkills={currentData.currentSkills}
                         targetRole={currentData.role}
-                        seniority="Mid" // Or currentData.seniority
+                        seniority="Mid"
                       />
                     </div>
-                    <Roadmap
-                      roadmap={currentData.roadmap}
-                      onUpdate={handleRoadmapUpdate}
-                      onAssessment={handleAssessment}
-                      learningStyle={learningStyle}
-                    />
-                    <ReasoningPanel reasoning={currentData.reasoning} />
-                  </div>
-                </motion.div>
+                  )}
+                </div>
               ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex flex-col items-center justify-center p-12 text-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 h-[400px]"
+                /* Empty state prompt */
+                <div
+                  key="empty"
+                  className="p-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 space-y-4"
                 >
-                  <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl mb-4">
-                    <Sparkles className="w-8 h-8 text-indigo-500" />
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 mx-auto flex items-center justify-center">
+                    <Sparkles className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Ready to Start?</h3>
-                  <p className="text-slate-500 dark:text-slate-400">Select a demo profile or upload your documents to begin the analysis.</p>
-                </motion.div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                      Start Your Skill Gap Analysis
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
+                      Upload your resume and target role description or load the preset demo profile on the left to explore the interactive career engine.
+                    </p>
+                  </div>
+                </div>
               )}
             </AnimatePresence>
           </div>
@@ -514,51 +482,50 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200/60 dark:border-slate-800/60 mt-24 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md transition-colors">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-slate-900 dark:bg-indigo-600 rounded-lg">
-                <Brain className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <span className="font-bold text-slate-900 dark:text-white">AI Onboarding Engine</span>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Empowering Careers with AI</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-8 text-sm font-semibold text-slate-500 dark:text-slate-400">
-              <a href="#" className="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">Documentation</a>
-            </div>
-
-            <div className="flex items-center gap-4">
-              {[Github, Twitter, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="p-2.5 bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 rounded-full hover:bg-indigo-500 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-all duration-300">
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div>
+      <footer className="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#080c14] py-6 text-xs text-slate-500 dark:text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-300">
+            <Brain className="w-4 h-4 text-indigo-500" />
+            <span>CodeForge AI &bull; ArtPark Hackathon</span>
           </div>
-          <div className="mt-12 pt-8 border-t border-slate-200/60 dark:border-slate-800/60 text-center">
-            <p className="text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-widest">© 2024 ArtPark CodeForge Hackathon • Built with Passion</p>
-          </div>
+          <span>Engineered for next-generation AI career acceleration</span>
         </div>
       </footer>
 
-      {/* AI Mentor Chatbot */}
+      {/* AI Mentor Floating Drawer */}
       <MentorChat userData={currentData} />
     </div>
   );
+}
+
+export default function App() {
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage darkMode={darkMode} toggleDark={toggleDarkMode} />} />
-        <Route path="/dashboard" element={appLayout} />
-        <Route path="/upload" element={appLayout} />
-        <Route path="*" element={appLayout} />
+        <Route path="/dashboard" element={<DashboardWorkspace darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
+        <Route path="/upload" element={<DashboardWorkspace darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
+        <Route path="*" element={<DashboardWorkspace darkMode={darkMode} toggleDarkMode={toggleDarkMode} />} />
       </Routes>
     </BrowserRouter>
   );

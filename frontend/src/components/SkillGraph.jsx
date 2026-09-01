@@ -521,7 +521,7 @@ const SkillGraph = ({ skills, graphData }) => {
 
   return (
     <motion.div
-      className={`rounded-3xl p-6 mb-8 overflow-hidden relative flex flex-col hover-levitate sg-theme-${graphTheme}`}
+      className={`rounded-2xl p-6 mb-8 overflow-hidden relative flex flex-col hover-levitate sg-theme-${graphTheme}`}
       animate={{
         background: t.containerBg,
         borderColor: t.containerBorder,
@@ -531,7 +531,7 @@ const SkillGraph = ({ skills, graphData }) => {
         background: t.containerBg,
         border: `1px solid ${t.containerBorder}`,
         boxShadow: t.containerShadow,
-        height: '750px',
+        height: '700px',
       }}
     >
       {/* ── Header ── */}

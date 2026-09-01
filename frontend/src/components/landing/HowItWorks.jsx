@@ -1,52 +1,134 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { FileText, Cpu, Network, Route, Award, ArrowRight } from 'lucide-react';
 
 export default function HowItWorks() {
   const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.08 } }
   };
   const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    hidden: { opacity: 0, y: 16 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.3 } }
   };
 
+  const phases = [
+    {
+      step: '01',
+      title: 'Entity & Skill Extraction',
+      desc: 'High-precision parsing of resume PDFs and target job descriptions to extract proficiencies, experience depth, and tech requirements.',
+      icon: FileText,
+      tag: 'Phase 1 · NLP Extraction'
+    },
+    {
+      step: '02',
+      title: 'Vector Cosine Similarity',
+      desc: 'Normalizes synonyms and semantic overlaps (e.g., Deep Learning ≈ Neural Networks) to accurately quantify skill readiness.',
+      icon: Cpu,
+      tag: 'Phase 2 · Embedding Match'
+    },
+    {
+      step: '03',
+      title: 'DAG Dependency Graph',
+      desc: 'Builds a Directed Acyclic Graph across 84 catalog courses and 14 technical domains to map prerequisite relations.',
+      icon: Network,
+      tag: 'Phase 3 · Graph Theory'
+    },
+    {
+      step: '04',
+      title: 'Kahn\'s Topological Sort',
+      desc: 'Deterministic algorithm ensures zero circular loops and sequences foundational skills before advanced architectural concepts.',
+      icon: Route,
+      tag: 'Phase 4 · Topological Sort'
+    },
+    {
+      step: '05',
+      title: 'Adaptive Studio & Roadmap',
+      desc: 'Synthesizes interactive 5-phase roadmaps, AI mock interview questions, and surgical STAR resume bullet points.',
+      icon: Award,
+      tag: 'Phase 5 · Career Readiness'
+    }
+  ];
+
   return (
-    <section className="py-24 max-w-7xl mx-auto px-6" id="how-it-works">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} className="text-center mb-16">
-        <div className="flex items-center justify-center gap-2 text-indigo-500 font-bold uppercase tracking-widest text-xs mb-4">
-          <span>&mdash;</span> How It Works
+    <section className="py-20 max-w-6xl mx-auto px-6" id="how-it-works">
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        variants={item}
+        className="text-center mb-12"
+      >
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[#252A31] bg-[#111418] text-[#A7AFBA] text-xs font-semibold uppercase tracking-wider mb-3">
+          <span>Algorithmic Architecture</span>
         </div>
-        <h2 className="text-3xl md:text-5xl font-black mb-6" style={{ fontFamily: "'Syne', sans-serif" }}>
-          From Resume to Roadmap in Under 5 Minutes
+        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#F5F7FA] mb-3">
+          The 5-Phase Topological AI Engine
         </h2>
+        <p className="text-xs sm:text-sm text-[#A7AFBA] max-w-xl mx-auto">
+          Combining deterministic graph theory with generative multi-LLM reasoning to create verified, prerequisite-backed career roadmaps.
+        </p>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="relative flex flex-col lg:flex-row gap-8 mb-16 z-10">
-        <div className="hidden lg:block absolute top-7 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-500 via-emerald-500 to-violet-500 opacity-30 -z-10"></div>
+      {/* 5-Phase Grid */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3.5 mb-8"
+      >
+        {phases.map((p) => {
+          const Icon = p.icon;
+          return (
+            <motion.div
+              key={p.step}
+              variants={item}
+              className="p-5 rounded-2xl bg-[#111418] border border-[#252A31] hover:border-[#323842] transition-colors flex flex-col justify-between space-y-3"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xl font-bold text-[#6366F1]">{p.step}</span>
+                  <div className="w-8 h-8 rounded-lg bg-[#171A1F] border border-[#252A31] flex items-center justify-center text-[#6366F1]">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                </div>
+                <h3 className="text-xs font-bold text-[#F5F7FA] mb-1.5 leading-snug">
+                  {p.title}
+                </h3>
+                <p className="text-[11px] text-[#A7AFBA] leading-relaxed">
+                  {p.desc}
+                </p>
+              </div>
+
+              <span className="text-[9px] font-semibold text-[#737C88] uppercase tracking-wider block pt-2 border-t border-[#252A31]">
+                {p.tag}
+              </span>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      {/* Execution Pipeline Banner */}
+      <motion.div
+        variants={item}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="p-4 rounded-xl bg-[#111418] border border-[#252A31] flex flex-wrap items-center justify-between gap-2.5 text-xs"
+      >
         {[
-          { n: '01', t: 'Upload Resume', d: 'Drag and drop your PDF, TXT, or DOC. The backend parser (pdf-parse) extracts every skill instantly.' },
-          { n: '02', t: 'Select Target Role', d: 'Choose from presets (Frontend Dev, Backend Dev, DevOps) or type any custom role.' },
-          { n: '03', t: 'AI Gap Analysis', d: 'Multi-provider AI (Gemini → GPT → Groq fallback) analyzes your profile against the role requirements in real-time.' },
-          { n: '04', t: 'Get Your Full Plan', d: 'Receive: Skill DNA Profile, AI Learning Roadmap (React Flow graph), Career Readiness Score, and Interview Simulation access.' }
-        ].map((step, i) => (
-          <motion.div key={i} variants={item} className="flex-1">
-            <div className="w-14 h-14 rounded-full bg-[#07080f] border-2 border-indigo-500 flex items-center justify-center font-black text-xl mb-4 shadow-[0_0_15px_rgba(99,102,241,0.3)] shadow-indigo-500/30" style={{ fontFamily: "'Syne', sans-serif" }}>
-              {step.n}
-            </div>
-            <h3 className="text-2xl font-black mb-3 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>{step.t}</h3>
-            <p className="text-sm text-slate-400 leading-relaxed">{step.d}</p>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      <motion.div variants={item} initial="hidden" whileInView="show" viewport={{ once: true }} className="p-8 rounded-full bg-slate-900/40 backdrop-blur-md border border-white/10 flex flex-wrap lg:flex-nowrap items-center justify-between gap-4">
-        {[['Resume Upload', 'indigo'], ['PDF Parse Extract', 'emerald'], ['AI Analysis Engine', 'amber'], ['Roadmap Dashboard', 'violet']].map((node, i, arr) => (
-          <React.Fragment key={i}>
-            <div className={`px-4 py-2 rounded-full border border-${node[1]}-500/30 bg-${node[1]}-500/10 text-${node[1]}-400 font-bold text-xs uppercase tracking-widest whitespace-nowrap`}>
-              {node[0]}
-            </div>
-            {i < arr.length - 1 && <div className="text-slate-600">&rarr;</div>}
+          '1. Document Ingestion',
+          '2. Vector Embeddings',
+          '3. DAG Graph',
+          '4. Kahn Ordering',
+          '5. Roadmap & Studio'
+        ].map((node, i, arr) => (
+          <React.Fragment key={node}>
+            <span className="font-semibold text-[#F5F7FA] px-2.5 py-1 bg-[#171A1F] rounded-lg border border-[#252A31]">
+              {node}
+            </span>
+            {i < arr.length - 1 && <ArrowRight className="w-3.5 h-3.5 text-[#737C88] hidden lg:block" />}
           </React.Fragment>
         ))}
       </motion.div>

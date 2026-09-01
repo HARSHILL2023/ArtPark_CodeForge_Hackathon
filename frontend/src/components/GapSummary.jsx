@@ -1,5 +1,6 @@
+import React from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Target, Shield, XCircle, Clock, Sparkles } from 'lucide-react';
+import { TrendingUp, Target, Shield, CircleAlert, Clock, Award, Wrench, Layers, BookOpen } from 'lucide-react';
 import CircularProgress from './CircularProgress';
 
 export default function GapSummary({
@@ -10,7 +11,6 @@ export default function GapSummary({
   totalTime,
   roadmapProgress,
   skillConfidence,
-  marketTrends,
   learningStyle,
   onStyleChange
 }) {
@@ -18,188 +18,148 @@ export default function GapSummary({
     {
       label: 'Match Rate',
       value: `${matchPercentage}%`,
+      sublabel: 'Requirements Met',
       icon: TrendingUp,
-      color: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-      trend: matchPercentage >= 70 ? 'up' : 'down',
+      iconColor: 'text-[#6366F1]',
+      badgeBg: 'bg-[#6366F1]/10 text-[#6366F1] border-[#6366F1]/20',
     },
     {
       label: 'Skill Confidence',
       value: `${skillConfidence}%`,
+      sublabel: 'Proficiency Depth',
       icon: Shield,
-      color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
-      trend: skillConfidence >= 80 ? 'up' : 'down',
+      iconColor: 'text-[#10B981]',
+      badgeBg: 'bg-[#10B981]/10 text-[#10B981] border-[#10B981]/20',
     },
     {
       label: 'Critical Gaps',
       value: missingSkills,
-      icon: XCircle,
-      color: 'bg-rose-100 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400',
-      trend: missingSkills <= 1 ? 'up' : 'down',
+      sublabel: 'Skills to Acquire',
+      icon: CircleAlert,
+      iconColor: 'text-[#EF4444]',
+      badgeBg: 'bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/20',
     },
     {
       label: 'Learning Velocity',
-      value: `${weakSkills <= 2 ? 'High' : 'Moderate'}`,
-      icon: TrendingUp,
-      color: 'bg-amber-100 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-      trend: 'up',
+      value: `${weakSkills <= 2 ? 'Accelerated' : 'Standard'}`,
+      sublabel: `${weakSkills} Skills Need Upgrade`,
+      icon: Award,
+      iconColor: 'text-[#F59E0B]',
+      badgeBg: 'bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20',
     },
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden shadow-indigo-100/20 dark:shadow-none hover-levitate"
-    >
+    <div className="bg-[#FFFFFF] dark:bg-[#111418] border border-[#E2E5E9] dark:border-[#252A31] rounded-2xl shadow-xs overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-900 px-8 py-6 border-b border-slate-200/60 dark:border-slate-800/60">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-emerald-100/80 dark:bg-emerald-500/10 rounded-xl">
-              <Target className="w-5 h-5 text-emerald-600 dark:text-emerald-400 icon-spin-float" />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Job Readiness Dashboard</h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Real-time progress and predictive analysis</p>
-            </div>
+      <div className="p-5 border-b border-[#E2E5E9] dark:border-[#252A31] bg-[#F7F8FA] dark:bg-[#171A1F] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-[#10B981]/10 border border-[#10B981]/20 flex items-center justify-center text-[#10B981]">
+            <Target className="w-4 h-4" />
           </div>
-          <div className="flex flex-col items-end">
-            <div className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-500/25">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm font-bold tracking-tight">ETA: {totalTime}</span>
-            </div>
-            <p className="text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest mt-1.5">Predicted Completion</p>
+          <div>
+            <h2 className="text-sm font-bold text-[#16181D] dark:text-[#F5F7FA]">Job Readiness Intelligence</h2>
+            <p className="text-[11px] text-[#5F6672] dark:text-[#A7AFBA]">Real-time candidate profile fit analysis</p>
           </div>
+        </div>
+
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#111418] dark:bg-[#171A1F] border border-[#252A31] text-xs font-semibold text-[#A7AFBA] self-start sm:self-auto">
+          <Clock className="w-3.5 h-3.5 text-[#6366F1]" />
+          <span>Est. Completion: {totalTime}</span>
         </div>
       </div>
 
-      <div className="p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Circular Progress */}
-          <div className="flex flex-col items-center justify-center p-6 bg-slate-50 dark:bg-slate-800/30 rounded-3xl border border-slate-100 dark:border-slate-800/50">
-            <CircularProgress score={readinessScore} />
-            <p className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mt-6">Match Readiness</p>
+      <div className="p-5 space-y-5">
+        {/* Main 2-Column Gauge + Stat Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
+          {/* Circular Progress Gauge */}
+          <div className="lg:col-span-4 p-5 bg-[#F7F8FA] dark:bg-[#171A1F] rounded-xl border border-[#E2E5E9] dark:border-[#252A31] flex flex-col items-center justify-center">
+            <CircularProgress score={readinessScore} size={140} strokeWidth={9} />
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#5F6672] dark:text-[#737C88] mt-3">
+              Overall Match Score
+            </span>
           </div>
 
-          {/* Stat Cards */}
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
-                className="flex flex-col gap-3 p-4 bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 hover:border-indigo-500/30 transition-all shadow-sm"
-              >
-                <div className={`w-10 h-10 flex items-center justify-center rounded-xl ${stat.color}`}>
-                  <stat.icon className="w-5 h-5" />
+          {/* 4 Stat Cards */}
+          <div className="lg:col-span-8 grid grid-cols-2 gap-3">
+            {stats.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={stat.label}
+                  className="p-3.5 rounded-xl bg-[#F7F8FA] dark:bg-[#171A1F] border border-[#E2E5E9] dark:border-[#252A31]"
+                >
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-medium text-[#5F6672] dark:text-[#A7AFBA]">{stat.label}</span>
+                    <div className={`p-1 rounded-md border ${stat.badgeBg}`}>
+                      <Icon className="w-3 h-3" />
+                    </div>
+                  </div>
+                  <div className="text-xl font-bold text-[#16181D] dark:text-[#F5F7FA] tracking-tight">
+                    {stat.value}
+                  </div>
+                  <div className="text-[10px] text-[#5F6672] dark:text-[#737C88] mt-0.5">
+                    {stat.sublabel}
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{stat.label}</p>
-                  <p className="text-xl font-black text-slate-900 dark:text-white mt-0.5">{stat.value}</p>
-                </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* New Sections: Market Intelligence and Gamification */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
-          {/* Market Intelligence */}
-          <div className="p-6 bg-slate-50 dark:bg-slate-800/30 rounded-3xl border border-slate-100 dark:border-slate-800 group hover:border-indigo-500/30 transition-all">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-indigo-100 dark:bg-indigo-500/10 rounded-xl">
-                <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Market Intelligence</span>
-            </div>
-            <div>
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-2xl font-black text-slate-900 dark:text-white">{marketTrends?.demand || 'High'}</span>
-                <span className="text-xs font-bold text-emerald-500">{marketTrends?.growth || '+18%'}</span>
-              </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">{marketTrends?.insight || 'Market demand for this stack is growing rapidly in enterprise sectors.'}</p>
-            </div>
+        {/* Learning Personalization Mode */}
+        <div className="p-4 rounded-xl bg-[#F7F8FA] dark:bg-[#171A1F] border border-[#E2E5E9] dark:border-[#252A31] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span className="text-xs font-bold text-[#16181D] dark:text-[#F5F7FA] block">
+              Personalized Learning Modality
+            </span>
+            <p className="text-[11px] text-[#5F6672] dark:text-[#A7AFBA] mt-0.5">
+              Adapts module study guides and recommended exercises to your preferred style.
+            </p>
           </div>
 
-          {/* Gamification + Learning Style */}
-          <div className="p-6 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-3xl shadow-xl shadow-indigo-500/20 text-white relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-10 -rotate-12 transition-transform group-hover:scale-110">
-              <Sparkles className="w-16 h-16" />
-            </div>
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-4">
-                <div className="px-2 py-0.5 bg-white/20 backdrop-blur-md rounded-lg text-[8px] font-black uppercase tracking-widest border border-white/20">Learning Personalization</div>
-                <div className="text-[8px] font-black uppercase opacity-60">Architect • LVL 14</div>
-              </div>
-
-              <div className="flex items-center gap-2 mb-4">
-                {[
-                  { id: 'Visual', label: '🎥 Visual' },
-                  { id: 'Practical', label: '🛠️ Practical' },
-                  { id: 'Theoretical', label: '📚 Theory' }
-                ].map(style => (
-                  <button
-                    key={style.id}
-                    onClick={() => onStyleChange(style.id)}
-                    className={`px-3 py-1.5 rounded-xl text-[10px] font-black transition-all border 
-                       ${learningStyle === style.id ? 'bg-white text-indigo-600 border-white shadow-lg' : 'bg-indigo-500/30 text-white/70 border-white/10 hover:bg-indigo-400/50'}`}
-                  >
-                    {style.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="text-[10px] font-black uppercase opacity-60">{learningStyle} Mode Active</div>
-                <div className="text-[10px] font-black uppercase opacity-60">75% Next Lvl</div>
-              </div>
-              <div className="h-1.5 bg-white/20 rounded-full mt-2 overflow-hidden border border-white/10">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: '75%' }}
-                  className="h-full bg-white shadow-[0_0_10px_white]"
-                />
-              </div>
-            </div>
+          <div className="flex items-center gap-1.5">
+            {[
+              { id: 'Practical', label: 'Hands-on', icon: Wrench },
+              { id: 'Visual', label: 'Visual', icon: Layers },
+              { id: 'Theoretical', label: 'In-Depth', icon: BookOpen }
+            ].map(style => {
+              const StyleIcon = style.icon;
+              return (
+                <button
+                  key={style.id}
+                  type="button"
+                  onClick={() => onStyleChange(style.id)}
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 border ${
+                    learningStyle === style.id
+                      ? 'bg-[#6366F1] text-white border-[#6366F1]'
+                      : 'bg-white dark:bg-[#111418] text-[#5F6672] dark:text-[#A7AFBA] border-[#E2E5E9] dark:border-[#252A31] hover:text-[#16181D] dark:hover:text-white'
+                  }`}
+                >
+                  <StyleIcon className="w-3 h-3" />
+                  <span>{style.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Action Badges for Gamification */}
-        <div className="flex flex-wrap gap-3 mt-8">
-          {['Early Adopter', 'Quiz Master', 'Fast Learner'].map((badge) => (
-            <div key={badge} className="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center gap-2 group hover:bg-white dark:hover:bg-slate-700 transition-all cursor-default">
-              <div className="p-1 bg-amber-100 dark:bg-amber-500/20 rounded-md">
-                <Target className="w-3 h-3 text-amber-600 dark:text-amber-400" />
-              </div>
-              <span className="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-tighter">{badge}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Learning Path Progress */}
-        <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <span className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Overall Path Progress</span>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Status of your Adaptive Roadmap milestones</p>
-            </div>
-            <div className="text-right">
-              <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{Math.round(roadmapProgress)}%</span>
-              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Completed</p>
-            </div>
+        {/* Roadmap Progress Bar */}
+        <div>
+          <div className="flex items-center justify-between text-xs font-medium mb-1.5">
+            <span className="text-[#5F6672] dark:text-[#A7AFBA]">Curriculum Milestone Progress</span>
+            <span className="text-[#6366F1] font-bold">{Math.round(roadmapProgress)}% Completed</span>
           </div>
-          <div className="h-4 bg-slate-100 dark:bg-slate-800 rounded-2xl p-1 overflow-hidden border border-slate-200 dark:border-slate-700">
+          <div className="w-full h-2 bg-[#E2E5E9] dark:bg-[#252A31] rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${roadmapProgress}%` }}
-              transition={{ duration: 1.5, ease: 'circOut' }}
-              className="h-full rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-500 shadow-[0_0_15px_rgba(79,70,229,0.3)]"
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="h-full bg-[#6366F1] rounded-full"
             />
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

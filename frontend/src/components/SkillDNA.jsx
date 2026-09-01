@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Fingerprint, Terminal, Clock, Target, ChevronRight, BarChart3, TrendingUp, Search } from 'lucide-react';
+import { Fingerprint, Terminal, Clock, Target, ChevronRight, BarChart3, TrendingUp, Search, Layers } from 'lucide-react';
 import { careerPaths } from '../data/mockData';
 
 const SkillDNA = ({ userSkills }) => {
@@ -9,7 +9,7 @@ const SkillDNA = ({ userSkills }) => {
 
   // Panel A data calculation
   const distribution = useMemo(() => {
-    if (!userSkills) return { strong: 0, moderate: 0, weak: 0 };
+    if (!userSkills || userSkills.length === 0) return { strong: 0, moderate: 0, weak: 0, count: 0 };
     const total = userSkills.length;
     const strong = userSkills.filter(s => s.yourLevel >= s.requiredLevel).length;
     const moderate = userSkills.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length;
@@ -18,7 +18,8 @@ const SkillDNA = ({ userSkills }) => {
     return {
       strong: Math.round((strong / total) * 100),
       moderate: Math.round((moderate / total) * 100),
-      weak: Math.round((weak / total) * 100)
+      weak: Math.round((weak / total) * 100),
+      count: total
     };
   }, [userSkills]);
 
@@ -32,17 +33,17 @@ const SkillDNA = ({ userSkills }) => {
     const weak = role.requiredSkills.filter(rs => skillMap[rs] && skillMap[rs].yourLevel > 0 && skillMap[rs].yourLevel < skillMap[rs].requiredLevel);
     const totalRequired = role.requiredSkills.length;
     
-    // Readiness: Mastered count is 1, Weak is 0.5, Missing is 0
     const masteredCount = role.requiredSkills.filter(rs => skillMap[rs] && skillMap[rs].yourLevel >= skillMap[rs].requiredLevel).length;
     const readiness = Math.round(((masteredCount + (weak.length * 0.5)) / totalRequired) * 100);
     
     const timeInWeeks = missing.length * 2 + weak.length * 1;
-    const probability = Math.round(readiness * 0.9 + 5); // Simple heuristic
+    const probability = Math.min(99, Math.round(readiness * 0.9 + 5));
 
     return {
       readiness,
       timeInWeeks,
       missing,
+      weak,
       probability,
       name: role.name
     };
@@ -51,189 +52,181 @@ const SkillDNA = ({ userSkills }) => {
   const handleRoleChange = (e) => {
     setIsSimulating(true);
     setSelectedRole(e.target.value);
-    setTimeout(() => setIsSimulating(false), 600);
+    setTimeout(() => setIsSimulating(false), 300);
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Panel A: Skill DNA Profile */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm dark:shadow-xl border border-slate-200/60 dark:border-slate-700/40 p-8 overflow-hidden hover-levitate"
-      >
-        <div className="flex items-center gap-3 mb-8">
-          <div className="p-2 bg-indigo-50 dark:bg-indigo-500/20 rounded-lg">
-            <Fingerprint className="w-5 h-5 text-indigo-600 dark:text-indigo-400 icon-spin-float" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Skill DNA Profile</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Distribution analysis based on current proficiency</p>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
+        <div className="p-6 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+              <Fingerprint className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">Skill DNA Vector Profile</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Proficiency depth across {distribution.count} evaluated skills</p>
+            </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md">Mastered Skills</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-white">{distribution.strong}%</span>
+        <div className="p-6 space-y-5">
+          {/* Mastered */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                Mastered Skills (Target Level Met)
+              </span>
+              <span className="font-bold text-slate-900 dark:text-white">{distribution.strong}%</span>
             </div>
             <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${distribution.strong}%` }}
-                className="h-full bg-emerald-500"
+                transition={{ duration: 0.6 }}
+                className="h-full bg-emerald-500 rounded-full"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-1 rounded-md">Emerging Skills</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-white">{distribution.moderate}%</span>
+          {/* Emerging */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
+                Emerging Skills (Proficiency Gap)
+              </span>
+              <span className="font-bold text-slate-900 dark:text-white">{distribution.moderate}%</span>
             </div>
             <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${distribution.moderate}%` }}
-                className="h-full bg-amber-500"
+                transition={{ duration: 0.6 }}
+                className="h-full bg-amber-500 rounded-full"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 px-2 py-1 rounded-md">Growth Opportunity</span>
-              <span className="text-sm font-bold text-slate-900 dark:text-white">{distribution.weak}%</span>
+          {/* Growth */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between items-center text-xs">
+              <span className="font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
+                Growth Opportunities (Missing Requirements)
+              </span>
+              <span className="font-bold text-slate-900 dark:text-white">{distribution.weak}%</span>
             </div>
             <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${distribution.weak}%` }}
-                className="h-full bg-rose-500"
+                transition={{ duration: 0.6 }}
+                className="h-full bg-rose-500 rounded-full"
               />
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-800 flex items-center gap-3 mt-4">
+            <BarChart3 className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-normal">
+              Candidate shows {distribution.strong >= 50 ? 'solid core strength' : 'strong growth velocity'} with high leverage in modular skill acquisition.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Panel B: Career Simulation Engine */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col justify-between">
+        <div className="p-6 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-violet-50 dark:bg-violet-500/10 border border-violet-100 dark:border-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400">
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">Role Trajectory Simulator</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Simulate alternate domain readiness</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/50 flex items-center gap-4">
-          <div className="p-2 bg-white dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600/50 shadow-sm dark:shadow-none">
-            <BarChart3 className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-          </div>
-          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Your profile shows a <span className="font-bold text-emerald-600 dark:text-emerald-400">{distribution.strong < 40 ? 'growing' : 'strong'}</span> technical foundation 
-            with significant growth potential in emerging areas.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Panel B: Career Simulation Engine */}
-      <motion.div
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm dark:shadow-xl border border-slate-200/60 dark:border-transparent p-8 text-slate-900 dark:text-white relative overflow-hidden hover-levitate"
-      >
-        <div className="absolute top-0 right-0 p-8 opacity-5 dark:opacity-10">
-          <TrendingUp className="w-32 h-32" />
-        </div>
-
-        <div className="relative flex items-center gap-3 mb-8">
-          <div className="p-2 bg-indigo-50 dark:bg-indigo-500/20 rounded-lg">
-            <Terminal className="w-5 h-5 text-indigo-600 dark:text-indigo-400 icon-spin-float" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Career Simulator</h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Predicting your trajectory for different roles</p>
-          </div>
-        </div>
-
-        <div className="relative mb-8">
-          <select
-            value={selectedRole}
-            onChange={handleRoleChange}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none cursor-pointer"
-          >
-            {careerPaths.map(path => (
-              <option key={path.id} value={path.id}>{path.name}</option>
-            ))}
-          </select>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-            <ChevronRight className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-          </div>
-        </div>
-
-        <AnimatePresence mode="wait">
-          {isSimulating ? (
-            <motion.div
-              key="simulating"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-4 animate-pulse"
+        <div className="p-6 space-y-4">
+          <div className="relative">
+            <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+              Select Target Role Benchmark
+            </label>
+            <select
+              value={selectedRole}
+              onChange={handleRoleChange}
+              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-3.5 py-2.5 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500/30 cursor-pointer"
             >
-              <div className="h-20 bg-slate-100 dark:bg-slate-800 rounded-xl" />
-              <div className="grid grid-cols-2 gap-4">
-                <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-xl" />
-                <div className="h-16 bg-slate-100 dark:bg-slate-800 rounded-xl" />
-              </div>
-            </motion.div>
-          ) : simulation && (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
-            >
-              <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 rounded-xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-indigo-600 dark:text-indigo-300">Readiness for {simulation.name}</span>
-                  <span className="text-2xl font-black text-indigo-600 dark:text-indigo-400">{simulation.readiness}%</span>
-                </div>
-                <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${simulation.readiness}%` }}
-                    className="h-full bg-indigo-500"
-                  />
-                </div>
-              </div>
+              {careerPaths.map(path => (
+                <option key={path.id} value={path.id}>{path.name}</option>
+              ))}
+            </select>
+          </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/50">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400" />
-                    <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Estimated Time</span>
-                  </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">{simulation.timeInWeeks} Weeks</p>
+          <AnimatePresence mode="wait">
+            {!isSimulating && simulation && (
+              <motion.div
+                key={selectedRole}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-3 pt-1"
+              >
+                {/* Readiness Result */}
+                <div className="p-3.5 bg-indigo-50/60 dark:bg-indigo-950/20 border border-indigo-100 dark:border-indigo-800/40 rounded-xl flex items-center justify-between">
+                  <span className="text-xs font-semibold text-indigo-900 dark:text-indigo-200">
+                    Fit for {simulation.name}
+                  </span>
+                  <span className="text-lg font-black text-indigo-600 dark:text-indigo-400">
+                    {simulation.readiness}%
+                  </span>
                 </div>
-                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700/50">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Target className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-                    <span className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Success Fate</span>
-                  </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">{simulation.probability}% Probability</p>
-                </div>
-              </div>
 
-              {simulation.missing.length > 0 && (
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase flex items-center gap-2">
-                    <Search className="w-4 h-4" />
-                    Critical Skill Gaps to Address
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {simulation.missing.map(skill => (
-                      <span key={skill} className="text-xs font-medium px-2 py-1 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-300 rounded-md border border-rose-200 dark:border-rose-500/20">
-                        {skill}
-                      </span>
-                    ))}
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-slate-400 text-[10px] uppercase tracking-wider font-bold mb-0.5">
+                      <Clock className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Estimated Time</span>
+                    </div>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{simulation.timeInWeeks} Weeks</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-slate-400 text-[10px] uppercase tracking-wider font-bold mb-0.5">
+                      <Target className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>Pass Probability</span>
+                    </div>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{simulation.probability}%</p>
                   </div>
                 </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+
+                {simulation.missing.length > 0 && (
+                  <div className="pt-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+                      Required Skills to Close
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {simulation.missing.map(skill => (
+                        <span
+                          key={skill}
+                          className="px-2 py-0.5 rounded-md text-[11px] font-medium bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300 border border-rose-200 dark:border-rose-500/20"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 };

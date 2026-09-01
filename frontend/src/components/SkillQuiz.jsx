@@ -1,138 +1,197 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Target, CheckCircle2, XCircle, ChevronRight, Brain, AlertTriangle } from 'lucide-react';
+import { Target, CheckCircle2, XCircle, ChevronRight, Brain, AlertTriangle, X, Sparkles } from 'lucide-react';
 
 export default function SkillQuiz({ step, onComplete, onCancel }) {
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const [score, setScore] = useState(0);
-    const [showResult, setShowResult] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
-    // Mock quiz data based on the step title
-    const mockQuiz = [
-        {
-            question: `Which concept is most fundamental to ${step.title}?`,
-            options: ["Core Syntax", "Advanced Patterns", "Standard Libraries", "Ecosystem Integration"],
-            correct: 0
-        },
-        {
-            question: `What is the primary benefit of mastering ${step.title}?`,
-            options: ["Higher Salary", "Better Performance", "Faster Development", "All of the above"],
-            correct: 3
-        },
-        {
-            question: `When should you NOT use ${step.title}?`,
-            options: ["In large scale apps", "For simple tasks", "When performance is critical", "In production"],
-            correct: 1
-        }
-    ];
-
-    const handleAnswer = (index) => {
-        setSelectedAnswer(index);
-        if (index === mockQuiz[currentQuestion].correct) {
-            setScore(score + 1);
-        }
-
-        setTimeout(() => {
-            if (currentQuestion < mockQuiz.length - 1) {
-                setCurrentQuestion(currentQuestion + 1);
-                setSelectedAnswer(null);
-            } else {
-                setShowResult(true);
-            }
-        }, 800);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onCancel?.();
     };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onCancel]);
 
-    const finalScorePercent = Math.round((score / mockQuiz.length) * 100);
-    const passed = finalScorePercent >= 70;
+  const mockQuiz = [
+    {
+      question: `Which fundamental principle is most critical to ${step.title}?`,
+      options: [
+        "Core Architectural Syntax & Conventions",
+        "Advanced Reactive Performance Tuning",
+        "Ecosystem Tooling & Integration",
+        "Runtime Error Boundaries & Observability"
+      ],
+      correct: 0
+    },
+    {
+      question: `What is the primary milestone achieved upon mastering ${step.title}?`,
+      options: [
+        "Eliminating critical prerequisite dependencies",
+        "Higher test coverage across services",
+        "Accelerated sprint delivery and code quality",
+        "All of the above"
+      ],
+      correct: 3
+    },
+    {
+      question: `When evaluating system boundaries for ${step.title}, what is the best practice?`,
+      options: [
+        "Avoid unnecessary coupling and isolate side effects",
+        "Hardcode static configs in runtime modules",
+        "Bypass type safety checks in production",
+        "Disable asynchronous error handling"
+      ],
+      correct: 0
+    }
+  ];
 
-    return (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-6 backdrop-blur-xl bg-slate-900/60">
-            <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-200/60 dark:border-slate-800/60 overflow-hidden"
+  const handleAnswer = (index) => {
+    setSelectedAnswer(index);
+    if (index === mockQuiz[currentQuestion].correct) {
+      setScore(prev => prev + 1);
+    }
+
+    setTimeout(() => {
+      if (currentQuestion < mockQuiz.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+      } else {
+        setShowResult(true);
+      }
+    }, 700);
+  };
+
+  const finalScorePercent = Math.round((score / mockQuiz.length) * 100);
+  const passed = finalScorePercent >= 66;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 16 }}
+        transition={{ duration: 0.2 }}
+        className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden"
+      >
+        {!showResult ? (
+          <div className="p-6 sm:p-8 space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                  <Brain className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                    Milestone Knowledge Check
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    Question {currentQuestion + 1} of {mockQuiz.length} &bull; {step.title}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={onCancel}
+                aria-label="Close quiz"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Question Body */}
+            <div>
+              <h4 className="text-base font-bold text-slate-900 dark:text-white mb-4 leading-snug">
+                {mockQuiz[currentQuestion].question}
+              </h4>
+
+              <div className="space-y-2.5">
+                {mockQuiz[currentQuestion].options.map((option, i) => {
+                  const isSelected = selectedAnswer === i;
+                  const isCorrect = i === mockQuiz[currentQuestion].correct;
+                  
+                  let btnStyle = 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-200 hover:border-indigo-500/50';
+                  if (isSelected) {
+                    btnStyle = isCorrect
+                      ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-800 dark:text-emerald-300'
+                      : 'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-800 dark:text-rose-300';
+                  }
+
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      disabled={selectedAnswer !== null}
+                      onClick={() => handleAnswer(i)}
+                      className={`w-full p-3.5 rounded-xl text-left text-xs font-semibold transition-all border flex items-center justify-between ${btnStyle} cursor-pointer`}
+                    >
+                      <span>{option}</span>
+                      {isSelected && (
+                        isCorrect ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-rose-500" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Progress Bar */}
+            <div className="pt-2">
+              <div className="flex justify-between text-[10px] text-slate-400 font-semibold mb-1">
+                <span>Progress</span>
+                <span>{Math.round(((currentQuestion + 1) / mockQuiz.length) * 100)}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${((currentQuestion + 1) / mockQuiz.length) * 100}%` }}
+                  className="h-full bg-indigo-600 rounded-full"
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* Result Summary */
+          <div className="p-8 text-center space-y-5">
+            <div
+              className={`w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-md ${
+                passed
+                  ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+                  : 'bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400'
+              }`}
             >
-                {!showResult ? (
-                    <div className="p-8">
-                        <div className="flex items-center justify-between mb-8">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2.5 bg-indigo-100 dark:bg-indigo-500/10 rounded-xl">
-                                    <Brain className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight">Adaptive Quiz</h3>
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">Question {currentQuestion + 1} of {mockQuiz.length}</p>
-                                </div>
-                            </div>
-                            <button
-                                onClick={onCancel}
-                                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-                            >
-                                <XCircle className="w-5 h-5 text-slate-400" />
-                            </button>
-                        </div>
+              {passed ? <Target className="w-8 h-8" /> : <AlertTriangle className="w-8 h-8" />}
+            </div>
 
-                        <div className="mb-8">
-                            <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
-                                {mockQuiz[currentQuestion].question}
-                            </h4>
-                            <div className="space-y-3">
-                                {mockQuiz[currentQuestion].options.map((option, i) => (
-                                    <button
-                                        key={i}
-                                        disabled={selectedAnswer !== null}
-                                        onClick={() => handleAnswer(i)}
-                                        className={`w-full p-4 rounded-2xl text-left font-medium transition-all border-2
-                      ${selectedAnswer === i
-                                                ? (i === mockQuiz[currentQuestion].correct ? 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-500 text-emerald-700 dark:text-emerald-400' : 'bg-rose-50 dark:bg-rose-500/10 border-rose-500 text-rose-700 dark:text-rose-400')
-                                                : 'bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-600 text-slate-700 dark:text-slate-300'}`}
-                                    >
-                                        <div className="flex items-center justify-between">
-                                            <span>{option}</span>
-                                            {selectedAnswer === i && (
-                                                i === mockQuiz[currentQuestion].correct ? <CheckCircle2 className="w-5 h-5" /> : <XCircle className="w-5 h-5" />
-                                            )}
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                {passed ? 'Milestone Assessment Passed!' : 'Targeted Remedial Path Injected'}
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto leading-relaxed">
+                Score: <span className="font-bold text-slate-900 dark:text-white">{finalScorePercent}%</span>.
+                {passed
+                  ? ' Prerequisite verified. Adaptive algorithm marks milestone completed.'
+                  : ' Adaptive algorithm has auto-injected targeted remedial exercises into your curriculum.'}
+              </p>
+            </div>
 
-                        <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${((currentQuestion + 1) / mockQuiz.length) * 100}%` }}
-                                className="h-full bg-indigo-500"
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="p-10 text-center">
-                        <div className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center shadow-xl 
-              ${passed ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-rose-500 shadow-rose-500/20'}`}
-                        >
-                            {passed ? <Target className="w-12 h-12 text-white" /> : <AlertTriangle className="w-12 h-12 text-white" />}
-                        </div>
-                        <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-2">
-                            {passed ? 'Assessment Passed!' : 'Further Review Needed'}
-                        </h3>
-                        <p className="text-slate-500 dark:text-slate-400 mb-8 max-w-xs mx-auto">
-                            Your score: <span className="font-black text-slate-900 dark:text-white">{finalScorePercent}%</span>.
-                            {passed
-                                ? 'Adaptive engine is fast-tracking your roadmap.'
-                                : 'Adaptive engine is adding a remedial module to your path.'}
-                        </p>
-                        <button
-                            onClick={() => onComplete(passed)}
-                            className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black shadow-lg shadow-indigo-500/20 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
-                        >
-                            Update Roadmap
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
-                    </div>
-                )}
-            </motion.div>
-        </div>
-    );
+            <button
+              type="button"
+              onClick={() => onComplete(passed)}
+              className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-md shadow-indigo-500/25 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <span>Apply to Adaptive Roadmap</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
 }

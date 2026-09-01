@@ -1,461 +1,400 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    Terminal, X, CheckSquare,
-    Mic, ArrowRight, Shield,
-    Cpu, Gauge, Sparkles, Bookmark,
-    Layers, RefreshCw, Zap,
-    Target, History
+  Terminal, X, CheckSquare,
+  Mic, ArrowRight, Shield,
+  Cpu, Sparkles, Bookmark,
+  RefreshCw, Zap,
+  Target, Send, Bot, User, Loader2
 } from 'lucide-react';
+import * as api from '../lib/api';
 
 export default function InterviewPrep({ skills = [], role = "Software Engineer" }) {
-    const [isActive, setIsActive] = useState(false);
-    const [currentType, setCurrentType] = useState('questions'); // 'questions', 'mock'
-    const [isListening, setIsListening] = useState(false);
-    const [isThinking, setIsThinking] = useState(false);
-    const [activeTier, setActiveTier] = useState('All');
-    const [randomQuestionIndex] = useState(() => Math.floor(Math.random() * 20));
+  const [isActive, setIsActive] = useState(false);
+  const [currentType, setCurrentType] = useState('questions'); // 'questions', 'mock'
+  const [activeTier, setActiveTier] = useState('All');
+  const [isLoadingQA, setIsLoadingQA] = useState(false);
+  const [qaList, setQaList] = useState([]);
+  
+  // Mock Studio conversation state
+  const [messages, setMessages] = useState([
+    {
+      role: 'assistant',
+      content: `Hello! I'm your Technical Interviewer for the ${role} position. Let's begin by reviewing your core architecture design choices. Ready?`
+    }
+  ]);
+  const [chatInput, setChatInput] = useState('');
+  const [isAiThinking, setIsAiThinking] = useState(false);
 
-    const tiers = ['All', 'Beginner Warmup', 'Core Concepts', 'Advanced System Design', 'Real-world Scenarios'];
+  const fallbackQuestions = useMemo(() => [
+    {
+      id: 1,
+      category: "System Design",
+      difficulty: "Hard",
+      question: `How would you design a scalable architecture for a high-traffic ${role} microservice system?`,
+      idealAnswer: "I would decouple ingestion from processing using message queues (Kafka/RabbitMQ), implement distributed caching with Redis, use circuit breakers for fault tolerance, and ensure database queries are indexed with read-replicas.",
+      keyPoints: ["Horizontal scaling", "Decoupled queues", "Distributed caching", "Circuit breaking"],
+      followUp: "How do you maintain data consistency across distributed boundaries without two-phase commits?"
+    },
+    {
+      id: 2,
+      category: "Technical",
+      difficulty: "Medium",
+      question: "Explain how you optimize latency and throughput in API endpoints handling 50k+ requests/sec.",
+      idealAnswer: "Profile the hot paths using APM tools, optimize database queries with composite indexes, implement response payload compression, leverage CDN edge caching, and offload CPU-intensive operations to background workers.",
+      keyPoints: ["Indexing & query profiling", "In-memory caching", "Edge CDN", "Worker offloading"],
+      followUp: "What metrics would you monitor in your Grafana dashboard to alert before latency breaches SLA?"
+    },
+    {
+      id: 3,
+      category: "Behavioral",
+      difficulty: "Medium",
+      question: "Describe a critical production incident you resolved and the post-mortem safeguards you implemented.",
+      idealAnswer: "During a database pool exhaustion incident, I temporarily throttled non-critical traffic, increased pool limits with connection timeouts, and later implemented connection pooling metrics, automated health checks, and a runbook for the team.",
+      keyPoints: ["Calm incident triage", "Root cause identification", "Automated alerts", "Blameless post-mortem"],
+      followUp: "How did you communicate the downtime impact and resolution to non-technical stakeholders?"
+    },
+    {
+      id: 4,
+      category: "Problem Solving",
+      difficulty: "Easy",
+      question: `What is your approach to testing and ensuring zero regression in continuous delivery for ${skills[0]?.name || 'key technologies'}?`,
+      idealAnswer: "I follow the testing pyramid: comprehensive unit tests for business logic, contract tests for API boundaries, integration tests in containerized CI environments, and canary deployments with automated rollback.",
+      keyPoints: ["Unit & contract tests", "Containerized CI", "Canary releases", "Automated rollbacks"],
+      followUp: "How do you balance test execution speed against test coverage in tight CI/CD windows?"
+    }
+  ], [role, skills]);
 
-    const questions = [
-        {
-            q: "How would you design a scalable micro-frontend architecture for a large enterprise dashboard?",
-            a: "I'd use a Module Federation approach (Webpack/Vite) to share dependencies. Key considerations include consistent design system tokens, cross-application state (via custom events or a lightweight store), and robust error boundaries to prevent one app from crashing the container.",
-            tier: "Advanced System Design",
-            difficulty: "Hard"
-        },
-        {
-            q: "Explain how you would optimize Core Web Vitals, specifically LCP and CLS, in a complex Next.js application.",
-            a: "For LCP, I'd prioritize critical CSS, use next/image for optimized assets, and implement pre-fetching. For CLS, I'd set explicit dimensions for media/ads, avoid inserting content above existing elements, and ensure font-display: swap is managed to prevent layout shifts.",
-            tier: "Core Concepts",
-            difficulty: "Medium"
-        },
-        {
-            q: "Compare Redux, Context API, and Zustand for state management in a high-performance React app.",
-            a: "Redux is best for large-scale apps with complex state transitions and strict debugging needs. Context API is suitable for static data (themes, auth). Zustand offers a minimalist, high-performance middle ground with less boilerplate, making it ideal for most modern reactive applications.",
-            tier: "Core Concepts",
-            difficulty: "Medium"
-        },
-        {
-            q: "What is your strategy for ensuring a React application is fully accessible (WCAG 2.1 compliance)?",
-            a: "I prioritize semantic HTML (main, section, nav), use ARIA attributes where necessary, ensure full keyboard navigability, and implement focus traps for modals. Constant testing with screen readers (NVDA/VoiceOver) and automated tools like axe-core is essential.",
-            tier: "Beginner Warmup",
-            difficulty: "Easy"
-        },
-        {
-            q: "Describe a robust pattern for handling API authentication and silent token refreshes in a SPA.",
-            a: "I utilize Axios interceptors to catch 401 errors, trigger a refresh token call, and retry original requests seamlessly. Tokens are stored in memory (not localStorage) to mitigate XSS, while HttpOnly cookies handle the actual session persistence.",
-            tier: "Core Concepts",
-            difficulty: "Medium"
-        },
-        {
-            q: "How would you secure a frontend application against common XSS and CSRF attacks?",
-            a: "For XSS, I avoid dangerouslySetInnerHTML, sanitize all user inputs, and implement a strict Content Security Policy (CSP). For CSRF, I ensure that sensitive actions are done via POST with Anti-CSRF tokens and SameSite cookie attributes (Strict/Lax).",
-            tier: "Core Concepts",
-            difficulty: "Medium"
-        },
-        {
-            q: "Explain the benefits of React Server Components (RSC) vs. traditional Client Components.",
-            a: "RSCs execute on the server, significantly reducing the JavaScript bundle sent to the client. This allows for direct database access from components, eliminates unnecessary data fetching waterfalls, and improves initial page load speed and SEO.",
-            tier: "Advanced System Design",
-            difficulty: "Hard"
-        },
-        {
-            q: "How do you handle large-scale data rendering (e.g., 10k+ items) without blocking the main thread?",
-            a: "I implement virtualization using libraries like react-window or react-virtual. This ensures only visible items are rendered in the DOM, drastically reducing memory usage and initial render time while keeping scroll performance smooth.",
-            tier: "Real-world Scenarios",
-            difficulty: "Hard"
-        },
-        {
-            q: "What is your testing hierarchy for a production-ready frontend project?",
-            a: "I follow the 'Testing Trophy' model: high emphasis on integration tests (RTL) to verify component behavior, unit tests for pure logic/utils (Jest/Vitest), and critical E2E flows (Playwright/Cypress) to ensure the entire system works together.",
-            tier: "Beginner Warmup",
-            difficulty: "Easy"
-        },
-        {
-            q: "Strategy for managing large, complex forms with dynamic validation in React?",
-            a: "I use React Hook Form for performance (uncontrolled components) paired with Zod for schema-based validation. This allows for clear, declarative validation logic that handles dynamic fields effortlessly without constant re-renders.",
-            tier: "Real-world Scenarios",
-            difficulty: "Medium"
-        },
-        {
-            q: "How would you implement a 'Dark Mode' system that respects OS preferences but persists user choices?",
-            a: "I'd use a CSS Variables based theme system. A small script in the HTML head checks localStorage and `matchMedia('(prefers-color-scheme: dark)')` to apply a `.dark` class to the document root before the main app paints, preventing 'theme flicker'.",
-            tier: "Beginner Warmup",
-            difficulty: "Easy"
-        },
-        {
-            q: "Describe how to optimize a frontend build pipeline for faster CI/CD times.",
-            a: "I'd utilize build caching (GitHub Actions cache/Turborepo), parallelize test suites, and implement incremental builds. Using faster bundlers like Vite/esbuild and swc for transpilation significantly cuts down on compilation time.",
-            tier: "Advanced System Design",
-            difficulty: "Hard"
-        },
-        {
-            q: "What is 'Tree Shaking' and how do you ensure your project benefits from it?",
-            a: "Tree shaking removes unused code during bundling. To maximize it, I use ES6 module syntax (import/export), keep functions pure, avoid side effects in top-level files, and ensure libraries used are correctly marked as 'sideEffects: false' in their package.json.",
-            tier: "Core Concepts",
-            difficulty: "Easy"
-        },
-        {
-            q: "How do you handle Internationalization (i18n) for a multi-region enterprise application?",
-            a: "I use react-i18next with lazy-loaded translation files to keep bundles light. I support right-to-left (RTL) layouts via CSS logical properties and ensure date/number formatting is handled via the Intl browser API for consistency.",
-            tier: "Real-world Scenarios",
-            difficulty: "Medium"
-        },
-        {
-            q: "Explain the 'Compound Component' pattern and why it's useful for UI libraries.",
-            a: "It's a pattern where state is shared implicitly between a parent and its children (like Select/Option). It provides a clean, declarative API for users, reduces prop drilling, and gives high flexibility over component structure while maintaining internal state.",
-            tier: "Core Concepts",
-            difficulty: "Medium"
-        },
-        {
-            q: "How would you implement a performant 'Search-as-you-type' feature with API debouncing?",
-            a: "I'd use a custom `useDebounce` hook to delay the API call until the user stops typing for ~300ms. I'd also use a results cache and implement an 'AbortController' to cancel previous inflight requests if a new search is initiated.",
-            tier: "Real-world Scenarios",
-            difficulty: "Easy"
-        },
-        {
-            q: "Discuss the pros and cons of using a Monorepo for frontend development (Nx vs Turbo).",
-            a: "Pros include shared code/UI libraries, atomic commits across projects, and simplified dependency management. Cons involve potentially large repo sizes and increased complexity in CI setup. Nx and Turbo provide 'computation hashing' to make these structures manageable.",
-            tier: "Advanced System Design",
-            difficulty: "Hard"
-        },
-        {
-            q: "What is the difference between UseMemo and UseCallback, and when should you avoid them?",
-            a: "UseMemo caches a value, UseCallback caches a function. Avoid them for simple calculations or small components, as the overhead of dependency tracking and memory usage can sometimes outweigh the performance gain of skipping a re-render.",
-            tier: "Beginner Warmup",
-            difficulty: "Easy"
-        },
-        {
-            q: "How do you manage 'Cascading Renders' in large React applications?",
-            a: "I identify unnecessary re-renders using Profilers. Solutions include moving state closer to where it's used, using state composition (lifting down), memoizing expensive components, and ensuring stable props (using useMemo/useCallback appropriately).",
-            tier: "Real-world Scenarios",
-            difficulty: "Hard"
-        },
-        {
-            q: "Explain the 'Hydration Error' in SSR apps and how to prevent it.",
-            a: "It occurs when the server-rendered HTML doesn't match the first client-side render (e.g., using `new Date()` or `window`). To prevent it, I use `useEffect` to trigger client-only logic or use 'suppressHydrationWarning' sparingly for inevitable mismatches.",
-            tier: "Advanced System Design",
-            difficulty: "Medium"
-        }
-    ];
+  // Load questions when matrix is launched
+  const handleLaunchQA = async () => {
+    setIsActive(true);
+    setCurrentType('questions');
+    
+    if (qaList.length > 0) return; // already loaded
 
-    const filteredQuestions = activeTier === 'All'
-        ? questions
-        : questions.filter(q => q.tier === activeTier);
+    setIsLoadingQA(true);
+    try {
+      const skillNames = skills.map(s => s.name || s.skill || s);
+      const res = await api.generateQA({
+        jobRole: role,
+        skills: skillNames.length > 0 ? skillNames : ['TypeScript', 'React', 'Node.js'],
+        experienceLevel: 'Mid-Senior',
+        interviewType: 'Mixed'
+      });
 
-    useEffect(() => {
-        if (isActive && currentType === 'mock') {
-            const timer = setTimeout(() => setIsThinking(true), 1500);
-            return () => clearTimeout(timer);
-        }
-    }, [isActive, currentType]);
+      if (res && res.qaList && Array.isArray(res.qaList) && res.qaList.length > 0) {
+        setQaList(res.qaList);
+      } else {
+        setQaList(fallbackQuestions);
+      }
+    } catch (err) {
+      console.warn('Using curated fallback questions:', err.message);
+      setQaList(fallbackQuestions);
+    } finally {
+      setIsLoadingQA(false);
+    }
+  };
 
-    const pulseAnimate = {
-        scale: [1, 1.02, 1],
-        opacity: [0.7, 1, 0.7],
-        transition: {
-            duration: 2.5,
-            repeat: Infinity,
-            ease: "easeInOut"
-        }
-    };
+  const handleSendMockMessage = async (e) => {
+    if (e) e.preventDefault();
+    if (!chatInput.trim() || isAiThinking) return;
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="group relative"
-        >
-            {/* Outer Glow */}
-            <div className="absolute inset-0 bg-violet-400/10 rounded-[2rem] blur-2xl group-hover:opacity-100 opacity-0 transition-all duration-1000 -z-10" />
+    const userMessage = { role: 'user', content: chatInput.trim() };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+    setChatInput('');
+    setIsAiThinking(true);
 
-            <div className="relative bg-white dark:bg-[#020617] border border-slate-200/80 dark:border-slate-800/60 rounded-[2rem] p-0.5 overflow-hidden transition-all duration-500 hover:border-violet-400/40 dark:hover:border-violet-500/30 shadow-[0_4px_24px_rgba(0,0,0,0.08)] dark:shadow-2xl hover-levitate">
-                <div className="rounded-[1.9rem] p-6 md:p-10">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-                        <div className="flex-1 space-y-5 text-center md:text-left">
-                            <div className="flex items-center justify-center md:justify-start gap-2">
-                                <div className="px-3 py-1 bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 rounded-md text-[9px] font-black uppercase tracking-[0.15em] border border-violet-200 dark:border-violet-500/20">
-                                    <Sparkles className="w-3 h-3 inline mr-1.5" />
-                                    Studio Matrix 3.5
-                                </div>
-                                <div className="px-2 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-md text-[8px] font-black uppercase border border-emerald-200 dark:border-emerald-500/20 tracking-wider">
-                                    Production Grade
-                                </div>
-                            </div>
+    try {
+      const systemPrompt = `You are a Senior Technical Interviewer evaluating a candidate for the role of ${role}. Candidate evaluated skills: ${skills.map(s => s.name || s.skill).join(', ')}. Keep replies focused on realistic technical questions, constructive follow-ups, and probing depth. Keep answers under 3-4 sentences.`;
+      const res = await api.sendInterviewChat(systemPrompt, updatedMessages);
+      
+      const aiReply = res?.reply || "Good answer. Let's dig deeper into how you would test and monitor this system under heavy concurrent load.";
+      setMessages(prev => [...prev, { role: 'assistant', content: aiReply }]);
+    } catch (err) {
+      console.error('Interview chat error:', err);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: "That's a solid architectural perspective. How would you handle state synchronization across multiple client instances?"
+      }]);
+    } finally {
+      setIsAiThinking(false);
+    }
+  };
 
-                            <h2 className="text-3xl md:text-5xl font-black text-[#1a1a2e] dark:text-white tracking-tight leading-[1.1]">
-                                Engineering <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 dark:from-violet-400 to-purple-500 dark:to-indigo-400">Simulation Studio</span>
-                            </h2>
+  const displayedQuestions = qaList.length > 0 ? qaList : fallbackQuestions;
+  const filteredQuestions = activeTier === 'All'
+    ? displayedQuestions
+    : displayedQuestions.filter(q => q.category === activeTier || q.difficulty === activeTier);
 
-                            <p className="text-sm text-[#6b7280] dark:text-slate-400 font-medium max-w-lg leading-relaxed px-1">
-                                High-density technical evaluation and architectural reasoning. Select a module to begin deep-state assessment.
-                            </p>
+  const categories = ['All', 'Technical', 'System Design', 'Behavioral', 'Problem Solving'];
 
-                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
-                                <button
-                                    onClick={() => { setIsActive(true); setCurrentType('questions') }}
-                                    className="group/q px-6 py-3 bg-[#1a1a2e] dark:bg-white text-white dark:text-slate-950 rounded-xl text-xs font-black shadow-lg shadow-slate-900/10 dark:shadow-xl hover:shadow-xl hover:shadow-violet-500/15 dark:hover:shadow-violet-500/20 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-2.5 pulse-glow-btn"
-                                >
-                                    <Zap className="w-4 h-4 text-violet-400 dark:text-violet-600 icon-spin-float" />
-                                    Launch Q&A Matrix
-                                    <ArrowRight className="w-4 h-4 group-hover/q:translate-x-1 transition-transform" />
-                                </button>
-                                <button
-                                    onClick={() => { setIsActive(true); setCurrentType('mock'); setIsListening(true) }}
-                                    className="px-6 py-3 bg-emerald-50 dark:bg-slate-900 border border-emerald-200 dark:border-slate-700 text-emerald-700 dark:text-white rounded-xl text-xs font-black hover:bg-emerald-100 dark:hover:bg-slate-800 hover:border-emerald-300 dark:hover:border-slate-500 transition-all active:scale-95 flex items-center gap-2.5"
-                                >
-                                    <Target className="w-4 h-4 text-emerald-500 dark:text-emerald-400 icon-spin-float" />
-                                    Start Session
-                                </button>
-                            </div>
-                        </div>
+  return (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+      {/* Header Banner */}
+      <div className="p-6 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 border border-purple-100 dark:border-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
+            <Cpu className="w-5 h-5" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-slate-900 dark:text-white">AI Technical Interview Simulator</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Live generative technical interview preparation for {role}
+            </p>
+          </div>
+        </div>
 
-                        <div className="hidden xl:block relative">
-                            <div className="absolute inset-0 bg-violet-400/5 dark:bg-violet-600/5 rounded-full blur-[60px]" />
-                            <div className="relative w-56 h-56 bg-[#f3f4f6] dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] flex items-center justify-center shadow-sm dark:shadow-xl rotate-2">
-                                <div className="absolute inset-0 opacity-5 dark:opacity-10 bg-[linear-gradient(45deg,transparent_25%,rgba(99,102,241,0.15)_50%,transparent_75%)] [background-size:200%_200%] animate-[shimmer_5s_infinite] rounded-[2.5rem]" />
-                                <div className="w-32 h-32 rounded-[2rem] border border-slate-200/60 dark:border-slate-700/30 flex items-center justify-center p-6 bg-white dark:bg-slate-900/50 hover-levitate pointer-events-auto cursor-pointer">
-                                    <Cpu className="w-16 h-16 text-violet-500/80 icon-spin-float" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleLaunchQA}
+            className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>Launch Q&A Matrix</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => { setIsActive(true); setCurrentType('mock'); }}
+            className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
+          >
+            <Mic className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Mock Session</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Preview Section */}
+      <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { title: "Targeted Gap Alignment", desc: "Questions dynamically focus on your missing & weak skills.", icon: Target, col: "text-indigo-500" },
+          { title: "FAANG-Grade Rubrics", desc: "Includes ideal STAR model answers and key evaluation points.", icon: Shield, col: "text-emerald-500" },
+          { title: "Live Conversational AI", desc: "Simulate multi-turn technical and behavioral interviewer rounds.", icon: Sparkles, col: "text-violet-500" }
+        ].map((item, idx) => (
+          <div key={idx} className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+            <item.icon className={`w-5 h-5 ${item.col} mb-2`} />
+            <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-1">{item.title}</h4>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Modal Dialog */}
+      <AnimatePresence>
+        {isActive && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col h-[85vh]"
+            >
+              {/* Modal Top Bar */}
+              <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/60 dark:bg-slate-900/60">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-indigo-600 text-white rounded-lg">
+                    {currentType === 'questions' ? <Terminal className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                      {currentType === 'questions' ? `AI Question Matrix &bull; ${role}` : `Mock Interview Simulation &bull; ${role}`}
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      {currentType === 'questions' ? 'Curated architectural & technical challenge questions' : 'Multi-turn AI technical evaluation session'}
+                    </p>
+                  </div>
                 </div>
-            </div>
 
-            {/* Pro-Tool Dashboard Modal */}
-            <AnimatePresence>
-                {isActive && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6 backdrop-blur-3xl bg-slate-950/95"
+                <div className="flex items-center gap-2">
+                  <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <button
+                      type="button"
+                      onClick={() => setCurrentType('questions')}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                        currentType === 'questions'
+                          ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm'
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
                     >
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.98, y: 30 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.98, y: 30 }}
-                            className="w-full max-w-6xl bg-[#020617] rounded-[2.5rem] shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-slate-800/80 overflow-hidden flex flex-col h-[85vh]"
+                      Question Matrix
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentType('mock')}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                        currentType === 'mock'
+                          ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm'
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      Mock Simulation
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsActive(false)}
+                    aria-label="Close interview prep"
+                    className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="flex-1 overflow-y-auto p-6 bg-slate-50/30 dark:bg-slate-950/30">
+                {currentType === 'questions' ? (
+                  <div className="space-y-6">
+                    {/* Filter Pills */}
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex flex-wrap gap-1.5">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => setActiveTier(cat)}
+                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors border ${
+                              activeTier === cat
+                                ? 'bg-indigo-600 text-white border-indigo-600'
+                                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-50'
+                            }`}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleLaunchQA}
+                        disabled={isLoadingQA}
+                        className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5 hover:bg-slate-50"
+                      >
+                        <RefreshCw className={`w-3.5 h-3.5 ${isLoadingQA ? 'animate-spin' : ''}`} />
+                        <span>Regenerate AI Questions</span>
+                      </button>
+                    </div>
+
+                    {isLoadingQA ? (
+                      <div className="flex flex-col items-center justify-center py-16 space-y-3">
+                        <Loader2 className="w-8 h-8 animate-spin text-indigo-600 dark:text-indigo-400" />
+                        <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                          Generating tailored FAANG-grade interview questions...
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {filteredQuestions.map((item, idx) => (
+                          <div
+                            key={item.id || idx}
+                            className="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3"
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20 uppercase tracking-wider">
+                                {item.category}
+                              </span>
+                              <span
+                                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                                  item.difficulty === 'Hard'
+                                    ? 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300'
+                                    : item.difficulty === 'Medium'
+                                    ? 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300'
+                                    : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300'
+                                }`}
+                              >
+                                {item.difficulty}
+                              </span>
+                            </div>
+
+                            <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                              {item.question}
+                            </h4>
+
+                            <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Model Answer Framework:</span>
+                              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">
+                                "{item.idealAnswer}"
+                              </p>
+                            </div>
+
+                            {item.followUp && (
+                              <div className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
+                                <span className="font-bold">Interviewer Probing Follow-Up: </span>
+                                {item.followUp}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* Mock Interview Chat Interface */
+                  <div className="flex flex-col h-full space-y-4 max-w-3xl mx-auto">
+                    <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+                      {messages.map((msg, i) => (
+                        <div
+                          key={i}
+                          className={`flex items-start gap-3 ${
+                            msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                          }`}
                         >
-                            {/* Pro Header */}
-                            <div className="px-8 py-5 border-b border-slate-800/50 flex items-center justify-between bg-slate-950/80">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-2.5 bg-violet-600/90 text-white rounded-xl shadow-lg shadow-violet-600/20">
-                                        {currentType === 'questions' ? <Terminal className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                                    </div>
-                                    <div className="space-y-0.5">
-                                        <h4 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
-                                            {currentType === 'questions' ? 'Architecture Ledger' : 'Simulation Studio'}
-                                            <span className="px-2 py-0.5 bg-slate-800 text-[8px] text-slate-400 rounded uppercase font-black tracking-widest border border-slate-700/50">v3.5p</span>
-                                        </h4>
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex items-center gap-1.5">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                                <span className="text-[8px] text-slate-500 font-black uppercase tracking-widest">Active Link</span>
-                                            </div>
-                                            <span className="flex items-center gap-1.5 text-[8px] text-slate-500 font-black uppercase tracking-widest">
-                                                <Shield className="w-3 h-3 text-violet-500" /> Secure Tunnel
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={() => setIsActive(false)}
-                                    className="p-3 bg-slate-900/50 border border-slate-800 rounded-xl text-slate-500 hover:text-white hover:border-slate-600 transition-all active:scale-90"
-                                >
-                                    <X className="w-5 h-5" />
-                                </button>
-                            </div>
+                          <div
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              msg.role === 'assistant'
+                                ? 'bg-indigo-600 text-white'
+                                : 'bg-slate-700 text-white'
+                            }`}
+                          >
+                            {msg.role === 'assistant' ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                          </div>
+                          <div
+                            className={`p-4 rounded-xl text-xs leading-relaxed max-w-[85%] ${
+                              msg.role === 'assistant'
+                                ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm'
+                                : 'bg-indigo-600 text-white shadow-sm'
+                            }`}
+                          >
+                            {msg.content}
+                          </div>
+                        </div>
+                      ))}
+                      {isAiThinking && (
+                        <div className="flex items-center gap-2 text-xs text-slate-400 font-medium py-2">
+                          <Loader2 className="w-4 h-4 animate-spin text-indigo-500" />
+                          <span>Interviewer is evaluating your response...</span>
+                        </div>
+                      )}
+                    </div>
 
-                            <div className="flex-1 flex overflow-hidden">
-                                {/* Compact Sidebar */}
-                                <div className="hidden lg:flex w-64 border-r border-slate-800/50 flex-col p-6 bg-slate-950/20">
-                                    <div className="space-y-2">
-                                        <p className="px-4 text-[8px] font-black text-slate-600 uppercase tracking-widest mb-4">Core Modules</p>
-                                        <button
-                                            onClick={() => setCurrentType('questions')}
-                                            className={`w-full px-4 py-3 rounded-xl flex items-center gap-3 text-[11px] font-bold transition-all ${currentType === 'questions' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-900 border border-transparent hover:border-slate-800'}`}
-                                        >
-                                            <Bookmark className="w-4 h-4 shrink-0" />
-                                            Knowledge Ledger
-                                        </button>
-                                        <button
-                                            onClick={() => setCurrentType('mock')}
-                                            className={`w-full px-4 py-3 rounded-xl flex items-center gap-3 text-[11px] font-bold transition-all ${currentType === 'mock' ? 'bg-violet-600 text-white' : 'text-slate-500 hover:bg-slate-900 border border-transparent hover:border-slate-800'}`}
-                                        >
-                                            <Mic className="w-4 h-4 shrink-0" />
-                                            Voice Assessment
-                                        </button>
-                                        <button className="w-full px-4 py-3 rounded-xl flex items-center gap-3 text-[11px] font-bold text-slate-700 opacity-40 cursor-not-allowed">
-                                            <History className="w-4 h-4" />
-                                            Trace Logs
-                                        </button>
-                                    </div>
-
-                                    <div className="mt-auto border border-slate-800/50 bg-slate-900/10 rounded-2xl p-4 space-y-3">
-                                        <div className="w-8 h-8 bg-violet-600/10 rounded-lg flex items-center justify-center text-violet-500">
-                                            <Layers className="w-4 h-4" />
-                                        </div>
-                                        <p className="text-[9px] font-medium leading-relaxed text-slate-500 uppercase tracking-wider">GPT-4o Engine <br /> Enabled</p>
-                                    </div>
-                                </div>
-
-                                {/* Refined Content Hub */}
-                                <div className="flex-1 overflow-y-auto p-6 md:p-8 scrollbar-hide bg-[#020617]">
-                                    {currentType === 'questions' ? (
-                                        <div className="space-y-8">
-                                            {/* Tier Filter */}
-                                            <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-900/30 rounded-lg border border-slate-800/50 w-fit mx-auto md:mx-0">
-                                                {tiers.map(tier => (
-                                                    <button
-                                                        key={tier}
-                                                        onClick={() => setActiveTier(tier)}
-                                                        className={`px-3 py-1.5 rounded-md text-[8px] font-black uppercase tracking-wider transition-all ${activeTier === tier ? 'bg-violet-600 text-white' : 'text-slate-500 hover:text-slate-300'}`}
-                                                    >
-                                                        {tier}
-                                                    </button>
-                                                ))}
-                                            </div>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                {filteredQuestions.map((item, i) => (
-                                                    <motion.div
-                                                        key={i}
-                                                        layout
-                                                        initial={{ opacity: 0, y: 10 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        className="group/card relative bg-slate-900/10 border border-slate-800/40 p-5 rounded-2xl hover:border-violet-500/20 transition-all hover:bg-slate-900/20"
-                                                    >
-                                                        <div className="space-y-4">
-                                                            <div className="flex items-start justify-between gap-4">
-                                                                <div className="space-y-2">
-                                                                    <div className="flex items-center gap-2">
-                                                                        <span className="text-[7px] font-black text-slate-600 uppercase tracking-widest bg-slate-800/50 px-1.5 py-0.5 rounded leading-none">{item.tier}</span>
-                                                                        <span className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded leading-none ${item.difficulty === 'Hard' ? 'text-rose-400 bg-rose-500/5' :
-                                                                                item.difficulty === 'Medium' ? 'text-amber-400 bg-amber-500/5' :
-                                                                                    'text-emerald-400 bg-emerald-500/5'
-                                                                            }`}>{item.difficulty}</span>
-                                                                    </div>
-                                                                    <h5 className="text-sm font-bold text-white leading-snug group-hover/card:text-violet-200 transition-colors">
-                                                                        {item.q}
-                                                                    </h5>
-                                                                </div>
-                                                                <div className="text-[10px] font-black text-slate-800 group-hover/card:text-violet-900/30 shrink-0">
-                                                                    #{i + 1 < 10 ? `0${i + 1}` : i + 1}
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="p-4 bg-slate-950/50 border border-slate-800/30 rounded-xl">
-                                                                <p className="text-[11px] leading-relaxed text-slate-500 font-medium italic">
-                                                                    "{item.a}"
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="h-full flex flex-col items-center justify-center max-w-2xl mx-auto space-y-12">
-                                            {/* Microphone Module */}
-                                            <div className="relative">
-                                                <AnimatePresence>
-                                                    {isListening && (
-                                                        <motion.div
-                                                            animate={pulseAnimate}
-                                                            className="absolute inset-0 bg-violet-600/10 rounded-full blur-[40px]"
-                                                        />
-                                                    )}
-                                                </AnimatePresence>
-
-                                                <div className="relative w-40 h-40 rounded-full bg-slate-950 border border-slate-800/50 flex items-center justify-center shadow-inner">
-                                                    <div className={`absolute inset-0 rounded-full border border-violet-500/10`} />
-                                                    <div className={`absolute inset-2 rounded-full border-t border-violet-500/40 ${isThinking ? 'animate-spin' : ''}`} />
-
-                                                    <div className={`w-28 h-28 rounded-full flex items-center justify-center transition-all duration-700 ${isListening ? 'bg-violet-600 shadow-xl' : 'bg-slate-900'}`}>
-                                                        <Mic className={`w-10 h-10 ${isListening ? 'text-white' : 'text-slate-700'}`} />
-                                                    </div>
-
-                                                    {/* Pro Waveform */}
-                                                    {isListening && (
-                                                        <div className="absolute -bottom-6 flex gap-1 items-end h-8 w-16 justify-center">
-                                                            {[...Array(10)].map((_, i) => (
-                                                                <motion.div
-                                                                    key={i}
-                                                                    animate={{ height: [4, Math.random() * 20 + 5, 4] }}
-                                                                    transition={{ duration: 0.5, repeat: Infinity, delay: i * 0.04 }}
-                                                                    className="w-1 bg-violet-500/60 rounded-full"
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            <div className="text-center space-y-4">
-                                                <h3 className="text-xl font-black text-white tracking-tight">
-                                                    {isThinking ? (
-                                                        <span className="flex items-center justify-center gap-2">
-                                                            <RefreshCw className="w-4 h-4 animate-spin text-violet-500" />
-                                                            Processing Neural Feedback...
-                                                        </span>
-                                                    ) : "Studio Active. Transmitting."}
-                                                </h3>
-                                                <div className="p-4 bg-slate-900/20 border border-slate-800/30 rounded-2xl">
-                                                    <p className="text-slate-500 text-xs font-medium leading-relaxed italic opacity-80 max-w-sm mx-auto">
-                                                        "{questions[randomQuestionIndex % questions.length].q}"
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-wrap items-center justify-center gap-4">
-                                                <button
-                                                    onClick={() => setIsListening(!isListening)}
-                                                    className={`px-8 py-3 rounded-xl text-[10px] font-black transition-all flex items-center gap-2 shadow-lg active:scale-95 ${isListening ? 'bg-rose-600 text-white' : 'bg-violet-600 text-white'}`}
-                                                >
-                                                    <X className="w-3.5 h-3.5" />
-                                                    {isListening ? 'Stop Link' : 'Re-engage Studio'}
-                                                </button>
-                                                <button
-                                                    onClick={() => setIsThinking(true)}
-                                                    className="px-8 py-3 bg-white text-slate-950 rounded-xl text-[10px] font-black hover:bg-slate-100 transition-all active:scale-95 flex items-center gap-2 border border-transparent"
-                                                >
-                                                    <CheckSquare className="w-3.5 h-3.5" />
-                                                    Finalize Scoring
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Pro Footer */}
-                            <div className="px-8 py-6 bg-slate-950 border-t border-slate-800/50 flex flex-col md:flex-row items-center justify-between gap-6">
-                                <div className="flex items-center gap-6">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
-                                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Sys. 0 errors</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Gauge className="w-3 h-3 text-violet-500" />
-                                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Lat. 12ms</span>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={() => setIsActive(false)}
-                                    className="px-8 py-3 bg-slate-900/50 border border-slate-800 text-slate-300 rounded-xl text-[10px] font-black transition-all active:scale-95 hover:bg-slate-800 hover:text-white"
-                                >
-                                    End Matrix Session
-                                </button>
-                            </div>
-                        </motion.div>
-                    </motion.div>
+                    <form onSubmit={handleSendMockMessage} className="pt-2 flex gap-2">
+                      <input
+                        type="text"
+                        value={chatInput}
+                        onChange={(e) => setChatInput(e.target.value)}
+                        placeholder="Type your architectural explanation or answer..."
+                        className="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                      />
+                      <button
+                        type="submit"
+                        disabled={!chatInput.trim() || isAiThinking}
+                        className="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Send className="w-4 h-4" />
+                        <span>Send</span>
+                      </button>
+                    </form>
+                  </div>
                 )}
-            </AnimatePresence>
-        </motion.div>
-    );
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }

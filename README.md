@@ -1,197 +1,204 @@
-# <p align="center"> <img src="./assets/README_HERO.png" alt="AI-Adaptive Onboarding Engine Hero" width="100%"> </p>
+# <p align="center"> <img src="./assets/README_HERO.png" alt="CodeForge AI Onboarding Engine Hero" width="100%"> </p>
 
-<h1 align="center">⚡ AI-ADAPTIVE ONBOARDING ENGINE ⚡</h1>
+<h1 align="center">⚡ CODEFORGE: AI-ADAPTIVE ONBOARDING ENGINE ⚡</h1>
 
 <p align="center">
-  <b>Eliminate generic onboarding. Empower talent with personalized, AI-driven learning pathways.</b>
+  <b>Eliminate generic onboarding. Empower talent with semantic skill analysis, topological learning pathways, and generative interview prep.</b>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0-gold?style=for-the-badge&logo=appveyor" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.0.0-gold?style=for-the-badge&logo=appveyor" alt="Version">
   <img src="https://img.shields.io/badge/Backend-NodeJS%20%7C%20Express-black?style=for-the-badge&logo=node.js&logoColor=white" alt="Backend">
   <img src="https://img.shields.io/badge/Frontend-React%2019%20%7C%20Tailwind%20v4-black?style=for-the-badge&logo=react&logoColor=blue" alt="Frontend">
-  <img src="https://img.shields.io/badge/AI-Gemini%20%7C%20GPT--4o%20%7C%20Groq-gold?style=for-the-badge&logo=google-gemini&logoColor=white" alt="AI Stack">
+  <img src="https://img.shields.io/badge/AI-Groq%20%7C%20Gemini%20%7C%20GPT--4o-gold?style=for-the-badge&logo=google-gemini&logoColor=white" alt="AI Stack">
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/github/last-commit/HARSHILL2023/ArtPark_CodeForge_Hackathon?style=flat-square&color=gold" alt="Last Commit">
   <img src="https://img.shields.io/badge/Maintained%3F-Yes-green?style=flat-square" alt="Maintained">
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License">
-  <img src="https://img.shields.io/badge/Made%20with-Love%20%26%20Coffee-rose?style=flat-square" alt="Made with Love">
+  <img src="https://img.shields.io/badge/Judge%20Demo-1--Click%20Ready-amber?style=flat-square" alt="Judge Ready">
 </p>
 
 ---
 
-### 🛑 The Problem: The "Generic Onboarding" Trap
+## 🛑 The Problem: The "Generic Onboarding" Trap
 
-Companies today lose billions in productivity because they treat every new hire like a blank slate. 
-- **Senior developers** sit through "Introduction to Git."
+Companies today lose billions in productivity because they treat every hire like a blank slate:
+- **Senior engineers** sit through repetitive "Intro to Git" modules.
 - **Niche specialists** are forced into irrelevant domain training.
-- **Critical skill gaps** are only discovered *after* they impact a project.
-Generic onboarding is where talent goes to die. It's time for an engine that understands the **DNA of your talent.**
+- **Critical skill gaps** are discovered *months later* when production outages occur.
+- **Interviews and resume screening** fail to pinpoint concrete prerequisite deficiencies.
+
+Generic onboarding is where talent velocity dies. It's time for an engine that understands the **DNA of your talent.**
 
 ---
 
-### ✨ The Solution: Engineering Mastery, Personalized.
+## ✨ The Solution: Adaptive Onboarding & Career Studio
 
-The **AI-Adaptive Onboarding Engine** is a first-class SaaS platform that bridges the gap between a candidate's current skills and their new role's requirements. Using state-of-the-art **Topological Sorting** and **LLM reasoning**, we generate a laser-focused, dependency-aware roadmap in seconds.
+**CodeForge** is an enterprise-grade AI career platform that analyzes candidate resumes against target job descriptions, computes semantic embeddings, sorts dependency prerequisites via **Kahn's Topological Algorithm**, and provides interactive mock interviews and STAR resume optimization.
 
-- **Stop guessing.** Our engine maps the shortest path from "New Hire" to "Productive Contributor."
-- **Start scaling.** One platform to onboard Engineering, HR, Sales, and Design teams with zero manual effort.
-- **Trust the process.** Every AI decision is backed by a **Reasoning Trace** for total transparency.
+- **Automated Roadmap Generation**: Maps the shortest path from "New Hire" to "Productive Contributor."
+- **Prerequisite Integrity**: Graph-verified sequencing guarantees fundamental skills are mastered before advanced frameworks.
+- **Multi-LLM Resilience**: Seamless fallback across **Groq (Llama 3.3 70B)**, **Google Gemini 1.5/2.0**, and **OpenAI GPT-4o**.
+- **Explainable AI (XAI)**: Every course selection is backed by an auditable **Reasoning Trace**.
+- **Interactive Mock Studio**: Conducts live conversational technical interviews tailored to candidate gaps.
 
 ---
 
-### 🚀 Feature Showcase
+## 🚀 Feature Matrix
 
 | Feature | Icon | Description |
 | :--- | :---: | :--- |
-| **Deep Resume Parsing** | 🔍 | Extracts nuanced skills, seniority, and years of experience from any PDF using GPT-4o. |
-| **JD Semantic Alignment** | 🎯 | Maps job descriptions to extracted profiles to pinpoint exactly what's missing. |
-| **Topological Sort Engine** | ⛓️ | Orders learning modules by prerequisites — so you learn basics before advanced topics. |
-| **Interview Studio** | 🎙️ | High-fidelity technical simulation studio with real-time feedback and difficulty scaling. |
-| **Interactive Skill Map** | 🕸️ | 3D-styled dependency graph visualization built with React Flow and Framer Motion. |
-| **Readiness DNA** | 🧬 | A visual "Readiness Score" that improves as you complete modules in your roadmap. |
+| **Document Ingestion** | 📄 | Server-side PDF/TXT resume & JD parsing with vector entity extraction. |
+| **Semantic Skill Matrix** | 🧬 | High-dimensional embedding comparison mapping Mastered, Emerging, and Missing skills. |
+| **Role Trajectory Simulator** | 🎯 | Simulates fit across alternative roles (Frontend, DevOps, Backend) with time-to-hire estimates. |
+| **Dagre Interactive Graph** | 🕸️ | 2D/3D styled DAG dependency visualization built with ReactFlow and Dagre spatial auto-layout. |
+| **5-Phase Kahn Pathways** | ⛓️ | Dependency-verified curriculum ordering with zero circular prerequisite traps. |
+| **Remedial Assessment Flow** | 🧪 | Integrated knowledge quizzes that dynamically inject remedial modules upon assessment failure. |
+| **AI Mock Interview Studio** | 🎙️ | Dynamic FAANG-grade question matrix and live multi-turn conversational AI interviewer. |
+| **Surgical Resume Optimizer** | ✍️ | Before/after STAR bullet rewrites, ATS score metrics, and instant PDF resume export. |
+| **Live AI Skill Mentor** | 💬 | Floating context-aware assistant with instant suggestion chips and session awareness. |
+| **1-Click Judge Demo** | ⚡ | Instant pre-seeded sandbox access for evaluation without registration barriers. |
 
 ---
 
-### 🧠 The AI Brain: How the Magic Happens
+## 🧠 The AI Pipeline Architecture
 
-Our engine doesn't just "guess." It follows a rigorous **6-Phase Pipeline** to ensure the highest quality learning experience.
+CodeForge runs a rigorous **5-Phase Algorithmic Pipeline** that combines deterministic graph theory with generative multi-LLM intelligence:
 
 ```mermaid
-graph TD
-    A[📄 Raw Resume / JD] -->|Phase 1| B[🤖 LLM Entity Extraction]
-    B -->|Phase 2| C[⚖️ Semantic Gap Analysis]
-    C -->|Phase 3| D[🕸️ Dependency Graph Construction]
-    D -->|Phase 4| E[🔢 Topological Sort Algorithm]
-    E -->|Phase 5| F[👤 Learner Profile Adaptation]
-    F -->|Phase 6| G[🗺️ Enriched Adaptive Roadmap]
-    G --> H[🏁 Success: Productive Associate]
+flowchart TD
+    A[📄 Candidate Resume + Target JD] --> B[🔍 Step 1: Entity & Skill Extraction]
+    B --> C[⚖️ Step 2: Vector Semantic Embedding Similarity]
+    C --> D[🕸️ Step 3: Directed Acyclic Graph DAG Construction]
+    D --> E[🔢 Step 4: Kahn's Topological Sort Algorithm]
+    E --> F[👤 Step 5: Learner Modality & Profile Adaptation]
+    F --> G[🗺️ Enriched Adaptive Roadmap + Reasoning Traces]
+    G --> H[🎙️ Live AI Mock Interview & Resume Optimizer]
 ```
 
-#### 🔍 Phase Detail:
-1.  **Phase 1: Resume & JD Parsing**: We transform unstructured text into high-fidelity JSON profiles using GPT-4o.
-2.  **Phase 2: Semantic Gap Analysis**: We compare "Required Mastery" vs "Current Mastery" using semantic normalization (e.g. mapping "ReactJS" to "React").
-3.  **Phase 3: Dependency Graph**: We build a directed acyclic graph (DAG) of the internal course catalog.
-4.  **Phase 4: Topological Sort**: **The Genius Part.** Using Kahn's Algorithm, we sort the required courses such that all prerequisites are completed before advanced material.
-5.  **Phase 5: Adaptation**: The engine skips "Easy" modules for Senior hires and automatically ups the difficulty for high-aptitude candidates.
-6.  **Phase 6: Reasoning Trace**: The AI generates a `why_included` field for every step, proving why it's there and how it saves time.
+### Algorithmic Highlights:
+1. **Phase 1 (Entity Extraction)**: Parses raw PDF text and extracts candidate experience level, skill proficiencies, and job requirements.
+2. **Phase 2 (Semantic Mapping)**: Normalizes synonyms using vector similarity (e.g., `React.js` ≈ `React`, `K8s` ≈ `Kubernetes`).
+3. **Phase 3 (DAG Construction)**: Queries the 84-course database catalog and builds a dependency matrix across 14 technical domains.
+4. **Phase 4 (Kahn's Topological Sort)**: Resolves in-degree prerequisites so courses are ordered with strict prerequisite compliance.
+5. **Phase 5 (Reasoning Traces)**: Multi-LLM synthesis generates explainable justifications for why each module was selected or pruned.
 
 ---
 
-### 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-| Layer | Technology | Usage |
+| Layer | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Frontend** | ![React](https://img.shields.io/badge/React%2019-20232A?logo=react) | Modern, responsive component architecture. |
-| **Styling** | ![Tailwind](https://img.shields.io/badge/Tailwind%20v4-38B2AC?logo=tailwind-css) | Ultra-fast CSS utility-first design. |
-| **Backend** | ![Node](https://img.shields.io/badge/Node.js-339933?logo=node.js) | Scalable Express.js API orchestration. |
-| **Database** | ![Mongo](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb) | Flexible schema for sessions and course storage. |
-| **AI LLM** | ![Groq](https://img.shields.io/badge/Groq%20Llama%203-gold?logo=meta) | High-speed inference for parsing and enrichment. |
-| **Flows** | ![ReactFlow](https://img.shields.io/badge/React--Flow-BC0C4B?logo=react) | Interactive node-based roadmap visualization. |
-| **Motion** | ![Framer](https://img.shields.io/badge/Framer--Motion-0055FF?logo=framer) | Cinematic transitions and micro-animations. |
+| **Frontend Core** | ![React](https://img.shields.io/badge/React%2019-20232A?logo=react) ![Vite](https://img.shields.io/badge/Vite%206-646CFF?logo=vite) | Blazing fast client with React 19 architecture. |
+| **Styling & UI** | ![Tailwind](https://img.shields.io/badge/Tailwind%20v4-38B2AC?logo=tailwind-css) ![CSS](https://img.shields.io/badge/Design%20Tokens-Indigo%20%7C%20Slate-indigo) | Unified 16px radius surfaces, dual-theme dark/light mode. |
+| **Graph & Motion** | ![ReactFlow](https://img.shields.io/badge/React--Flow-BC0C4B?logo=react) ![Framer](https://img.shields.io/badge/Framer--Motion-0055FF?logo=framer) | Interactive node graphs, smooth layout transitions. |
+| **Backend API** | ![Node](https://img.shields.io/badge/Node.js%2020-339933?logo=node.js) ![Express](https://img.shields.io/badge/Express.js-000000?logo=express) | RESTful API orchestration and algorithm execution. |
+| **Database** | ![Mongo](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb) ![Mongoose](https://img.shields.io/badge/Mongoose%208-880000?logo=mongoose) | Session persistence, catalog schemas, and caching. |
+| **AI LLM Inference** | ![Groq](https://img.shields.io/badge/Groq%20Llama%203.3-f55036?logo=meta) ![Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?logo=google-gemini) ![OpenAI](https://img.shields.io/badge/OpenAI%20GPT--4o-412991?logo=openai) | Multi-provider fallback for parsing, Q&A, and STAR rewrites. |
+| **PDF Generation** | ![ReactPDF](https://img.shields.io/badge/React--PDF-E13535?logo=adobe-acrobat-reader) | Dynamic client-side ATS resume compilation. |
 
 ---
 
-### 🛰️ API Reference (Top Endpoints)
+## 🛰️ Core API Reference
 
 | Method | Endpoint | Description |
-| :--- | :---: | :--- |
-| `POST` | `/api/upload` | Upload Resume (File) + JD (Text/File). Returns `sessionId`. |
-| `POST` | `/api/analysis/run` | Triggers the full 6-phase AI pipeline for a session. |
-| `GET` | `/api/analysis/:id` | Recovers completed roadmap, metrics, and reasoning trace. |
-| `POST` | `/api/interview/ask` | Generates a dynamic technical question based on current skill. |
+| :--- | :--- | :--- |
+| `POST` | `/api/upload/resume` | Ingests PDF resume file and returns parsed JSON profile. |
+| `POST` | `/api/upload/jd` | Ingests job description and returns normalized skill requirements. |
+| `POST` | `/api/skills/gap-analysis` | Performs vector cosine similarity and classifies skill readiness. |
+| `POST` | `/api/pathway/generate` | Executes Kahn's algorithm and returns 5-phase sequenced roadmap. |
+| `POST` | `/api/pathway/:sessionId/assessment` | Evaluates module quiz; dynamically injects remedial nodes on failure. |
+| `POST` | `/api/interview/qa` | Generates dynamic technical, architectural, and behavioral questions. |
+| `POST` | `/api/interview/chat` | Multi-turn conversational AI interviewer session. |
+| `POST` | `/api/resume/optimize` | Generates STAR rewrites, ATS score metrics, and keyword injections. |
+| `POST` | `/api/chat` | Live context-aware AI mentor assistant. |
 
 ---
 
-### 🎯 Explainable AI: The Reasoning Trace
+## 🎯 Explainable AI: The Reasoning Trace
 
-"Black Box" AI is for amateurs. Our engine provides a full **Reasoning Trace** for every single recommendation.
+CodeForge does not operate as a black box. Every step in the roadmap includes an auditable **Algorithmic Trace**:
 
-> **Example Trace Output:**
-> *"Course 'Advanced Node.js' included because JD requires Proficiency 5/5, but Resume shows 3/5. Placed in Week 3 because 'Javascript Fundamentals' must be completed first to satisfy the dependency chain (JS → Node Basics → Advanced Node)."*
-
-This level of transparency ensures that HR teams and Managers can trust the path being forged for their talent.
-
----
-
-### 🌍 Cross-Domain Scalability
-
-While our demo catalog is optimized for **Software Engineering**, the core engine is **Domain-Agnostic**.
-- **HR & Ops**: Load your internal policy courses into the database.
-- **Sales & Marketing**: Connect to your CRM training modules.
-- **Legal & Compliance**: Map certification prerequisites effortlessly.
-The engine adapts its topological sort to *any* set of skills and training materials.
+> **Example System Trace:**
+> ```text
+> SYSTEM_TRACE :: TYPESCRIPT [VERIFIED]
+> > Vector Cosine Score: 0.42 (Proficiency Gap Detected)
+> > Target Role Requirement: 5/5 | Candidate Profile: 2/5
+> > Kahn Prerequisite Status: Prerequisites Met (JavaScript Fundamentals satisfied)
+> > Action: INJECT_TOPOLOGICAL_MILESTONE -> 'TypeScript Enterprise Masterclass (Week 1)'
+> ```
 
 ---
 
-### 🐋 Docker: One-Command Setup
+## 🐋 Quick Start with Docker
 
-Experience the speed of a production-ready setup using Docker Compose.
+Launch the complete application (Frontend, Backend, and MongoDB) with a single command:
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/HARSHILL2023/ArtPark_CodeForge_Hackathon.git
 cd ArtPark_CodeForge_Hackathon
 
-# Launch the entire engine (Frontend, Backend, MongoDB)
+# 2. Launch with Docker Compose
 docker-compose up --build
 ```
 
+Access the application at `http://localhost:5173`.
+
 ---
 
-### 🚀 Manual Local Setup
+## 💻 Manual Local Development
 
-#### 1. Backend Setup
+### 1. Backend Setup
 ```bash
 cd backend
 npm install
-cp .env.example .env # Add your GROQ/OPENAI/GEMINI keys
+
+# Configure environment variables in backend/.env
+# PORT=5000
+# GROQ_API_KEY=your_groq_key
+# GEMINI_API_KEY=your_gemini_key
+# OPENAI_API_KEY=your_openai_key
+# MONGO_URI=mongodb://localhost:27017/codeforge
+
 npm run dev
 ```
 
-#### 2. Frontend Setup
+### 2. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
+The frontend will run at `http://localhost:5173` and communicate with the backend at `http://localhost:5000`.
+
 ---
 
-### 📊 System Architecture
+## 🧪 Validation & Testing
 
-```mermaid
-graph LR
-    User([User]) -->|Upload PDF| FE(React Frontend)
-    FE -->|API Call| BE(Express Backend)
-    BE -->|Query| DB[(MongoDB)]
-    BE -->|Prompt| AI{Multi-LLM Engine}
-    AI -->|Groq / GPT-4o| BE
-    BE -->|Response| FE
-    FE -->|Render| Flow[React Flow Roadmap]
+Run the automated domain validation suite to verify Kahn's topological sort across courses:
+
+```bash
+cd backend
+node test_domains.js
+```
+
+Build the production frontend bundle:
+
+```bash
+cd frontend
+npm run build
 ```
 
 ---
 
-### 📈 Results & Evaluation Roadmap
-
-| Evaluative Criterion | Our Implementation | Result |
-| :--- | :--- | :---: |
-| **AI Innovation** | Multi-Provider Fallback (Gemini + Groq) | **High** |
-| **Logic Dept** | Topological Sorting of Dependencies | **Elite** |
-| **UI/UX Premium** | Glassmorphism + React Flow + animations | **Premium** |
-| **Scalability** | Domain-Agnostic metadata engine | **Global** |
-
----
-
-### 📄 License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
 <p align="center">
-  <b>Built for the ArtPark CodeForge Hackathon. Redefining how the world learns.</b>
+  <b>Built for the ArtPark CodeForge Hackathon • Empowering the Future of Work</b>
 </p>
