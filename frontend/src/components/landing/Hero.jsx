@@ -3,19 +3,35 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown, ShieldCheck, BrainCircuit, Route, Layers, Sparkles, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../../lib/AuthContext';
+import Hero3DVisual from '../3d/Hero3DVisual';
+import TiltCard3D from '../3d/TiltCard3D';
+import FloatingCube3D from '../3d/FloatingCube3D';
 
 export default function Hero({ onOpenAuth }) {
   const { isLoggedIn } = useAuth();
 
   return (
-    <section className="relative min-h-[82vh] flex items-center justify-center pt-28 pb-14 overflow-hidden">
+    <section className="relative min-h-[86vh] flex items-center justify-center pt-28 pb-14 overflow-hidden">
+      {/* 3D Topological Background Visual */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-35 dark:opacity-45 pointer-events-none z-0">
+        <Hero3DVisual />
+      </div>
+
+      {/* Floating 3D Geometric Ornaments */}
+      <div className="absolute top-28 left-8 sm:left-20 hidden lg:block opacity-60 dark:opacity-75 pointer-events-none z-0">
+        <FloatingCube3D size={44} />
+      </div>
+      <div className="absolute bottom-20 right-8 sm:right-24 hidden lg:block opacity-60 dark:opacity-75 pointer-events-none z-0">
+        <FloatingCube3D size={52} />
+      </div>
+
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10 w-full">
         {/* Top Tagline Pill */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-xs font-medium mb-6"
+          className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8]/90 dark:bg-[#121416]/90 backdrop-blur-md text-[#5E5C56] dark:text-[#B4B1A9] text-xs font-medium mb-6 shadow-xs"
         >
           <Sparkles className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3B82F6]" />
           <span>AI-Adaptive Career Intelligence OS</span>
@@ -80,7 +96,7 @@ export default function Hero({ onOpenAuth }) {
           </a>
         </motion.div>
 
-        {/* Metric Cards Grid */}
+        {/* Metric Cards Grid with 3D Tilt */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -93,18 +109,21 @@ export default function Hero({ onOpenAuth }) {
             { metric: 'Kahn Graph', desc: '0 Dependency Loops', icon: Route },
             { metric: 'Sandbox Ready', desc: '1-Click Judge Access', icon: ShieldCheck },
           ].map((item, idx) => (
-            <div
-              key={idx}
-              className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-left hover-card group cursor-default"
-            >
-              <item.icon className="w-4 h-4 text-[#2563EB] dark:text-[#3B82F6] mb-2 transition-transform duration-200 group-hover:scale-110" />
-              <div className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] tracking-tight group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors">
-                {item.metric}
+            <TiltCard3D key={idx} maxTilt={10} scale={1.03}>
+              <div
+                className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-left hover-card group cursor-default h-full flex flex-col justify-between"
+              >
+                <div>
+                  <item.icon className="w-4 h-4 text-[#2563EB] dark:text-[#3B82F6] mb-2 transition-transform duration-200 group-hover:scale-110" />
+                  <div className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] tracking-tight group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors">
+                    {item.metric}
+                  </div>
+                </div>
+                <div className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] font-normal mt-1">
+                  {item.desc}
+                </div>
               </div>
-              <div className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] font-normal mt-0.5">
-                {item.desc}
-              </div>
-            </div>
+            </TiltCard3D>
           ))}
         </motion.div>
       </div>
