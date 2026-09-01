@@ -41,7 +41,7 @@ export default function ResumeOptimizer({
     name: "Target Role Candidate",
     title: targetRole,
     summary: result?.overallSuggestion || "Engineered for maximum ATS match and role alignment.",
-    skills: currentSkills.map(s => s.name || s.skill || s),
+    skills: (Array.isArray(currentSkills) ? currentSkills : []).map(s => (typeof s === 'string' ? s : s?.name || s?.skill || '')),
     rewrittenBullets: result?.rewrittenBullets || []
   };
 

@@ -3,16 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Fingerprint, Clock, Target, BarChart3, TrendingUp } from 'lucide-react';
 import { careerPaths } from '../data/mockData';
 
-const SkillDNA = ({ userSkills }) => {
-  const [selectedRole, setSelectedRole] = useState(careerPaths[0].id);
+const SkillDNA = ({ userSkills, skills, readinessScore }) => {
+  const actualSkills = useMemo(() => {
+    if (Array.isArray(userSkills)) return userSkills;
+    if (Array.isArray(skills)) return skills;
+    return [];
+  }, [userSkills, skills]);
+
+  const [selectedRole, setSelectedRole] = useState(careerPaths[0]?.id || 'frontend');
   const [isSimulating, setIsSimulating] = useState(false);
 
   const distribution = useMemo(() => {
-    if (!userSkills || userSkills.length === 0) return { strong: 0, moderate: 0, weak: 0, count: 0 };
-    const total = userSkills.length;
-    const strong = userSkills.filter(s => s.yourLevel >= s.requiredLevel).length;
-    const moderate = userSkills.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length;
-    const weak = userSkills.filter(s => s.yourLevel === 0).length;
+    if (!actualSkills || actualSkills.length === 0) return { strong: 0, moderate: 0, weak: 0, count: 0 };
+    const total = actualSkills.length;
+    const strong = actualSkills.filter(s => (s.yourLevel || 0) >= (s.requiredLevel || 1)).length;
+    const moderate = actualSkills.filter(s => (s.yourLevel || 0) > 0 && (s.yourLevel || 0) < (s.requiredLevel || 1)).length;
+    const weak = actualSkills.filter(s => (s.yourLevel || 0) === 0).length;
     
     return {
       strong: Math.round((strong / total) * 100),
@@ -20,18 +26,18 @@ const SkillDNA = ({ userSkills }) => {
       weak: Math.round((weak / total) * 100),
       count: total
     };
-  }, [userSkills]);
+  }, [actualSkills]);
 
   const simulation = useMemo(() => {
     const role = careerPaths.find(r => r.id === selectedRole);
-    if (!role || !userSkills) return null;
+    if (!role || !actualSkills || actualSkills.length === 0) return null;
 
-    const skillMap = Object.fromEntries(userSkills.map(s => [s.name, s]));
-    const missing = role.requiredSkills.filter(rs => !skillMap[rs] || skillMap[rs].yourLevel === 0);
-    const weak = role.requiredSkills.filter(rs => skillMap[rs] && skillMap[rs].yourLevel > 0 && skillMap[rs].yourLevel < skillMap[rs].requiredLevel);
-    const totalRequired = role.requiredSkills.length;
+    const skillMap = Object.fromEntries(actualSkills.map(s => [s.name || s.skill || s, s]));
+    const missing = (role.requiredSkills || []).filter(rs => !skillMap[rs] || (skillMap[rs].yourLevel || 0) === 0);
+    const weak = (role.requiredSkills || []).filter(rs => skillMap[rs] && (skillMap[rs].yourLevel || 0) > 0 && (skillMap[rs].yourLevel || 0) < (skillMap[rs].requiredLevel || 1));
+    const totalRequired = role.requiredSkills?.length || 1;
     
-    const masteredCount = role.requiredSkills.filter(rs => skillMap[rs] && skillMap[rs].yourLevel >= skillMap[rs].requiredLevel).length;
+    const masteredCount = (role.requiredSkills || []).filter(rs => skillMap[rs] && (skillMap[rs].yourLevel || 0) >= (skillMap[rs].requiredLevel || 1)).length;
     const readiness = Math.round(((masteredCount + (weak.length * 0.5)) / totalRequired) * 100);
     
     const timeInWeeks = missing.length * 2 + weak.length * 1;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Briefcase } from 'lucide-react';
 
-export default function ProfileSelector({ selectedProfile, onProfileChange, profileOptions }) {
+export default function ProfileSelector({ selectedProfile, onProfileChange, profileOptions = [] }) {
+  const options = Array.isArray(profileOptions) ? profileOptions : [];
   return (
     <div className="space-y-1.5">
       <label className="flex items-center gap-1.5 text-[11px] font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
@@ -10,10 +11,10 @@ export default function ProfileSelector({ selectedProfile, onProfileChange, prof
       </label>
       <select
         value={selectedProfile}
-        onChange={(e) => onProfileChange(e.target.value)}
+        onChange={(e) => onProfileChange?.(e.target.value)}
         className="w-full px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C] transition-colors cursor-pointer"
       >
-        {profileOptions.map((option) => (
+        {options.map((option) => (
           <option key={option.id} value={option.id} className="bg-[#FCFBF8] dark:bg-[#121416] text-[#1B1B19] dark:text-[#F2F0EA]">
             {option.name}
           </option>

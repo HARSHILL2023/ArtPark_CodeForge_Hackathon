@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.5.0-gold?style=for-the-badge&logo=appveyor" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.5.1-gold?style=for-the-badge&logo=appveyor" alt="Version">
   <img src="https://img.shields.io/badge/Design%20System-Graphite%20%7C%20Warm%20Gold-amber?style=for-the-badge" alt="Design System">
   <img src="https://img.shields.io/badge/Backend-NodeJS%20%7C%20Express-black?style=for-the-badge&logo=node.js&logoColor=white" alt="Backend">
   <img src="https://img.shields.io/badge/Frontend-React%2019%20%7C%20Tailwind%20v4-black?style=for-the-badge&logo=react&logoColor=gold" alt="Frontend">
@@ -19,6 +19,7 @@
   <img src="https://img.shields.io/badge/Maintained%3F-Yes-green?style=flat-square" alt="Maintained">
   <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License">
   <img src="https://img.shields.io/badge/Judge%20Demo-Sandbox%20Ready-amber?style=flat-square" alt="Judge Ready">
+  <img src="https://img.shields.io/badge/Status-Production%20Verified-brightgreen?style=flat-square" alt="Status">
 </p>
 
 ---

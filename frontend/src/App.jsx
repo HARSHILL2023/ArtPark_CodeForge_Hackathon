@@ -13,6 +13,7 @@ import {
   Cpu,
   Layers,
   ArrowLeft,
+  ArrowRight,
   CheckCircle2
 } from 'lucide-react';
 import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
@@ -339,7 +340,24 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
               <UploadForm
                 onAnalyze={handleAnalyze}
                 profiles={profileOptions}
-                onSelectProfile={setSelectedProfile}
+                profileOptions={profileOptions}
+                selectedProfile={selectedProfile}
+                onProfileChange={(id) => {
+                  setSelectedProfile(id);
+                  const found = mockProfiles.find(p => p.id === id);
+                  if (found) {
+                    setCurrentData(found);
+                    setShowResults(true);
+                  }
+                }}
+                onSelectProfile={(id) => {
+                  setSelectedProfile(id);
+                  const found = mockProfiles.find(p => p.id === id);
+                  if (found) {
+                    setCurrentData(found);
+                    setShowResults(true);
+                  }
+                }}
                 isAnalyzing={isAnalyzing}
                 disabled={!isLoggedIn}
               />

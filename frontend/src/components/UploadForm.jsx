@@ -17,10 +17,14 @@ export default function UploadForm({
   onAnalyze,
   selectedProfile,
   onProfileChange,
+  onSelectProfile,
+  profiles,
   profileOptions,
   learningStyle,
   disabled
 }) {
+  const effectiveProfileOptions = profileOptions || profiles || [];
+  const effectiveProfileChange = onProfileChange || onSelectProfile || (() => {});
   const [resumeFile, setResumeFile] = useState(null);
   const [jdText, setJdText] = useState('');
   const [dragActive, setDragActive] = useState(null);
@@ -247,8 +251,8 @@ export default function UploadForm({
         {/* Profile Selector */}
         <ProfileSelector
           selectedProfile={selectedProfile}
-          onProfileChange={onProfileChange}
-          profileOptions={profileOptions}
+          onProfileChange={effectiveProfileChange}
+          profileOptions={effectiveProfileOptions}
         />
 
         {/* Resume Dropzone */}
