@@ -8,19 +8,19 @@ export default function TrustStrip() {
   };
 
   return (
-    <section className="py-12 max-w-7xl mx-auto px-6">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} whileHover={{ y: -5, boxShadow: '0 24px 48px rgba(139,92,246,0.1)' }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="p-8 rounded-full bg-slate-900/40 backdrop-blur-md border border-white/10 flex flex-wrap lg:flex-nowrap justify-between gap-8 items-center cursor-default">
+    <section className="py-12 max-w-6xl mx-auto px-6">
+      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} className="p-6 sm:p-8 rounded-2xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] shadow-xs flex flex-wrap lg:flex-nowrap justify-between gap-6 items-center cursor-default">
         {[
           { i: '🔐', t: 'Google OAuth2', s: 'Secure login via Google' },
           { i: '🛡️', t: 'JWT Protected', s: 'All routes auth-guarded' },
           { i: '🍃', t: 'MongoDB Atlas', s: 'Encrypted cloud database' },
           { i: '⚡', t: 'Multi-AI Fallback', s: '99.9% AI availability' }
         ].map((t, i) => (
-          <div key={i} className="flex items-center gap-4">
-            <span className="text-3xl">{t.i}</span>
+          <div key={i} className="flex items-center gap-3">
+            <span className="text-2xl">{t.i}</span>
             <div>
-              <div className="font-bold text-white text-sm" style={{ fontFamily: "'Syne', sans-serif" }}>{t.t}</div>
-              <div className="text-xs text-slate-400">{t.s}</div>
+              <div className="font-bold text-[#1B1B19] dark:text-[#F2F0EA] text-xs sm:text-sm">{t.t}</div>
+              <div className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9]">{t.s}</div>
             </div>
           </div>
         ))}

@@ -36,29 +36,29 @@ import LandingPage from './pages/LandingPage';
 // Skeleton Loader Component
 function SkeletonLoader() {
   return (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 flex items-center justify-between text-white shadow-md">
+    <div className="space-y-4">
+      <div className="bg-[#2563EB] dark:bg-[#1D4ED8] rounded-xl p-5 flex items-center justify-between text-white shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-white/20 rounded-xl animate-pulse">
-            <Sparkles className="w-5 h-5 text-white" />
+          <div className="p-2 bg-white/20 rounded-lg animate-pulse">
+            <Sparkles className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 className="text-base font-bold">Semantic Multi-LLM Pipeline Active</h3>
-            <p className="text-xs text-indigo-100">Embedding similarity & Kahn topological sort in progress...</p>
+            <h3 className="text-xs sm:text-sm font-bold">Semantic Multi-LLM Pipeline Active</h3>
+            <p className="text-[11px] text-blue-100 mt-0.5">Embedding similarity & Kahn topological sort in progress...</p>
           </div>
         </div>
         <div className="hidden sm:block">
-          <span className="px-3 py-1 bg-white/10 rounded-lg text-xs font-bold uppercase tracking-wider animate-pulse">
+          <span className="px-2.5 py-1 bg-white/10 rounded-md text-[10px] font-bold uppercase tracking-wider animate-pulse">
             Processing Graph
           </span>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
-        <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded-lg w-1/4 animate-pulse" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-[#FCFBF8] dark:bg-[#121416] rounded-xl border border-[#DCD9D1] dark:border-[#292D33] p-5 space-y-4 shadow-xs">
+        <div className="h-4 bg-[#EEECE6] dark:bg-[#181B1F] rounded-md w-1/4 animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-28 bg-slate-100 dark:bg-slate-800/60 rounded-xl animate-pulse" />
+            <div key={i} className="h-24 bg-[#EEECE6]/70 dark:bg-[#181B1F]/70 rounded-lg animate-pulse" />
           ))}
         </div>
       </div>
@@ -505,10 +505,10 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
 
                         <div className="space-y-4">
                           <div className="flex items-center justify-between">
-                            <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                            <h3 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
                               Dagre Topological Skill Graph
                             </h3>
-                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                            <span className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">
                               Interactive directed acyclic dependency layout
                             </span>
                           </div>
@@ -565,16 +565,16 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                   /* Empty state prompt */
                   <div
                     key="empty"
-                    className="p-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 space-y-4"
+                    className="p-12 text-center bg-[#FCFBF8] dark:bg-[#121416] rounded-xl border border-dashed border-[#DCD9D1] dark:border-[#292D33] space-y-4"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 mx-auto flex items-center justify-center">
-                      <Sparkles className="w-6 h-6" />
+                    <div className="w-10 h-10 rounded-xl bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 text-[#2563EB] dark:text-[#3B82F6] border border-[#2563EB]/20 dark:border-[#3B82F6]/25 mx-auto flex items-center justify-center">
+                      <Sparkles className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                      <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
                         Start Your Skill Gap Analysis
                       </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
+                      <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] max-w-sm mx-auto mt-1 leading-relaxed">
                         Upload your resume and target role description or load the preset demo profile on the left to explore the interactive career engine.
                       </p>
                     </div>
@@ -587,13 +587,13 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#080c14] py-6 text-xs text-slate-500 dark:text-slate-400">
+      <footer className="mt-auto border-t border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#0C0D0F] py-5 text-xs text-[#5E5C56] dark:text-[#B4B1A9]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 font-bold text-slate-700 dark:text-slate-300">
-            <Brain className="w-4 h-4 text-indigo-500" />
+          <div className="flex items-center gap-2 font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
+            <Brain className="w-4 h-4 text-[#2563EB] dark:text-[#3B82F6]" />
             <span>CodeForge AI &bull; ArtPark Hackathon</span>
           </div>
-          <span>Engineered for next-generation AI career acceleration</span>
+          <span className="text-[11px]">Engineered for next-generation AI career acceleration</span>
         </div>
       </footer>
 

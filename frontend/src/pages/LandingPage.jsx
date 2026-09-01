@@ -18,7 +18,7 @@ export default function LandingPage({ darkMode, toggleDark }) {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   return (
-    <main className="bg-[#0B0D10] text-[#F5F7FA] overflow-hidden min-h-screen relative font-sans">
+    <main className="bg-[#F5F3EE] dark:bg-[#0C0D0F] text-[#1B1B19] dark:text-[#F2F0EA] overflow-hidden min-h-screen relative font-sans transition-colors duration-150">
       <Navbar darkMode={darkMode} toggleDark={toggleDark} onOpenAuth={() => setIsAuthOpen(true)} />
       <Hero onOpenAuth={() => setIsAuthOpen(true)} />
       <ProblemSection />

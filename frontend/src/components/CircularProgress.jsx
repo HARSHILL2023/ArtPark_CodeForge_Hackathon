@@ -14,7 +14,7 @@ export default function CircularProgress({ score, size = 160, strokeWidth = 12 }
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          className="stroke-slate-200 dark:stroke-slate-800"
+          className="stroke-[#DCD9D1] dark:stroke-[#292D33]"
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -40,7 +40,7 @@ export default function CircularProgress({ score, size = 160, strokeWidth = 12 }
         >
           {score}%
         </motion.span>
-        <span className="text-sm text-slate-500 dark:text-slate-400 mt-1">Ready</span>
+        <span className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] mt-0.5 font-semibold">Ready</span>
       </div>
     </div>
   );
