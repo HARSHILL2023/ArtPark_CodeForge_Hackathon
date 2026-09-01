@@ -653,4 +653,7 @@ const generateAdaptivePathway = async (resumeProfile, jdProfile, skillGap, learn
   };
 };
 
-module.exports = { generateAdaptivePathway };
+module.exports = {
+  generateAdaptivePathway,
+  generatePathway: generateAdaptivePathway
+};
