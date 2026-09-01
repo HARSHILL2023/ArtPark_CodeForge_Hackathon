@@ -95,13 +95,13 @@ export default function Hero({ onOpenAuth }) {
           ].map((item, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-left"
+              className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] text-left hover-card group cursor-default"
             >
-              <item.icon className="w-4 h-4 text-[#2563EB] dark:text-[#3B82F6] mb-2" />
-              <div className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] tracking-tight">
+              <item.icon className="w-4 h-4 text-[#2563EB] dark:text-[#3B82F6] mb-2 transition-transform duration-200 group-hover:scale-110" />
+              <div className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] tracking-tight group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors">
                 {item.metric}
               </div>
-              <div className="text-[11px] text-[#85827A] dark:text-[#7E7C77] font-normal mt-0.5">
+              <div className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] font-normal mt-0.5">
                 {item.desc}
               </div>
             </div>

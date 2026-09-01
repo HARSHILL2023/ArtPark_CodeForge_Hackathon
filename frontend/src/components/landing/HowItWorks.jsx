@@ -84,16 +84,16 @@ export default function HowItWorks() {
             <motion.div
               key={p.step}
               variants={item}
-              className="p-4 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] hover:border-[#C9C5BB] dark:hover:border-[#363B43] transition-colors flex flex-col justify-between space-y-3"
+              className="p-4 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] hover-card hover-glow-blue transition-colors flex flex-col justify-between space-y-3 group cursor-default"
             >
               <div>
                 <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-base font-bold text-[#2563EB] dark:text-[#3B82F6] font-mono">{p.step}</span>
-                  <div className="w-7 h-7 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
+                  <span className="text-base font-bold text-[#2563EB] dark:text-[#3B82F6] font-mono group-hover:scale-110 transition-transform inline-block">{p.step}</span>
+                  <div className="w-7 h-7 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6] transition-transform duration-200 group-hover:scale-110 group-hover:bg-[#2563EB]/10 dark:group-hover:bg-[#3B82F6]/10">
                     <Icon className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <h3 className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1 leading-snug">
+                <h3 className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1 leading-snug group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors">
                   {p.title}
                 </h3>
                 <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">

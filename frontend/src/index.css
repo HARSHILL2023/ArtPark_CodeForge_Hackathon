@@ -180,11 +180,13 @@ body {
   border: 1px solid var(--border-subtle);
   border-radius: 0.875rem; /* 14px */
   box-shadow: var(--shadow-xs);
-  transition: border-color 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cf-card:hover {
   border-color: var(--border-medium);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .cf-control {
@@ -200,9 +202,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-/* Standardized Button Hierarchy */
+.cf-badge:hover {
+  transform: scale(1.03);
+}
+
+/* Standardized Button Hierarchy with Premium Hover */
 .cf-btn-primary {
   background-color: var(--brand-primary);
   color: var(--brand-primary-text);
@@ -216,15 +223,22 @@ body {
   gap: 0.45rem;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
 }
 
 .cf-btn-primary:hover:not(:disabled) {
   background-color: var(--brand-primary-hover);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.dark .cf-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
 }
 
 .cf-btn-primary:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
 }
 
 .cf-btn-secondary {
@@ -240,12 +254,20 @@ body {
   justify-content: center;
   gap: 0.45rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-xs);
 }
 
 .cf-btn-secondary:hover:not(:disabled) {
   background-color: var(--bg-surface-elevated);
   border-color: var(--border-medium);
+  transform: translateY(-1.5px);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-primary);
+}
+
+.cf-btn-secondary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
 }
 
 .cf-btn-ghost {
@@ -261,12 +283,61 @@ body {
   gap: 0.35rem;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .cf-btn-ghost:hover:not(:disabled) {
   color: var(--text-primary);
   background-color: var(--bg-surface-elevated);
+  transform: translateY(-1px);
+}
+
+/* Reusable Interactive Hover Utilities */
+.hover-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-2.5px);
+  box-shadow: 0 8px 20px -4px rgba(27, 27, 25, 0.08);
+  border-color: var(--border-medium);
+}
+
+.dark .hover-card:hover {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  border-color: var(--border-medium);
+}
+
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-glow-blue {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-glow-blue:hover {
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.15);
+}
+
+.dark .hover-glow-blue:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.interactive-chip {
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.interactive-chip:hover {
+  transform: translateY(-1px) scale(1.02);
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
 }
 
 /* Reduced motion preference */

@@ -395,8 +395,8 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
 
                       {/* Next Best Action & Readiness Triad */}
                       <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-                        <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-3">
-                          <div className="w-7 h-7 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#2563EB] dark:text-[#3B82F6] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-3 hover-card hover-glow-blue cursor-default">
+                          <div className="w-7 h-7 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#2563EB] dark:text-[#3B82F6] flex items-center justify-center flex-shrink-0 mt-0.5 transition-transform duration-200 hover:scale-110">
                             <Target className="w-3.5 h-3.5" />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -407,7 +407,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                               <button
                                 type="button"
                                 onClick={() => setActiveTab('roadmap')}
-                                className="text-[10px] font-semibold text-[#2563EB] dark:text-[#3B82F6] hover:underline flex items-center gap-0.5 cursor-pointer"
+                                className="text-[10px] font-semibold text-[#2563EB] dark:text-[#3B82F6] hover:underline hover:translate-x-0.5 transition-transform flex items-center gap-0.5 cursor-pointer"
                               >
                                 Jump to Path &rarr;
                               </button>
@@ -421,8 +421,8 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                           </div>
                         </div>
 
-                        <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-around gap-2 text-center">
-                          <div>
+                        <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-around gap-2 text-center hover-card cursor-default">
+                          <div className="hover:scale-105 transition-transform">
                             <span className="text-sm font-bold text-[#237A4B] dark:text-[#4CAF7A] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel >= s.requiredLevel).length || 0}
                             </span>
@@ -431,7 +431,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                             </span>
                           </div>
                           <div className="h-6 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
-                          <div>
+                          <div className="hover:scale-105 transition-transform">
                             <span className="text-sm font-bold text-[#D97706] dark:text-[#F59E0B] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length || 0}
                             </span>
@@ -440,7 +440,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                             </span>
                           </div>
                           <div className="h-6 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
-                          <div>
+                          <div className="hover:scale-105 transition-transform">
                             <span className="text-sm font-bold text-[#B33A3A] dark:text-[#D96565] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel === 0).length || 0}
                             </span>
@@ -465,10 +465,10 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                           <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
                               isActive
-                                ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white shadow-xs'
-                                : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border border-[#DCD9D1] dark:border-[#292D33] hover:bg-[#EEECE6] dark:hover:bg-[#181B1F]'
+                                ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white shadow-xs scale-[1.02]'
+                                : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border border-[#DCD9D1] dark:border-[#292D33] hover:bg-[#EEECE6] dark:hover:bg-[#181B1F] hover:text-[#1B1B19] dark:hover:text-white hover:-translate-y-0.5'
                             }`}
                           >
                             <Icon className="w-3.5 h-3.5" />

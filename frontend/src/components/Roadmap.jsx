@@ -90,7 +90,7 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
 
                   {/* Step Card Container */}
                   <div
-                    className={`p-4 rounded-xl border transition-colors ${
+                    className={`p-4 rounded-xl border hover-card hover-glow-blue cursor-default ${
                       isCompleted
                         ? 'bg-[#237A4B]/5 dark:bg-[#4CAF7A]/5 border-[#237A4B]/20 dark:border-[#4CAF7A]/25'
                         : isRemedial

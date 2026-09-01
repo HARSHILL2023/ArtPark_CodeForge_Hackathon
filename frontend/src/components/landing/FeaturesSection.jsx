@@ -86,14 +86,14 @@ export default function FeaturesSection() {
             <motion.div
               key={i}
               variants={item}
-              className={`flex flex-col p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] hover:border-[#C9C5BB] dark:hover:border-[#363B43] transition-colors ${
+              className={`flex flex-col p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] hover-card hover-glow-blue group cursor-default ${
                 f.wide ? 'md:col-span-2' : ''
               }`}
             >
-              <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center mb-3.5 text-[#2563EB] dark:text-[#3B82F6]">
+              <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center mb-3.5 text-[#2563EB] dark:text-[#3B82F6] transition-transform duration-200 group-hover:scale-110 group-hover:bg-[#2563EB]/10 dark:group-hover:bg-[#3B82F6]/10">
                 <Icon className="w-4 h-4" />
               </div>
-              <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1.5 tracking-tight">
+              <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1.5 tracking-tight group-hover:text-[#2563EB] dark:group-hover:text-[#3B82F6] transition-colors">
                 {f.title}
               </h3>
               <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed mb-3.5">

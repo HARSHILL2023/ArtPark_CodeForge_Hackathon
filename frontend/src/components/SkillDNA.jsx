@@ -61,11 +61,11 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Panel A: Skill DNA Profile */}
-      <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden flex flex-col justify-between">
+      {/* Panel A: Skill DNA Vector Profile */}
+      <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden flex flex-col justify-between hover-card hover-glow-blue">
         <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6] transition-transform duration-200 hover:scale-110">
               <Fingerprint className="w-4 h-4" />
             </div>
             <div>
@@ -143,10 +143,10 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
       </div>
 
       {/* Panel B: Career Simulation Engine */}
-      <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden flex flex-col justify-between">
+      <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden flex flex-col justify-between hover-card hover-glow-blue">
         <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6]">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#2563EB] dark:text-[#3B82F6] transition-transform duration-200 hover:scale-110">
               <TrendingUp className="w-4 h-4" />
             </div>
             <div>
@@ -183,7 +183,7 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
                 className="space-y-2.5 pt-0.5"
               >
                 {/* Readiness Result */}
-                <div className="p-3 bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 border border-[#2563EB]/20 dark:border-[#3B82F6]/25 rounded-xl flex items-center justify-between">
+                <div className="p-3 bg-[#2563EB]/10 dark:bg-[#3B82F6]/10 border border-[#2563EB]/20 dark:border-[#3B82F6]/25 rounded-xl flex items-center justify-between hover-card cursor-default">
                   <span className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
                     Fit for {simulation.name}
                   </span>
@@ -193,14 +193,14 @@ const SkillDNA = ({ userSkills, skills, readinessScore }) => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2.5">
-                  <div className="p-2.5 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33]">
+                  <div className="p-2.5 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] hover-card cursor-default">
                     <div className="flex items-center gap-1.5 text-[#85827A] dark:text-[#7E7C77] text-[10px] uppercase tracking-wider font-semibold mb-0.5">
                       <Clock className="w-3 h-3 text-[#9A6B00] dark:text-[#D6A84F]" />
                       <span>Estimated Time</span>
                     </div>
                     <p className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] font-mono">{simulation.timeInWeeks} Weeks</p>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33]">
+                  <div className="p-2.5 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] hover-card cursor-default">
                     <div className="flex items-center gap-1.5 text-[#85827A] dark:text-[#7E7C77] text-[10px] uppercase tracking-wider font-semibold mb-0.5">
                       <Target className="w-3 h-3 text-[#237A4B] dark:text-[#4CAF7A]" />
                       <span>Pass Probability</span>

@@ -45,7 +45,7 @@ export default function Testimonials() {
           <motion.div
             key={i}
             variants={item}
-            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3 flex flex-col justify-between"
+            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3 flex flex-col justify-between hover-card hover-glow-blue cursor-default"
           >
             <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed italic">
               "{t.q}"

@@ -87,11 +87,11 @@ export default function GapSummary({
               return (
                 <div
                   key={stat.label}
-                  className="p-3 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33]"
+                  className="p-3 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] hover-card hover-glow-blue cursor-default group"
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-[11px] font-medium text-[#5E5C56] dark:text-[#B4B1A9]">{stat.label}</span>
-                    <div className={`p-1 rounded-md border ${stat.badgeBg}`}>
+                    <div className={`p-1 rounded-md border ${stat.badgeBg} transition-transform duration-200 group-hover:scale-110`}>
                       <Icon className="w-3 h-3" />
                     </div>
                   </div>
@@ -108,7 +108,7 @@ export default function GapSummary({
         </div>
 
         {/* Learning Personalization Mode */}
-        <div className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <div className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 hover-card">
           <div>
             <span className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] block">
               Personalized Learning Modality
@@ -131,10 +131,10 @@ export default function GapSummary({
                   key={style.id}
                   type="button"
                   onClick={() => onStyleChange(style.id)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 border cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 border cursor-pointer ${
                     isSelected
-                      ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent'
-                      : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
+                      ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent shadow-xs scale-105'
+                      : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white hover:bg-[#EEECE6] dark:hover:bg-[#181B1F] hover:-translate-y-0.5'
                   }`}
                 >
                   <StyleIcon className="w-3 h-3" />

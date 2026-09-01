@@ -108,10 +108,10 @@ export default function SkillTable({ skills = [] }) {
                 key={cat}
                 type="button"
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-2.5 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors border cursor-pointer ${
+                className={`px-2.5 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-all border cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent'
-                    : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
+                    ? 'bg-[#2563EB] dark:bg-[#3B82F6] text-white border-transparent shadow-xs scale-105'
+                    : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white hover:bg-[#EEECE6] dark:hover:bg-[#181B1F] hover:-translate-y-0.5'
                 }`}
               >
                 {cat}
@@ -133,10 +133,10 @@ export default function SkillTable({ skills = [] }) {
               <th className="px-5 py-2.5 text-right">Evaluation</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#DCD9D1] dark:divide-[#292D33]/60 text-xs">
+          <tbody className="divide-y divide-[#DCD9D1] dark:divide-[#292D33] text-xs">
             {filteredSkills.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-5 py-8 text-center text-[#85827A] dark:text-[#7E7C77]">
+                <td colSpan={5} className="px-5 py-8 text-center text-xs text-[#85827A] dark:text-[#7E7C77]">
                   No skills matched your filter query.
                 </td>
               </tr>
@@ -149,7 +149,7 @@ export default function SkillTable({ skills = [] }) {
                 return (
                   <tr
                     key={skill.name}
-                    className="hover:bg-[#EEECE6]/30 dark:hover:bg-[#181B1F]/40 transition-colors"
+                    className="hover:bg-[#EEECE6]/60 dark:hover:bg-[#181B1F]/70 transition-colors group cursor-default"
                   >
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2">

@@ -59,7 +59,7 @@ export default function ImpactSection() {
           <motion.div
             key={i}
             variants={item}
-            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3"
+            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3 hover-card hover-glow-blue cursor-default"
           >
             <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">{c.title}</h3>
             <ul className="space-y-2">

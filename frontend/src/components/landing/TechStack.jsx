@@ -46,14 +46,14 @@ export default function TechStack() {
           <motion.div
             key={i}
             variants={item}
-            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3"
+            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3 hover-card hover-glow-blue cursor-default"
           >
             <h3 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
               {group.title}
             </h3>
             <div className="flex flex-wrap gap-1.5">
               {group.chips.map((chip, j) => (
-                <span key={j} className="px-2.5 py-1 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] text-xs font-mono">
+                <span key={j} className="px-2.5 py-1 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] text-xs font-mono interactive-chip cursor-pointer">
                   {chip}
                 </span>
               ))}
@@ -62,14 +62,14 @@ export default function TechStack() {
         ))}
       </motion.div>
 
-      <motion.div variants={item} initial="hidden" whileInView="show" viewport={{ once: true }} className="rounded-xl border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] overflow-hidden">
+      <motion.div variants={item} initial="hidden" whileInView="show" viewport={{ once: true }} className="rounded-xl border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] overflow-hidden shadow-xs hover-card">
         <div className="flex flex-col divide-y divide-[#DCD9D1] dark:divide-[#292D33]">
           {[
             { title: 'Deterministic Fallback Pipeline', desc: 'Google Gemini primary → OpenAI secondary → Groq high-speed fallback ensuring 100% platform availability.' },
             { title: 'Explainable AI Decision Audit', desc: 'Every recommended milestone and pruned prerequisite exposes vector similarity scores and dependency logic.' },
             { title: 'Isolated Sandbox Access', desc: 'Judge Demo sandbox tokens operate with zero persistence leaks while regular sessions authenticate with JWT.' }
           ].map((arch, i) => (
-            <div key={i} className="flex items-start gap-3.5 p-4 sm:p-5">
+            <div key={i} className="flex items-start gap-3.5 p-4 sm:p-5 hover:bg-[#EEECE6]/40 dark:hover:bg-[#181B1F]/60 transition-colors cursor-default">
               <div className="mt-1 w-2 h-2 flex-shrink-0 rounded-full bg-[#2563EB] dark:bg-[#3B82F6]"></div>
               <div>
                 <h4 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-0.5">{arch.title}</h4>
