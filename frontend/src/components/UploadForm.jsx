@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import {
   UploadCloud,
   FileText,
@@ -8,8 +8,7 @@ import {
   Loader2,
   Sparkles,
   Zap,
-  Trash2,
-  HelpCircle
+  Trash2
 } from 'lucide-react';
 import * as api from '../lib/api';
 import ProfileSelector from './ProfileSelector';
@@ -19,7 +18,8 @@ export default function UploadForm({
   selectedProfile,
   onProfileChange,
   profileOptions,
-  learningStyle
+  learningStyle,
+  disabled
 }) {
   const [resumeFile, setResumeFile] = useState(null);
   const [jdText, setJdText] = useState('');
@@ -95,29 +95,24 @@ export default function UploadForm({
     setStatus(analysisSteps[0]);
 
     try {
-      // Step 1: Parse Resume
       const resumeResult = await api.parseResume(resumeFile);
       const resumeProfile = resumeResult.profile;
 
-      // Step 2: Parse JD
       setCurrentStepIndex(1);
       setStatus(analysisSteps[1]);
       const jdResult = await api.parseJD(jdText);
       const jdProfile = jdResult.profile;
 
-      // Step 3: Skill Gap Analysis
       setCurrentStepIndex(2);
       setStatus(analysisSteps[2]);
       const gapResult = await api.analyzeSkillGap(resumeProfile, jdProfile);
       const skillGap = gapResult.skillGap;
 
-      // Step 4: Roadmap Generation
       setCurrentStepIndex(3);
       setStatus(analysisSteps[3]);
       const roadmapResult = await api.generateRoadmap(resumeProfile, jdProfile, skillGap, learningStyle);
       const roadmap = roadmapResult.roadmap;
 
-      // Step 5: Finalize
       setCurrentStepIndex(4);
       setStatus(analysisSteps[4]);
 
@@ -223,32 +218,32 @@ export default function UploadForm({
   const canAnalyze = resumeFile && jdText.trim().length > 0;
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden">
       {/* Header */}
-      <div className="p-6 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F]">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-              <UploadCloud className="w-5 h-5" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+              <UploadCloud className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900 dark:text-white">Document Ingestion</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Resume & Job Description Analysis</p>
+              <h2 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">Document Ingestion</h2>
+              <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">Resume & Job Description Analysis</p>
             </div>
           </div>
 
           <button
             onClick={handleTryDemo}
             type="button"
-            className="px-3 py-1.5 rounded-lg border border-amber-300 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold flex items-center gap-1.5 hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors"
+            className="cf-btn-secondary py-1 px-2 text-xs"
           >
-            <Zap className="w-3.5 h-3.5" />
+            <Zap className="w-3 h-3 text-[#B88916] dark:text-[#D4A72C]" />
             <span>Load Demo</span>
           </button>
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
+      <div className="p-4 space-y-4">
         {/* Profile Selector */}
         <ProfileSelector
           selectedProfile={selectedProfile}
@@ -257,13 +252,13 @@ export default function UploadForm({
         />
 
         {/* Resume Dropzone */}
-        <div className="space-y-2">
-          <label className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+        <div className="space-y-1.5">
+          <label className="flex items-center justify-between text-[11px] font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
             <span className="flex items-center gap-1.5">
-              <FileText className="w-3.5 h-3.5 text-indigo-500" />
+              <FileText className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
               1. Candidate Resume
             </span>
-            <span className="text-[11px] font-normal text-slate-400">PDF, TXT, DOCX</span>
+            <span className="text-[10px] font-normal text-[#85827A] dark:text-[#7E7C77]">PDF, TXT, DOCX</span>
           </label>
 
           {!resumeFile ? (
@@ -272,10 +267,10 @@ export default function UploadForm({
               onDragLeave={(e) => handleDrag(e, 'resume')}
               onDragOver={(e) => handleDrag(e, 'resume')}
               onDrop={(e) => handleDrop(e, 'resume')}
-              className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${
+              className={`relative border border-dashed rounded-xl p-5 text-center transition-colors cursor-pointer ${
                 dragActive === 'resume'
-                  ? 'border-indigo-500 bg-indigo-50/50 dark:bg-indigo-950/20'
-                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30'
+                  ? 'border-[#B88916] dark:border-[#D4A72C] bg-[#B88916]/5 dark:bg-[#D4A72C]/10'
+                  : 'border-[#DCD9D1] dark:border-[#292D33] hover:border-[#C9C5BB] dark:hover:border-[#363B43] bg-[#FCFBF8] dark:bg-[#181B1F]'
               }`}
             >
               <input
@@ -285,28 +280,28 @@ export default function UploadForm({
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 aria-label="Upload Resume"
               />
-              <div className="space-y-2">
-                <div className="mx-auto w-10 h-10 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                  <UploadCloud className="w-5 h-5" />
+              <div className="space-y-1.5">
+                <div className="mx-auto w-8 h-8 bg-[#EEECE6] dark:bg-[#121416] rounded-lg border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                  <UploadCloud className="w-4 h-4" />
                 </div>
-                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                  Drag & drop resume or <span className="text-indigo-600 dark:text-indigo-400 underline">browse</span>
+                <p className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
+                  Drag & drop resume or <span className="text-[#B88916] dark:text-[#D4A72C] underline">browse</span>
                 </p>
-                <p className="text-xs text-slate-400 dark:text-slate-500">Max size 10MB</p>
+                <p className="text-[10px] text-[#85827A] dark:text-[#7E7C77]">Max size 10MB</p>
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between p-3.5 bg-emerald-50/60 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
-                  <CheckCircle2 className="w-4 h-4" />
+            <div className="flex items-center justify-between p-3 bg-[#237A4B]/10 dark:bg-[#4CAF7A]/10 border border-[#237A4B]/20 dark:border-[#4CAF7A]/25 rounded-xl">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-[#237A4B]/20 dark:bg-[#4CAF7A]/20 flex items-center justify-center text-[#237A4B] dark:text-[#4CAF7A] flex-shrink-0">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                  <p className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA] truncate">
                     {resumeFile.name}
                   </p>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                    {(resumeFile.size / 1024).toFixed(1)} KB &bull; Verified
+                  <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">
+                    {(resumeFile.size / 1024).toFixed(1)} KB &bull; Ready
                   </p>
                 </div>
               </div>
@@ -314,25 +309,25 @@ export default function UploadForm({
                 type="button"
                 onClick={() => setResumeFile(null)}
                 aria-label="Remove uploaded resume"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
+                className="p-1 rounded-md text-[#85827A] hover:text-[#D96565] transition-colors cursor-pointer"
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
           )}
         </div>
 
         {/* Job Description */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-              <FileText className="w-3.5 h-3.5 text-indigo-500" />
+            <label className="flex items-center gap-1.5 text-[11px] font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
+              <FileText className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C]" />
               2. Target Job Description
             </label>
             <button
               type="button"
               onClick={handlePasteSampleJD}
-              className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+              className="text-[10px] font-semibold text-[#B88916] dark:text-[#D4A72C] hover:underline cursor-pointer"
             >
               Paste Sample JD
             </button>
@@ -342,36 +337,36 @@ export default function UploadForm({
             value={jdText}
             onChange={(e) => setJdText(e.target.value)}
             placeholder="Paste complete role description, responsibilities, and required qualifications..."
-            rows={5}
-            className="w-full px-4 py-3 bg-slate-50/60 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all resize-none font-sans leading-relaxed"
+            rows={4}
+            className="w-full px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C] transition-colors resize-none font-sans leading-relaxed"
           />
 
-          <div className="flex justify-between items-center text-[10px] text-slate-400">
+          <div className="flex justify-between items-center text-[10px] text-[#85827A] dark:text-[#7E7C77]">
             <span>{jdText.length > 0 ? `${jdText.split(/\s+/).filter(Boolean).length} words entered` : 'Enter or paste job requirements'}</span>
-            {jdText.length > 0 && <span className="text-emerald-500 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Ready</span>}
+            {jdText.length > 0 && <span className="text-[#237A4B] dark:text-[#4CAF7A] font-semibold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Ready</span>}
           </div>
         </div>
 
         {/* Step-by-Step Processing Indicator */}
         {isAnalyzing && (
-          <div className="p-4 rounded-xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800/50 space-y-3">
-            <div className="flex items-center justify-between text-xs font-bold text-indigo-900 dark:text-indigo-200">
+          <div className="p-3 rounded-xl bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] space-y-2">
+            <div className="flex items-center justify-between text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
               <span className="flex items-center gap-2">
-                <Loader2 className="w-4 h-4 animate-spin text-indigo-600 dark:text-indigo-400" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
                 <span>AI Pipeline Active</span>
               </span>
-              <span>Step {currentStepIndex + 1} of 5</span>
+              <span className="font-mono text-[11px]">Step {currentStepIndex + 1} of 5</span>
             </div>
 
-            <div className="w-full h-1.5 bg-indigo-100 dark:bg-indigo-900/60 rounded-full overflow-hidden">
+            <div className="w-full h-1 bg-[#DCD9D1] dark:bg-[#292D33] rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: '10%' }}
                 animate={{ width: `${((currentStepIndex + 1) / 5) * 100}%` }}
-                transition={{ duration: 0.3 }}
-                className="h-full bg-indigo-600 rounded-full"
+                transition={{ duration: 0.2 }}
+                className="h-full bg-[#B88916] dark:bg-[#D4A72C] rounded-full"
               />
             </div>
-            <p className="text-[11px] text-indigo-700 dark:text-indigo-300 font-medium">
+            <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9] font-medium">
               {status}
             </p>
           </div>
@@ -379,8 +374,8 @@ export default function UploadForm({
 
         {/* Error Notification */}
         {status.startsWith('Analysis encountered') && (
-          <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800 text-xs font-medium text-rose-700 dark:text-rose-300 flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
+          <div className="p-3 rounded-xl bg-[#B33A3A]/10 dark:bg-[#D96565]/10 border border-[#B33A3A]/20 dark:border-[#D96565]/25 text-xs font-medium text-[#B33A3A] dark:text-[#D96565] flex items-start gap-2">
+            <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
             <span>{status}</span>
           </div>
         )}
@@ -389,21 +384,21 @@ export default function UploadForm({
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={!canAnalyze || isAnalyzing}
-          className={`w-full py-3.5 px-5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-            canAnalyze && !isAnalyzing
-              ? 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-md shadow-indigo-500/25 cursor-pointer active:scale-98'
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700 cursor-not-allowed'
+          disabled={!canAnalyze || isAnalyzing || disabled}
+          className={`w-full py-2.5 px-4 rounded-xl font-semibold text-xs transition-colors flex items-center justify-center gap-2 ${
+            canAnalyze && !isAnalyzing && !disabled
+              ? 'cf-btn-primary'
+              : 'bg-[#EEECE6] dark:bg-[#181B1F] text-[#85827A] dark:text-[#5B5A57] border border-[#DCD9D1] dark:border-[#292D33] cursor-not-allowed'
           }`}
         >
           {isAnalyzing ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
               <span>Analyzing Skill Matrix...</span>
             </>
           ) : (
             <>
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-3.5 h-3.5" />
               <span>Run Skill Gap Analysis</span>
             </>
           )}

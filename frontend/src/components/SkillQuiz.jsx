@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Target, CheckCircle2, XCircle, ChevronRight, Brain, AlertTriangle, X, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Target, CheckCircle2, XCircle, ChevronRight, Brain, AlertTriangle, X } from 'lucide-react';
 
 export default function SkillQuiz({ step, onComplete, onCancel }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -62,34 +62,34 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
       } else {
         setShowResult(true);
       }
-    }, 700);
+    }, 500);
   };
 
   const finalScorePercent = Math.round((score / mockQuiz.length) * 100);
   const passed = finalScorePercent >= 66;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#0C0D0F]/80 backdrop-blur-xs">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 16 }}
+        initial={{ opacity: 0, scale: 0.97, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 16 }}
-        transition={{ duration: 0.2 }}
-        className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden"
+        exit={{ opacity: 0, scale: 0.97, y: 12 }}
+        transition={{ duration: 0.15 }}
+        className="w-full max-w-md bg-[#FCFBF8] dark:bg-[#121416] rounded-2xl shadow-md border border-[#DCD9D1] dark:border-[#292D33] overflow-hidden"
       >
         {!showResult ? (
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-6 space-y-4">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+            <div className="flex items-center justify-between border-b border-[#DCD9D1] dark:border-[#292D33] pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
                   <Brain className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                  <h3 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
                     Milestone Knowledge Check
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">
                     Question {currentQuestion + 1} of {mockQuiz.length} &bull; {step.title}
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
                 type="button"
                 onClick={onCancel}
                 aria-label="Close quiz"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="p-1 rounded-md text-[#85827A] dark:text-[#7E7C77] hover:text-[#1B1B19] dark:hover:text-white hover:bg-[#EEECE6] dark:hover:bg-[#181B1F] transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -107,20 +107,20 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
 
             {/* Question Body */}
             <div>
-              <h4 className="text-base font-bold text-slate-900 dark:text-white mb-4 leading-snug">
+              <h4 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-3 leading-snug">
                 {mockQuiz[currentQuestion].question}
               </h4>
 
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {mockQuiz[currentQuestion].options.map((option, i) => {
                   const isSelected = selectedAnswer === i;
                   const isCorrect = i === mockQuiz[currentQuestion].correct;
                   
-                  let btnStyle = 'bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-200 hover:border-indigo-500/50';
+                  let btnStyle = 'bg-[#FCFBF8] dark:bg-[#181B1F] border-[#DCD9D1] dark:border-[#292D33] text-[#1B1B19] dark:text-[#F2F0EA] hover:border-[#B88916]/50 dark:hover:border-[#D4A72C]/50';
                   if (isSelected) {
                     btnStyle = isCorrect
-                      ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-500 text-emerald-800 dark:text-emerald-300'
-                      : 'bg-rose-50 dark:bg-rose-950/30 border-rose-500 text-rose-800 dark:text-rose-300';
+                      ? 'bg-[#237A4B]/10 dark:bg-[#4CAF7A]/10 border-[#237A4B] dark:border-[#4CAF7A] text-[#237A4B] dark:text-[#4CAF7A]'
+                      : 'bg-[#B33A3A]/10 dark:bg-[#D96565]/10 border-[#B33A3A] dark:border-[#D96565] text-[#B33A3A] dark:text-[#D96565]';
                   }
 
                   return (
@@ -129,11 +129,11 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
                       type="button"
                       disabled={selectedAnswer !== null}
                       onClick={() => handleAnswer(i)}
-                      className={`w-full p-3.5 rounded-xl text-left text-xs font-semibold transition-all border flex items-center justify-between ${btnStyle} cursor-pointer`}
+                      className={`w-full p-2.5 rounded-xl text-left text-xs font-medium transition-colors border flex items-center justify-between ${btnStyle} cursor-pointer`}
                     >
                       <span>{option}</span>
                       {isSelected && (
-                        isCorrect ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-rose-500" />
+                        isCorrect ? <CheckCircle2 className="w-3.5 h-3.5 text-[#237A4B] dark:text-[#4CAF7A]" /> : <XCircle className="w-3.5 h-3.5 text-[#B33A3A] dark:text-[#D96565]" />
                       )}
                     </button>
                   );
@@ -142,39 +142,39 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
             </div>
 
             {/* Progress Bar */}
-            <div className="pt-2">
-              <div className="flex justify-between text-[10px] text-slate-400 font-semibold mb-1">
+            <div className="pt-1">
+              <div className="flex justify-between text-[10px] text-[#85827A] dark:text-[#7E7C77] font-semibold mb-1">
                 <span>Progress</span>
-                <span>{Math.round(((currentQuestion + 1) / mockQuiz.length) * 100)}%</span>
+                <span className="font-mono">{Math.round(((currentQuestion + 1) / mockQuiz.length) * 100)}%</span>
               </div>
-              <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-[#EEECE6] dark:bg-[#292D33] rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${((currentQuestion + 1) / mockQuiz.length) * 100}%` }}
-                  className="h-full bg-indigo-600 rounded-full"
+                  className="h-full bg-[#B88916] dark:bg-[#D4A72C] rounded-full"
                 />
               </div>
             </div>
           </div>
         ) : (
           /* Result Summary */
-          <div className="p-8 text-center space-y-5">
+          <div className="p-6 text-center space-y-4">
             <div
-              className={`w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-md ${
+              className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center ${
                 passed
-                  ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
-                  : 'bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400'
+                  ? 'bg-[#237A4B]/10 text-[#237A4B] dark:bg-[#4CAF7A]/15 dark:text-[#4CAF7A]'
+                  : 'bg-[#9A6B00]/10 text-[#9A6B00] dark:bg-[#D6A84F]/15 dark:text-[#D6A84F]'
               }`}
             >
-              {passed ? <Target className="w-8 h-8" /> : <AlertTriangle className="w-8 h-8" />}
+              {passed ? <Target className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
             </div>
 
             <div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+              <h3 className="text-sm sm:text-base font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
                 {passed ? 'Milestone Assessment Passed!' : 'Targeted Remedial Path Injected'}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto leading-relaxed">
-                Score: <span className="font-bold text-slate-900 dark:text-white">{finalScorePercent}%</span>.
+              <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] mt-1 max-w-xs mx-auto leading-relaxed">
+                Score: <span className="font-bold text-[#1B1B19] dark:text-[#F2F0EA] font-mono">{finalScorePercent}%</span>.
                 {passed
                   ? ' Prerequisite verified. Adaptive algorithm marks milestone completed.'
                   : ' Adaptive algorithm has auto-injected targeted remedial exercises into your curriculum.'}
@@ -184,10 +184,10 @@ export default function SkillQuiz({ step, onComplete, onCancel }) {
             <button
               type="button"
               onClick={() => onComplete(passed)}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs shadow-md shadow-indigo-500/25 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="cf-btn-primary w-full justify-center py-2.5 text-xs"
             >
               <span>Apply to Adaptive Roadmap</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         )}

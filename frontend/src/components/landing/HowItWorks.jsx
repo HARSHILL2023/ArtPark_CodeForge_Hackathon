@@ -5,11 +5,11 @@ import { FileText, Cpu, Network, Route, Award, ArrowRight } from 'lucide-react';
 export default function HowItWorks() {
   const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.08 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.05 } }
   };
   const item = {
-    hidden: { opacity: 0, y: 16 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+    hidden: { opacity: 0, y: 12 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.25 } }
   };
 
   const phases = [
@@ -57,15 +57,15 @@ export default function HowItWorks() {
         whileInView="show"
         viewport={{ once: true }}
         variants={item}
-        className="text-center mb-12"
+        className="text-center mb-10"
       >
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[#252A31] bg-[#111418] text-[#A7AFBA] text-xs font-semibold uppercase tracking-wider mb-3">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-[11px] font-semibold uppercase tracking-wider mb-2.5">
           <span>Algorithmic Architecture</span>
         </div>
-        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#F5F7FA] mb-3">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA] mb-2.5">
           The 5-Phase Topological AI Engine
         </h2>
-        <p className="text-xs sm:text-sm text-[#A7AFBA] max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-[#5E5C56] dark:text-[#B4B1A9] max-w-lg mx-auto">
           Combining deterministic graph theory with generative multi-LLM reasoning to create verified, prerequisite-backed career roadmaps.
         </p>
       </motion.div>
@@ -76,7 +76,7 @@ export default function HowItWorks() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3.5 mb-8"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 mb-6"
       >
         {phases.map((p) => {
           const Icon = p.icon;
@@ -84,24 +84,24 @@ export default function HowItWorks() {
             <motion.div
               key={p.step}
               variants={item}
-              className="p-5 rounded-2xl bg-[#111418] border border-[#252A31] hover:border-[#323842] transition-colors flex flex-col justify-between space-y-3"
+              className="p-4 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] hover:border-[#C9C5BB] dark:hover:border-[#363B43] transition-colors flex flex-col justify-between space-y-3"
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xl font-bold text-[#6366F1]">{p.step}</span>
-                  <div className="w-8 h-8 rounded-lg bg-[#171A1F] border border-[#252A31] flex items-center justify-center text-[#6366F1]">
-                    <Icon className="w-4 h-4" />
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-base font-bold text-[#B88916] dark:text-[#D4A72C] font-mono">{p.step}</span>
+                  <div className="w-7 h-7 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                    <Icon className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <h3 className="text-xs font-bold text-[#F5F7FA] mb-1.5 leading-snug">
+                <h3 className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1 leading-snug">
                   {p.title}
                 </h3>
-                <p className="text-[11px] text-[#A7AFBA] leading-relaxed">
+                <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">
                   {p.desc}
                 </p>
               </div>
 
-              <span className="text-[9px] font-semibold text-[#737C88] uppercase tracking-wider block pt-2 border-t border-[#252A31]">
+              <span className="text-[9px] font-semibold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider block pt-2 border-t border-[#DCD9D1] dark:border-[#292D33]">
                 {p.tag}
               </span>
             </motion.div>
@@ -115,7 +115,7 @@ export default function HowItWorks() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="p-4 rounded-xl bg-[#111418] border border-[#252A31] flex flex-wrap items-center justify-between gap-2.5 text-xs"
+        className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex flex-wrap items-center justify-between gap-2 text-xs"
       >
         {[
           '1. Document Ingestion',
@@ -125,10 +125,10 @@ export default function HowItWorks() {
           '5. Roadmap & Studio'
         ].map((node, i, arr) => (
           <React.Fragment key={node}>
-            <span className="font-semibold text-[#F5F7FA] px-2.5 py-1 bg-[#171A1F] rounded-lg border border-[#252A31]">
+            <span className="font-medium text-[#1B1B19] dark:text-[#F2F0EA] px-2 py-0.5 bg-[#EEECE6] dark:bg-[#181B1F] rounded-md border border-[#DCD9D1] dark:border-[#292D33] text-[11px]">
               {node}
             </span>
-            {i < arr.length - 1 && <ArrowRight className="w-3.5 h-3.5 text-[#737C88] hidden lg:block" />}
+            {i < arr.length - 1 && <ArrowRight className="w-3.5 h-3.5 text-[#85827A] dark:text-[#7E7C77] hidden lg:block" />}
           </React.Fragment>
         ))}
       </motion.div>

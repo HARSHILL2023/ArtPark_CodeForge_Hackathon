@@ -1,71 +1,88 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export default function PricingSection() {
+export default function PricingSection({ onOpenAuth }) {
   const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.05 } }
   };
   const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    hidden: { opacity: 0, y: 12 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.25 } }
   };
 
   return (
-    <section className="py-24 max-w-7xl mx-auto px-6" id="pricing">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} className="text-center mb-16">
-        <div className="flex items-center justify-center gap-2 text-indigo-500 font-bold uppercase tracking-widest text-xs mb-4">
-          <span>&mdash;</span> Pricing
+    <section className="py-20 max-w-6xl mx-auto px-6" id="pricing">
+      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} className="text-center mb-10">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-[11px] font-semibold uppercase tracking-wider mb-2.5">
+          <span>Tiered Access</span>
         </div>
-        <h2 className="text-3xl md:text-5xl font-black mb-6" style={{ fontFamily: "'Syne', sans-serif" }}>
-          Simple, Transparent Access
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
+          Simple, Transparent Access Plans
         </h2>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
-        <motion.div variants={item} whileHover={{ y: -10, boxShadow: '0 24px 48px rgba(139,92,246,0.25)' }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="p-10 rounded-3xl bg-slate-900/40 backdrop-blur-md border border-white/10 flex flex-col group">
-          <h3 className="text-2xl font-black mb-2 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>Free</h3>
-          <div className="text-5xl font-black mb-8 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>$0</div>
-          <ul className="space-y-4 mb-10 flex-grow">
-            {['Full Skill Gap Analysis (1 resume)', 'Career Simulator (1 role)', 'Basic Roadmap', 'Job Readiness Score'].map((p, i) => (
-              <li key={i} className="text-slate-400 text-sm pb-4 border-b border-white/10 last:border-0">{p}</li>
-            ))}
-          </ul>
-          <button className="w-full py-3 px-6 rounded-xl border border-white/20 text-white font-bold hover:bg-white/5 transition-colors">
+        <motion.div variants={item} className="p-6 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex flex-col justify-between space-y-4">
+          <div>
+            <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1">Developer Sandbox</h3>
+            <div className="text-3xl font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-4 font-mono">$0</div>
+            <ul className="space-y-2.5 text-xs text-[#5E5C56] dark:text-[#B4B1A9]">
+              {['Full Resume + JD Skill Gap Analysis', 'Kahn Topological 5-Phase Roadmap', 'Interactive Skill DNA Radar', 'ATS Readiness Score Benchmark'].map((p, i) => (
+                <li key={i} className="pb-2 border-b border-[#DCD9D1] dark:border-[#292D33] last:border-0">{p}</li>
+              ))}
+            </ul>
+          </div>
+          <button
+            type="button"
+            onClick={onOpenAuth}
+            className="cf-btn-secondary w-full justify-center py-2 text-xs"
+          >
             Get Started Free
           </button>
         </motion.div>
 
-        <motion.div variants={item} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="p-10 rounded-3xl bg-slate-900/80 backdrop-blur-xl border border-violet-500/50 flex flex-col relative transform lg:scale-105 shadow-[0_0_40px_rgba(139,92,246,0.15)] group">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-t-3xl"></div>
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-violet-600 rounded-full text-[10px] font-black uppercase tracking-widest text-white whitespace-nowrap">
+        <motion.div variants={item} className="p-6 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#B88916] dark:border-[#D4A72C] flex flex-col justify-between relative space-y-4 shadow-xs">
+          <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-[#B88916] dark:bg-[#D4A72C] rounded-md text-[9px] font-bold uppercase tracking-widest text-white dark:text-[#0C0D0F] whitespace-nowrap">
             MOST POPULAR
           </div>
-          <h3 className="text-2xl font-black mb-2 bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent" style={{ fontFamily: "'Syne', sans-serif" }}>Pro</h3>
-          <div className="text-5xl font-black mb-8 text-white flex items-end" style={{ fontFamily: "'Syne', sans-serif" }}>
-            $12 <span className="text-base font-medium text-slate-400 mb-2">/month</span>
+          <div>
+            <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1">Professional Engineer</h3>
+            <div className="text-3xl font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-4 flex items-baseline gap-1 font-mono">
+              $19 <span className="text-xs font-normal text-[#85827A] dark:text-[#7E7C77]">/ month</span>
+            </div>
+            <ul className="space-y-2.5 text-xs text-[#5E5C56] dark:text-[#B4B1A9]">
+              {['Unlimited Target Role Audits', 'Full Interactive Dagre React Flow Graph', 'AI Mock Studio with Multi-Turn Audio', 'STAR Surgical Resume Optimization', 'Verifiable PDF Profile Export'].map((p, i) => (
+                <li key={i} className="pb-2 border-b border-[#DCD9D1] dark:border-[#292D33] last:border-0">{p}</li>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-4 mb-10 flex-grow">
-            {['Unlimited Resume Analysis', 'All Career Simulator Roles', 'Full AI Roadmap (React Flow graph)', 'Engineering Simulation Studio (unlimited sessions)', 'PDF Resume Export', 'Priority AI (Gemini + GPT)'].map((p, i) => (
-              <li key={i} className="text-slate-300 text-sm pb-4 border-b border-white/10 last:border-0">{p}</li>
-            ))}
-          </ul>
-          <button className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold hover:shadow-lg hover:shadow-indigo-500/20 hover:-translate-y-1 transition-all pulse-glow-btn">
-            Start Pro Trial
+          <button
+            type="button"
+            onClick={onOpenAuth}
+            className="cf-btn-primary w-full justify-center py-2 text-xs"
+          >
+            Start Pro Access
           </button>
         </motion.div>
 
-        <motion.div variants={item} whileHover={{ y: -10, boxShadow: '0 24px 48px rgba(139,92,246,0.25)' }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="p-10 rounded-3xl bg-slate-900/40 backdrop-blur-md border border-white/10 flex flex-col group">
-          <h3 className="text-2xl font-black mb-2 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>Enterprise</h3>
-          <div className="text-5xl font-black mb-8 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>Custom</div>
-          <ul className="space-y-4 mb-10 flex-grow">
-            {['Everything in Pro', 'Team/cohort management', 'Bulk resume analysis', 'Custom role definitions', 'Analytics dashboard', 'API access', 'Dedicated support'].map((p, i) => (
-              <li key={i} className="text-slate-400 text-sm pb-4 border-b border-white/10 last:border-0">{p}</li>
-            ))}
-          </ul>
-          <button className="w-full py-3 px-6 rounded-xl border border-white/20 text-white font-bold hover:bg-white/5 transition-colors">
-            Contact Us
+        <motion.div variants={item} className="p-6 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex flex-col justify-between space-y-4">
+          <div>
+            <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1">Enterprise & Cohorts</h3>
+            <div className="text-3xl font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-4 font-mono">Custom</div>
+            <ul className="space-y-2.5 text-xs text-[#5E5C56] dark:text-[#B4B1A9]">
+              {['Everything in Pro', 'Cohort Skill Matrix Analytics', 'Custom Enterprise Job Benchmarks', 'Dedicated API & LMS Webhooks', 'Team Onboarding SLA Support'].map((p, i) => (
+                <li key={i} className="pb-2 border-b border-[#DCD9D1] dark:border-[#292D33] last:border-0">{p}</li>
+              ))}
+            </ul>
+          </div>
+          <button
+            type="button"
+            onClick={onOpenAuth}
+            className="cf-btn-secondary w-full justify-center py-2 text-xs"
+          >
+            Contact Engineering Team
           </button>
         </motion.div>
 

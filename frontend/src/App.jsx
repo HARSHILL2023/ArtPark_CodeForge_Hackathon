@@ -206,53 +206,53 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#080c14] text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-200">
+    <div className="min-h-screen bg-[#F5F3EE] dark:bg-[#0C0D0F] text-[#1B1B19] dark:text-[#F2F0EA] flex flex-col transition-colors duration-150 font-sans">
       {/* Workspace Top Navbar */}
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#080c14]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#FCFBF8]/95 dark:bg-[#0C0D0F]/95 backdrop-blur-md border-b border-[#DCD9D1] dark:border-[#292D33]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors mr-2 text-xs font-semibold"
+              className="flex items-center gap-1.5 text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white transition-colors mr-1 text-xs font-semibold"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Landing</span>
             </Link>
 
-            <div className="h-4 w-px bg-slate-200 dark:bg-slate-800" />
+            <div className="h-4 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
 
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-sm shadow-indigo-500/25">
+              <div className="w-7 h-7 rounded-md bg-[#B88916] dark:bg-[#D4A72C] flex items-center justify-center text-white dark:text-[#0C0D0F] shadow-xs">
                 <Brain className="w-4 h-4" />
               </div>
-              <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+              <span className="text-xs sm:text-sm font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
                 CodeForge Workspace
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/20 rounded-lg text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="flex items-center gap-2.5">
+            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 bg-[#EEECE6] dark:bg-[#181B1F] text-[#237A4B] dark:text-[#4CAF7A] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-[#237A4B] dark:bg-[#4CAF7A] animate-pulse" />
               <span>Multi-AI Engine Live</span>
             </div>
 
             <button
               onClick={toggleDarkMode}
               aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              className="p-1.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white transition-colors cursor-pointer"
             >
-              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+              {darkMode ? <Sun className="w-3.5 h-3.5 text-[#D6A84F]" /> : <Moon className="w-3.5 h-3.5 text-[#B88916]" />}
             </button>
 
             {isLoggedIn ? (
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 hidden sm:inline">
+              <div className="flex items-center gap-2.5">
+                <span className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA] hidden sm:inline">
                   {user?.name}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="text-xs font-bold text-slate-500 hover:text-rose-500 transition-colors cursor-pointer"
+                  className="text-xs font-semibold text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#D96565] transition-colors cursor-pointer"
                 >
                   Sign Out
                 </button>
@@ -260,7 +260,7 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
             ) : (
               <button
                 onClick={() => setIsAuthModalOpen(true)}
-                className="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-sm transition-colors cursor-pointer"
+                className="cf-btn-primary"
               >
                 Sign In
               </button>
@@ -280,42 +280,36 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
       {isSigningIn && <SignInAnimation onComplete={() => setIsSigningIn(false)} />}
 
       {/* Main Workspace Grid or Auth Gate */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
         {!isLoggedIn ? (
           /* Authentication Required Gateway */
-          <div className="max-w-2xl mx-auto py-8 sm:py-12 space-y-8">
-            <div className="text-center space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center mx-auto border border-[#6366F1]/20 shadow-xs">
-                <Brain className="w-6 h-6" />
+          <div className="max-w-xl mx-auto py-8 sm:py-12 space-y-6">
+            <div className="text-center space-y-2.5">
+              <div className="w-10 h-10 rounded-xl bg-[#B88916]/10 dark:bg-[#D4A72C]/10 text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center mx-auto border border-[#B88916]/20 dark:border-[#D4A72C]/25 shadow-xs">
+                <Brain className="w-5 h-5" />
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
                 Sign In to Unlock Career Intelligence OS
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#5E5C56] dark:text-[#B4B1A9] max-w-md mx-auto leading-relaxed">
                 Personalized skill gap matrices, Kahn topological pathways, AI mock interviews, and STAR resume rewrites require a verified session.
               </p>
             </div>
 
-            {/* Core Feature Access Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-left">
+            {/* Feature preview cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
-                { title: 'Semantic Skill Matrix', desc: 'Vector cosine embeddings across 84 catalog courses', icon: Layers },
-                { title: '5-Phase Kahn Pathways', desc: 'Strict topological prerequisite sequencing', icon: Compass },
-                { title: 'AI Mock Interview Studio', desc: 'Dynamic FAANG-grade technical practice', icon: Cpu },
-                { title: 'STAR Resume Optimizer', desc: 'Measurable ATS optimization & PDF export', icon: Target },
+                { title: 'Deterministic Skill Matrix', desc: 'Vector cosine similarity benchmarks your competencies.' },
+                { title: '5-Phase Kahn Roadmaps', desc: 'Topological sort sequencing prerequisite learning paths.' },
+                { title: 'AI Mock Interview Studio', desc: 'Generative interview matrix with contextual AI scoring.' },
+                { title: 'STAR Resume Optimizer', desc: 'Quantifiable bullet rewrites and ATS score benchmarking.' }
               ].map((feat, i) => {
-                const Icon = feat.icon;
                 return (
-                  <div
-                    key={i}
-                    className="p-4 rounded-xl bg-white dark:bg-[#111418] border border-slate-200 dark:border-[#252A31] shadow-xs flex items-start gap-3"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[#171A1F] border border-[#252A31] text-[#6366F1] flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-4 h-4" />
-                    </div>
+                  <div key={i} className="p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#237A4B] dark:text-[#4CAF7A] flex-shrink-0 mt-0.5" />
                     <div>
-                      <h3 className="text-xs font-bold text-slate-900 dark:text-white">{feat.title}</h3>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">{feat.desc}</p>
+                      <h4 className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">{feat.title}</h4>
+                      <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] mt-0.5 leading-snug">{feat.desc}</p>
                     </div>
                   </div>
                 );
@@ -323,32 +317,31 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
             </div>
 
             {/* Single Sign In Action */}
-            <div className="p-6 rounded-2xl bg-white dark:bg-[#111418] border border-slate-200 dark:border-[#252A31] shadow-xs space-y-3 text-center">
+            <div className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] shadow-xs space-y-2.5 text-center">
               <button
                 type="button"
                 onClick={() => setIsAuthModalOpen(true)}
-                className="w-full py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl text-xs font-semibold shadow-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="cf-btn-primary w-full justify-center py-2.5 text-xs"
               >
                 <span>Sign In to Access Workspace</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
-              <p className="text-[11px] text-slate-500 dark:text-[#737C88]">
+              <p className="text-[11px] text-[#85827A] dark:text-[#7E7C77]">
                 Supports Google OAuth, Email/Password, and 1-Click Judge Demo Sandbox
               </p>
             </div>
           </div>
         ) : (
           /* Full Interactive Workspace (Unlocked upon Authentication) */
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Left Column: Document Ingestion Panel */}
-            <div className="lg:col-span-4 lg:sticky lg:top-20 space-y-6">
+            <div className="lg:col-span-4 lg:sticky lg:top-18 space-y-5">
               <UploadForm
                 onAnalyze={handleAnalyze}
+                profiles={profileOptions}
+                onSelectProfile={setSelectedProfile}
                 isAnalyzing={isAnalyzing}
-                selectedProfile={selectedProfile}
-                onProfileChange={setSelectedProfile}
-                profileOptions={profileOptions}
-                learningStyle={learningStyle}
+                disabled={!isLoggedIn}
               />
             </div>
 
@@ -360,80 +353,80 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                 ) : showResults && currentData ? (
                   <div key="results" className="space-y-6">
                     {/* Active Analysis Target Command Center */}
-                    <div className="space-y-4">
-                      <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-700 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-3.5">
+                      <div className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
                         <div>
-                          <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-200">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#B88916] dark:text-[#D4A72C]">
                             Evaluated Target Role
                           </span>
-                          <h2 className="text-2xl font-black tracking-tight mt-0.5">
+                          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA] mt-0.5">
                             {currentData.role}
                           </h2>
-                          <p className="text-xs text-indigo-100 mt-0.5">{currentData.company}</p>
+                          <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] mt-0.5">{currentData.company}</p>
                         </div>
 
                         <div className="flex items-center gap-3 self-start sm:self-auto">
-                          <div className="px-4 py-2.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/20 text-center">
-                            <span className="text-[10px] uppercase font-bold text-indigo-100 block">
+                          <div className="px-3.5 py-2 rounded-xl bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-center">
+                            <span className="text-[9px] uppercase font-bold text-[#85827A] dark:text-[#7E7C77] block">
                               Readiness Score
                             </span>
-                            <span className="text-2xl font-black">{currentData.readinessScore}%</span>
+                            <span className="text-xl font-bold text-[#B88916] dark:text-[#D4A72C] font-mono">{currentData.readinessScore}%</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Next Best Action & Readiness Triad */}
-                      <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5">
-                        <div className="md:col-span-6 p-4 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-800/40 flex items-start gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                            <Target className="w-4 h-4" />
+                      <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+                        <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-3">
+                          <div className="w-7 h-7 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <Target className="w-3.5 h-3.5" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                              <span className="text-[10px] font-bold text-[#B88916] dark:text-[#D4A72C] uppercase tracking-wider">
                                 Next Best Action
                               </span>
                               <button
                                 type="button"
                                 onClick={() => setActiveTab('roadmap')}
-                                className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-0.5"
+                                className="text-[10px] font-semibold text-[#B88916] dark:text-[#D4A72C] hover:underline flex items-center gap-0.5 cursor-pointer"
                               >
                                 Jump to Path &rarr;
                               </button>
                             </div>
-                            <p className="text-xs font-bold text-slate-900 dark:text-white truncate mt-0.5">
+                            <p className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] truncate mt-0.5">
                               {currentData.roadmap?.find(s => s.status !== 'completed')?.title || currentData.roadmap?.[0]?.title || 'Master Prerequisite Modules'}
                             </p>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                            <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] mt-0.5">
                               Closes high-priority prerequisite bottleneck to boost readiness toward 100%.
                             </p>
                           </div>
                         </div>
 
-                        <div className="md:col-span-6 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-around gap-2 text-center">
+                        <div className="md:col-span-6 p-3.5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-around gap-2 text-center">
                           <div>
-                            <span className="text-base font-black text-emerald-600 dark:text-emerald-400 block">
+                            <span className="text-sm font-bold text-[#237A4B] dark:text-[#4CAF7A] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel >= s.requiredLevel).length || 0}
                             </span>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#85827A] dark:text-[#7E7C77]">
                               Strong Skills
                             </span>
                           </div>
-                          <div className="h-7 w-px bg-slate-200 dark:bg-slate-800" />
+                          <div className="h-6 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
                           <div>
-                            <span className="text-base font-black text-amber-600 dark:text-amber-400 block">
+                            <span className="text-sm font-bold text-[#9A6B00] dark:text-[#D6A84F] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel > 0 && s.yourLevel < s.requiredLevel).length || 0}
                             </span>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#85827A] dark:text-[#7E7C77]">
                               Needs Work
                             </span>
                           </div>
-                          <div className="h-7 w-px bg-slate-200 dark:bg-slate-800" />
+                          <div className="h-6 w-px bg-[#DCD9D1] dark:border-[#292D33]" />
                           <div>
-                            <span className="text-base font-black text-rose-600 dark:text-rose-400 block">
+                            <span className="text-sm font-bold text-[#B33A3A] dark:text-[#D96565] block font-mono">
                               {currentData.skills?.filter(s => s.yourLevel === 0).length || 0}
                             </span>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#85827A] dark:text-[#7E7C77]">
                               Critical Gaps
                             </span>
                           </div>
@@ -442,21 +435,22 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                     </div>
 
                     {/* Section Navigation Tabs */}
-                    <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2 overflow-x-auto">
+                    <div className="flex items-center gap-2 border-b border-[#DCD9D1] dark:border-[#292D33] pb-2 overflow-x-auto">
                       {[
                         { id: 'skills', label: '1. Skill Matrix & DNA', icon: Layers },
                         { id: 'roadmap', label: '2. 5-Phase Roadmap', icon: Compass },
                         { id: 'studio', label: '3. Interview & Resume Studio', icon: Cpu },
                       ].map((tab) => {
                         const Icon = tab.icon;
+                        const isActive = activeTab === tab.id;
                         return (
                           <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
-                              activeTab === tab.id
-                                ? 'bg-indigo-600 text-white shadow-sm'
-                                : 'bg-white dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
+                            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-2 whitespace-nowrap cursor-pointer ${
+                              isActive
+                                ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] shadow-xs'
+                                : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border border-[#DCD9D1] dark:border-[#292D33] hover:bg-[#EEECE6] dark:hover:bg-[#181B1F]'
                             }`}
                           >
                             <Icon className="w-3.5 h-3.5" />

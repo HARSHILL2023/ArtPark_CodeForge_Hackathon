@@ -7,7 +7,7 @@ import { useAuth } from '../../lib/AuthContext';
 export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -34,7 +34,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-200 ${
         scrolled
-          ? 'py-3 bg-[#0B0D10]/90 dark:bg-[#0B0D10]/90 backdrop-blur-md border-b border-[#252A31] shadow-sm'
+          ? 'py-3 bg-[#FCFBF8]/95 dark:bg-[#0C0D0F]/95 backdrop-blur-md border-b border-[#DCD9D1] dark:border-[#292D33] shadow-xs'
           : 'py-4 bg-transparent'
       }`}
     >
@@ -42,17 +42,17 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
         {/* Brand Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2.5 text-white font-bold text-base tracking-tight"
+          className="flex items-center gap-2.5 text-[#1B1B19] dark:text-[#F2F0EA] font-bold text-base tracking-tight"
           aria-label="CodeForge Home"
         >
-          <div className="w-8 h-8 rounded-lg bg-[#6366F1] flex items-center justify-center text-white shadow-xs">
+          <div className="w-7 h-7 rounded-md bg-[#B88916] dark:bg-[#D4A72C] flex items-center justify-center text-white dark:text-[#0C0D0F] shadow-xs">
             <BrainCircuit className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-sm font-bold tracking-tight text-[#F5F7FA]">
+            <span className="text-sm font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
               CodeForge
             </span>
-            <span className="block text-[9px] uppercase tracking-wider font-semibold text-[#A7AFBA] -mt-0.5">
+            <span className="block text-[9px] uppercase tracking-wider font-semibold text-[#85827A] dark:text-[#7E7C77] -mt-0.5">
               Career Intelligence OS
             </span>
           </div>
@@ -60,12 +60,12 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
 
         {/* Desktop Nav Links */}
         <nav aria-label="Desktop Navigation" className="hidden md:block">
-          <ul className="flex items-center gap-7 text-xs font-medium text-[#A7AFBA]">
+          <ul className="flex items-center gap-7 text-xs font-medium text-[#5E5C56] dark:text-[#B4B1A9]">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="hover:text-white transition-colors duration-150 py-1"
+                  className="hover:text-[#1B1B19] dark:hover:text-[#F2F0EA] transition-colors duration-150 py-1"
                 >
                   {link.label}
                 </a>
@@ -79,16 +79,16 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
           <button
             onClick={toggleDark}
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="p-2 rounded-lg border border-[#252A31] bg-[#111418] text-[#A7AFBA] hover:text-white hover:border-[#323842] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white transition-colors cursor-pointer"
           >
-            {darkMode ? <Sun className="w-3.5 h-3.5 text-[#F59E0B]" /> : <Moon className="w-3.5 h-3.5 text-[#6366F1]" />}
+            {darkMode ? <Sun className="w-3.5 h-3.5 text-[#D6A84F]" /> : <Moon className="w-3.5 h-3.5 text-[#B88916]" />}
           </button>
 
           {isLoggedIn ? (
             <div className="flex items-center gap-2">
               <Link
                 to="/dashboard"
-                className="px-3.5 py-1.5 bg-[#6366F1] hover:bg-[#4F46E5] rounded-lg text-xs font-semibold text-white transition-colors flex items-center gap-1.5"
+                className="cf-btn-primary"
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
                 <span>Dashboard</span>
@@ -98,7 +98,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
                 onClick={logout}
                 title="Sign Out"
                 aria-label="Sign Out"
-                className="p-2 rounded-lg border border-[#252A31] bg-[#111418] text-[#A7AFBA] hover:text-[#EF4444] hover:border-[#EF4444]/40 transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#D96565] transition-colors cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
@@ -107,7 +107,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
             <button
               type="button"
               onClick={onOpenAuth}
-              className="px-4 py-1.5 bg-[#6366F1] hover:bg-[#4F46E5] rounded-lg text-xs font-semibold text-white transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="cf-btn-primary"
             >
               <span>Sign In</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -119,7 +119,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="md:hidden p-2 rounded-lg border border-[#252A31] bg-[#111418] text-[#F5F7FA] hover:bg-[#171A1F] transition-colors"
+            className="md:hidden p-1.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#1B1B19] dark:text-[#F2F0EA] transition-colors"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -133,8 +133,8 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden bg-[#0B0D10] border-b border-[#252A31] px-6 py-6 overflow-hidden"
+            transition={{ duration: 0.15 }}
+            className="md:hidden bg-[#FCFBF8] dark:bg-[#0C0D0F] border-b border-[#DCD9D1] dark:border-[#292D33] px-6 py-5 overflow-hidden"
           >
             <ul className="space-y-3">
               {navLinks.map((link) => (
@@ -142,7 +142,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
                   <a
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-sm font-semibold text-[#F5F7FA] hover:text-[#6366F1] py-1 transition-colors"
+                    className="block text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA] hover:text-[#B88916] dark:hover:text-[#D4A72C] py-1 transition-colors"
                   >
                     {link.label}
                   </a>
@@ -150,13 +150,13 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
               ))}
             </ul>
 
-            <div className="mt-5 pt-5 border-t border-[#252A31]">
+            <div className="mt-4 pt-4 border-t border-[#DCD9D1] dark:border-[#292D33]">
               {isLoggedIn ? (
                 <div className="flex flex-col gap-2">
                   <Link
                     to="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full text-center py-2.5 bg-[#6366F1] rounded-lg text-xs font-semibold text-white flex items-center justify-center gap-1.5"
+                    className="cf-btn-primary w-full justify-center"
                   >
                     <LayoutDashboard className="w-3.5 h-3.5" />
                     <span>Go to Dashboard</span>
@@ -167,7 +167,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full text-center py-2.5 border border-[#252A31] rounded-lg text-xs font-semibold text-[#EF4444] bg-[#111418]"
+                    className="cf-btn-secondary w-full justify-center text-[#D96565]"
                   >
                     Sign Out
                   </button>
@@ -179,7 +179,7 @@ export default function Navbar({ darkMode, toggleDark, onOpenAuth }) {
                     setMobileMenuOpen(false);
                     onOpenAuth?.();
                   }}
-                  className="w-full text-center py-2.5 bg-[#6366F1] rounded-lg text-xs font-semibold text-white flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="cf-btn-primary w-full justify-center"
                 >
                   <span>Sign In</span>
                   <ArrowRight className="w-3.5 h-3.5" />

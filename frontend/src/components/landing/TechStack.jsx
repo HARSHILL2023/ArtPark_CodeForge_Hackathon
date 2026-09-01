@@ -4,56 +4,56 @@ import { motion } from 'framer-motion';
 export default function TechStack() {
   const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.05 } }
   };
   const item = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+    hidden: { opacity: 0, y: 12 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.25 } }
   };
 
   const stack = [
     {
-      title: 'Frontend',
-      color: 'indigo',
-      chips: ['⚛️ React 19', '⚡ Vite', '🎨 Tailwind CSS v4', '🎞 Framer Motion', '🔗 React Flow', '🔣 Lucide React', '📄 @react-pdf/renderer']
+      title: 'Frontend Architecture',
+      chips: ['React 19', 'Vite 6', 'Tailwind CSS v4', 'Framer Motion', 'React Flow', 'Lucide Icons', '@react-pdf/renderer']
     },
     {
-      title: 'Backend',
-      color: 'emerald',
-      chips: ['🟢 Node.js', '🚂 Express', '🍃 MongoDB + Mongoose', '🔑 Passport.js', '🛡️ JWT Auth', '🔐 Google OAuth2', '📄 pdf-parse']
+      title: 'Backend & Data Services',
+      chips: ['Node.js', 'Express', 'MongoDB Atlas', 'Mongoose', 'Passport.js', 'JWT Auth', 'pdf-parse']
     },
     {
-      title: 'AI Providers',
-      color: 'amber',
-      chips: ['✨ Google Gemini', '🤖 OpenAI GPT', '⚡ Groq (Llama / Mixtral)', '🔄 Multi-Provider Fallback', '📊 Skill Extraction Pipeline']
+      title: 'AI Pipeline & LLM Fallback',
+      chips: ['Google Gemini', 'OpenAI GPT-4o', 'Groq (Llama-3.3)', 'Vector Cosine Matcher', 'Kahn Topological Engine']
     },
     {
-      title: 'Infrastructure',
-      color: 'rose',
-      chips: ['☁️ Vercel Deploy', '🌿 MongoDB Atlas', '🔒 Role-based JWT', '🔄 REST API', '🌙 Dark Mode (Tailwind v4)']
+      title: 'Infrastructure & Security',
+      chips: ['Vercel Production', 'Demo Sandbox Isolation', 'Role-based Permissions', 'REST API', 'Graphite Theme System']
     }
   ];
 
   return (
-    <section className="py-24 max-w-7xl mx-auto px-6" id="tech-stack">
-      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} className="text-center mb-16">
-        <div className="flex items-center justify-center gap-2 text-indigo-500 font-bold uppercase tracking-widest text-xs mb-4">
-          <span>&mdash;</span> Tech Stack
+    <section className="py-20 max-w-6xl mx-auto px-6" id="tech-stack">
+      <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={item} className="text-center mb-10">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-[11px] font-semibold uppercase tracking-wider mb-2.5">
+          <span>Engineering Architecture</span>
         </div>
-        <h2 className="text-3xl md:text-5xl font-black mb-6" style={{ fontFamily: "'Syne', sans-serif" }}>
-          Built on a Serious Modern Stack
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA]">
+          Built on a Production-Grade Full-Stack Engine
         </h2>
       </motion.div>
 
-      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {stack.map((group, i) => (
-          <motion.div key={i} variants={item} whileHover={{ y: -10, boxShadow: '0 24px 48px rgba(139,92,246,0.25)' }} transition={{ type: 'spring', stiffness: 300, damping: 20 }} className="p-8 rounded-3xl bg-slate-900/40 backdrop-blur-md border border-white/10 group">
-            <h3 className={`text-2xl font-black mb-6 flex items-center gap-3`} style={{ fontFamily: "'Syne', sans-serif" }}>
+          <motion.div
+            key={i}
+            variants={item}
+            className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] space-y-3"
+          >
+            <h3 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
               {group.title}
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {group.chips.map((chip, j) => (
-                <span key={j} className={`px-3 py-1.5 rounded-lg border border-${group.color}-500/20 bg-white/5 text-${group.color}-400 text-sm font-medium`}>
+                <span key={j} className="px-2.5 py-1 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] text-xs font-mono">
                   {chip}
                 </span>
               ))}
@@ -62,18 +62,18 @@ export default function TechStack() {
         ))}
       </motion.div>
 
-      <motion.div variants={item} initial="hidden" whileInView="show" viewport={{ once: true }} className="rounded-3xl border border-white/10 bg-slate-900/40 backdrop-blur-md overflow-hidden relative">
-        <div className="flex flex-col">
+      <motion.div variants={item} initial="hidden" whileInView="show" viewport={{ once: true }} className="rounded-xl border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] overflow-hidden">
+        <div className="flex flex-col divide-y divide-[#DCD9D1] dark:divide-[#292D33]">
           {[
-            { title: 'JWT Authentication', desc: 'Google OAuth2 + token-based session management with Passport.js' },
-            { title: 'Multi-AI Orchestration', desc: 'Gemini primary → GPT fallback → Groq fallback for 100% uptime' },
-            { title: 'Dark / Light Mode Architecture', desc: 'Full theme toggle via .dark class on <html> root, persisted in localStorage' }
-          ].map((arch, i, arr) => (
-            <div key={i} className={`flex items-start gap-6 p-6 md:p-8 ${i < arr.length - 1 ? 'border-b border-white/10' : ''}`}>
-              <div className="mt-1 w-3 h-3 flex-shrink-0 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+            { title: 'Deterministic Fallback Pipeline', desc: 'Google Gemini primary → OpenAI secondary → Groq high-speed fallback ensuring 100% platform availability.' },
+            { title: 'Explainable AI Decision Audit', desc: 'Every recommended milestone and pruned prerequisite exposes vector similarity scores and dependency logic.' },
+            { title: 'Isolated Sandbox Access', desc: 'Judge Demo sandbox tokens operate with zero persistence leaks while regular sessions authenticate with JWT.' }
+          ].map((arch, i) => (
+            <div key={i} className="flex items-start gap-3.5 p-4 sm:p-5">
+              <div className="mt-1 w-2 h-2 flex-shrink-0 rounded-full bg-[#B88916] dark:bg-[#D4A72C]"></div>
               <div>
-                <h4 className="text-xl font-bold mb-1 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>{arch.title}</h4>
-                <p className="text-sm text-slate-400 leading-relaxed">{arch.desc}</p>
+                <h4 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-0.5">{arch.title}</h4>
+                <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">{arch.desc}</p>
               </div>
             </div>
           ))}

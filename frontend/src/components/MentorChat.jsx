@@ -50,6 +50,7 @@ export default function MentorChat({ userData }) {
     if (!textToSend.trim() || isTyping) return;
 
     const userMessage = { role: 'user', content: textToSend.trim() };
+    const updatedHistory = [...messages, userMessage];
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsTyping(true);
@@ -81,30 +82,30 @@ export default function MentorChat({ userData }) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label={isOpen ? 'Close AI Mentor Chat' : 'Open AI Mentor Chat'}
-        className="fixed bottom-6 right-6 w-12 h-12 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl shadow-md flex items-center justify-center z-50 transition-colors cursor-pointer"
+        className="fixed bottom-6 right-6 w-11 h-11 bg-[#B88916] dark:bg-[#D4A72C] hover:bg-[#9E7510] dark:hover:bg-[#E0B63D] text-white dark:text-[#0C0D0F] rounded-xl shadow-md flex items-center justify-center z-50 transition-colors cursor-pointer"
       >
-        {isOpen ? <X className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
+        {isOpen ? <X className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
       </button>
 
       {/* Chat Window Panel */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="fixed bottom-20 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[380px] h-[500px] max-h-[80vh] bg-white dark:bg-[#111418] rounded-2xl shadow-xl z-50 flex flex-col overflow-hidden border border-[#E2E5E9] dark:border-[#252A31]"
+            className="fixed bottom-20 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-[360px] h-[480px] max-h-[80vh] bg-[#FCFBF8] dark:bg-[#121416] rounded-2xl shadow-md z-50 flex flex-col overflow-hidden border border-[#DCD9D1] dark:border-[#292D33]"
           >
             {/* Header */}
-            <div className="p-4 bg-[#F7F8FA] dark:bg-[#171A1F] border-b border-[#E2E5E9] dark:border-[#252A31] flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 bg-[#6366F1]/10 rounded-lg flex items-center justify-center text-[#6366F1]">
+            <div className="p-3.5 bg-[#EEECE6] dark:bg-[#181B1F] border-b border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-xs text-[#16181D] dark:text-[#F5F7FA]">AI Career Mentor</h3>
-                  <span className="text-[10px] text-[#5F6672] dark:text-[#A7AFBA]">Context-Aware Guidance</span>
+                  <h3 className="font-bold text-xs text-[#1B1B19] dark:text-[#F2F0EA]">AI Career Mentor</h3>
+                  <span className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">Context-Aware Guidance</span>
                 </div>
               </div>
 
@@ -112,49 +113,49 @@ export default function MentorChat({ userData }) {
                 type="button"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close chat"
-                className="p-1 rounded-lg text-[#5F6672] dark:text-[#A7AFBA] hover:text-[#16181D] dark:hover:text-white transition-colors"
+                className="p-1 rounded-md text-[#85827A] dark:text-[#7E7C77] hover:text-[#1B1B19] dark:hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Message Feed */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#F7F8FA] dark:bg-[#0B0D10] text-xs leading-relaxed">
+            <div className="flex-1 overflow-y-auto p-3.5 space-y-2.5 bg-[#FCFBF8] dark:bg-[#0C0D0F] text-xs leading-relaxed">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
                   className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="w-6 h-6 rounded-md bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-3.5 h-3.5" />
+                    <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Bot className="w-3 h-3" />
                     </div>
                   )}
 
                   <div
-                    className={`p-3 rounded-xl max-w-[84%] ${
+                    className={`p-2.5 rounded-xl max-w-[85%] text-xs ${
                       msg.role === 'user'
-                        ? 'bg-[#6366F1] text-white shadow-xs'
-                        : 'bg-white dark:bg-[#111418] text-[#16181D] dark:text-[#F5F7FA] border border-[#E2E5E9] dark:border-[#252A31] shadow-xs'
+                        ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                        : 'bg-[#FCFBF8] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] border border-[#DCD9D1] dark:border-[#292D33]'
                     }`}
                   >
                     {msg.content}
                   </div>
 
                   {msg.role === 'user' && (
-                    <div className="w-6 h-6 rounded-md bg-[#171A1F] text-[#A7AFBA] flex items-center justify-center flex-shrink-0">
-                      <User className="w-3.5 h-3.5" />
+                    <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] text-[#85827A] dark:text-[#7E7C77] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <User className="w-3 h-3" />
                     </div>
                   )}
                 </div>
               ))}
 
               {isTyping && (
-                <div className="flex items-center gap-2 text-[#737C88] py-1">
-                  <div className="w-6 h-6 rounded-md bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center">
-                    <Bot className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-2 text-[#85827A] dark:text-[#7E7C77] py-0.5">
+                  <div className="w-5 h-5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] text-[#B88916] dark:text-[#D4A72C] flex items-center justify-center">
+                    <Bot className="w-3 h-3" />
                   </div>
-                  <div className="px-2.5 py-1.5 bg-white dark:bg-[#111418] border border-[#E2E5E9] dark:border-[#252A31] rounded-lg text-[10px]">
+                  <div className="px-2 py-1 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-md text-[10px]">
                     Thinking...
                   </div>
                 </div>
@@ -165,13 +166,13 @@ export default function MentorChat({ userData }) {
 
             {/* Quick Prompt Chips */}
             {messages.length <= 2 && (
-              <div className="px-3 py-2 bg-white dark:bg-[#111418] border-t border-[#E2E5E9] dark:border-[#252A31] flex gap-1.5 overflow-x-auto">
+              <div className="px-3 py-1.5 bg-[#FCFBF8] dark:bg-[#121416] border-t border-[#DCD9D1] dark:border-[#292D33] flex gap-1.5 overflow-x-auto">
                 {quickPrompts.map((q) => (
                   <button
                     key={q}
                     type="button"
                     onClick={() => handleSend(q)}
-                    className="px-2 py-1 rounded-md bg-[#F7F8FA] dark:bg-[#171A1F] text-[10px] font-medium text-[#5F6672] dark:text-[#A7AFBA] hover:text-[#16181D] dark:hover:text-white whitespace-nowrap border border-[#E2E5E9] dark:border-[#252A31] transition-colors"
+                    className="px-2 py-0.5 rounded-md bg-[#EEECE6] dark:bg-[#181B1F] text-[10px] font-medium text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white whitespace-nowrap border border-[#DCD9D1] dark:border-[#292D33] transition-colors cursor-pointer"
                   >
                     {q}
                   </button>
@@ -182,20 +183,20 @@ export default function MentorChat({ userData }) {
             {/* Input Bar */}
             <form
               onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="p-3 bg-white dark:bg-[#111418] border-t border-[#E2E5E9] dark:border-[#252A31] flex items-center gap-2"
+              className="p-2.5 bg-[#FCFBF8] dark:bg-[#121416] border-t border-[#DCD9D1] dark:border-[#292D33] flex items-center gap-1.5"
             >
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask career guidance question..."
-                className="flex-1 px-3 py-2 bg-[#F7F8FA] dark:bg-[#171A1F] border border-[#E2E5E9] dark:border-[#252A31] rounded-lg text-xs text-[#16181D] dark:text-[#F5F7FA] placeholder:text-[#8A919C] dark:placeholder:text-[#737C88] focus:outline-none focus:ring-1 focus:ring-[#6366F1]"
+                className="flex-1 px-2.5 py-1.5 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-lg text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
                 aria-label="Send message"
-                className="p-2 bg-[#6366F1] hover:bg-[#4F46E5] disabled:opacity-40 text-white rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 cf-btn-primary rounded-lg cursor-pointer"
               >
                 {isTyping ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
               </button>

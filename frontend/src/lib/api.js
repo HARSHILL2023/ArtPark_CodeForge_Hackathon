@@ -164,6 +164,13 @@ export const generateQA = async (profileData) => {
   });
 };
 
+export const getInterviewQA = async (role, weakSkills) => {
+  return apiFetch('/interview/qa', {
+    method: 'POST',
+    body: JSON.stringify({ role, weakSkills }),
+  });
+};
+
 /**
  * Send conversation to interview chat
  */
@@ -171,5 +178,12 @@ export const sendInterviewChat = async (systemPrompt, messages) => {
   return apiFetch('/interview/chat', {
     method: 'POST',
     body: JSON.stringify({ systemPrompt, messages }),
+  });
+};
+
+export const sendInterviewMessage = async (role, messages, lastMessage) => {
+  return apiFetch('/interview/chat', {
+    method: 'POST',
+    body: JSON.stringify({ systemPrompt: `Technical interview for ${role}`, messages, lastMessage }),
   });
 };

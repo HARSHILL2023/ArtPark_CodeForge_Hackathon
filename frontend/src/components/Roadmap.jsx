@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { getPriorityColor } from '../data/mockData';
-import { Clock, ExternalLink, Flag, CheckCircle2, XCircle, Target, Brain, Sparkles, ArrowRight, Lock } from 'lucide-react';
+import { Clock, Flag, CheckCircle2, XCircle, Target, Brain, Lock } from 'lucide-react';
 import SkillQuiz from './SkillQuiz';
 
-export default function Roadmap({ roadmap = [], onUpdate, onAssessment, learningStyle }) {
+export default function Roadmap({ roadmap = [], onUpdate, onAssessment }) {
   const [activeQuizStep, setActiveQuizStep] = useState(null);
 
   const handleQuizComplete = (passed) => {
@@ -20,36 +20,36 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment, learning
   }, 0);
 
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl shadow-xs overflow-hidden">
       {/* Header */}
-      <div className="p-6 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-500/10 border border-sky-100 dark:border-sky-500/20 flex items-center justify-center text-sky-600 dark:text-sky-400">
-            <Flag className="w-5 h-5" />
+      <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+            <Flag className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-900 dark:text-white">Topological Learning Roadmap</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">5-Phase Kahn Sequenced Milestone Curriculum</p>
+            <h2 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">Topological Learning Roadmap</h2>
+            <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">5-Phase Kahn Sequenced Milestone Curriculum</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-semibold text-slate-500 dark:text-slate-400">
-          <span className="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
+          <span className="px-2.5 py-0.5 bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-md text-[11px]">
             {roadmap.length} Modular Steps
           </span>
-          <span className="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg">
+          <span className="px-2.5 py-0.5 bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] rounded-md text-[11px]">
             ~{totalEstimatedWeeks || roadmap.length * 2} Weeks Total
           </span>
         </div>
       </div>
 
       {/* Timeline Section */}
-      <div className="p-6">
+      <div className="p-4 sm:p-5">
         <div className="relative">
           {/* Vertical Progress Spine */}
-          <div className="absolute left-5 top-4 bottom-4 w-0.5 bg-slate-200 dark:bg-slate-800" />
+          <div className="absolute left-4 top-3 bottom-3 w-0.5 bg-[#DCD9D1] dark:bg-[#292D33]" />
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {roadmap.map((step, index) => {
               const priorityColors = getPriorityColor(step.priority);
               const isCompleted = step.status === 'completed';
@@ -61,99 +61,99 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment, learning
               return (
                 <div
                   key={step.course_id || step.step || index}
-                  className="relative pl-14 group"
+                  className="relative pl-11 group"
                 >
                   {/* Milestone Marker */}
                   <div
-                    className={`absolute left-0 top-3 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xs border-2 transition-all duration-300 z-10 ${
+                    className={`absolute left-0 top-2.5 w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs border transition-all duration-200 z-10 ${
                       isCompleted
-                        ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-500/20'
+                        ? 'bg-[#237A4B] dark:bg-[#4CAF7A] border-[#237A4B] dark:border-[#4CAF7A] text-white dark:text-[#0C0D0F]'
                         : isSkipped
-                        ? 'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-400'
+                        ? 'bg-[#EEECE6] dark:bg-[#181B1F] border-[#DCD9D1] dark:border-[#292D33] text-[#85827A]'
                         : isRemedial
-                        ? 'bg-amber-500 border-amber-500 text-white animate-pulse'
+                        ? 'bg-[#9A6B00] dark:bg-[#D6A84F] border-[#9A6B00] dark:border-[#D6A84F] text-white'
                         : isActive
-                        ? 'bg-indigo-600 border-indigo-600 text-white shadow-md shadow-indigo-500/25 ring-4 ring-indigo-500/10'
-                        : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
+                        ? 'bg-[#B88916] dark:bg-[#D4A72C] border-[#B88916] dark:border-[#D4A72C] text-white dark:text-[#0C0D0F] shadow-xs'
+                        : 'bg-[#FCFBF8] dark:bg-[#121416] border-[#DCD9D1] dark:border-[#292D33] text-[#85827A]'
                     }`}
                   >
                     {isCompleted ? (
-                      <CheckCircle2 className="w-5 h-5" />
+                      <CheckCircle2 className="w-4 h-4" />
                     ) : isSkipped ? (
-                      <XCircle className="w-5 h-5" />
+                      <XCircle className="w-4 h-4" />
                     ) : isLocked ? (
-                      <Lock className="w-4 h-4 text-slate-400" />
+                      <Lock className="w-3.5 h-3.5 text-[#85827A]" />
                     ) : (
-                      <span>{step.step || index + 1}</span>
+                      <span className="font-mono text-xs">{step.step || index + 1}</span>
                     )}
                   </div>
 
                   {/* Step Card Container */}
                   <div
-                    className={`p-5 rounded-xl border transition-all ${
+                    className={`p-4 rounded-xl border transition-colors ${
                       isCompleted
-                        ? 'bg-emerald-50/20 dark:bg-emerald-950/10 border-emerald-200/50 dark:border-emerald-900/30'
+                        ? 'bg-[#237A4B]/5 dark:bg-[#4CAF7A]/5 border-[#237A4B]/20 dark:border-[#4CAF7A]/25'
                         : isRemedial
-                        ? 'bg-amber-50/30 dark:bg-amber-950/10 border-amber-300 dark:border-amber-700/50'
+                        ? 'bg-[#9A6B00]/5 dark:bg-[#D6A84F]/5 border-[#9A6B00]/20 dark:border-[#D6A84F]/25'
                         : isActive
-                        ? 'bg-white dark:bg-slate-900 border-indigo-500/60 dark:border-indigo-500/50 shadow-md shadow-indigo-500/5'
-                        : 'bg-slate-50/50 dark:bg-slate-900/30 border-slate-200/70 dark:border-slate-800'
+                        ? 'bg-[#FCFBF8] dark:bg-[#181B1F] border-[#B88916] dark:border-[#D4A72C]'
+                        : 'bg-[#FCFBF8] dark:bg-[#121416] border-[#DCD9D1] dark:border-[#292D33]'
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1.5 mb-1.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[10px] font-semibold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider">
                           Milestone {step.step || index + 1}
                         </span>
                         {isRemedial && (
-                          <span className="px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="px-1.5 py-0.2 rounded bg-[#9A6B00]/10 dark:bg-[#D6A84F]/10 text-[#9A6B00] dark:text-[#D6A84F] border border-[#9A6B00]/20 text-[9px] font-bold uppercase tracking-wider">
                             Targeted Remedial Action
                           </span>
                         )}
                         {!isCompleted && !isSkipped && !isRemedial && (
                           <span
-                            className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${priorityColors.bg} ${priorityColors.text} ${priorityColors.border}`}
+                            className={`px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider border ${priorityColors.bg} ${priorityColors.text} ${priorityColors.border}`}
                           >
                             {step.priority || 'Medium'} Priority
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500 font-mono">
-                        <Clock className="w-3.5 h-3.5 text-indigo-500" />
+                      <div className="flex items-center gap-1 text-[11px] text-[#85827A] dark:text-[#7E7C77] font-mono">
+                        <Clock className="w-3 h-3 text-[#B88916] dark:text-[#D4A72C]" />
                         <span>{step.duration ? `${step.duration} Weeks` : '2 Weeks'}</span>
                       </div>
                     </div>
 
                     <h3
-                      className={`text-base font-bold mb-1.5 ${
+                      className={`text-xs sm:text-sm font-bold mb-1 ${
                         isCompleted
-                          ? 'text-emerald-900 dark:text-emerald-300 line-through opacity-80'
-                          : 'text-slate-900 dark:text-white'
+                          ? 'text-[#237A4B] dark:text-[#4CAF7A] line-through opacity-80'
+                          : 'text-[#1B1B19] dark:text-[#F2F0EA]'
                       }`}
                     >
                       {step.title}
                     </h3>
 
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                    <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed mb-3">
                       {step.description}
                     </p>
 
                     {/* AI Reasoning Trace */}
-                    <div className="p-3 rounded-lg bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-100/60 dark:border-indigo-800/30 flex items-start gap-2.5 mb-4">
-                      <Brain className="w-4 h-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-indigo-900 dark:text-indigo-300 leading-normal">
-                        <span className="font-bold">Algorithmic Trace: </span>
+                    <div className="p-2.5 rounded-lg bg-[#EEECE6]/60 dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-start gap-2 mb-3">
+                      <Brain className="w-3.5 h-3.5 text-[#B88916] dark:text-[#D4A72C] flex-shrink-0 mt-0.5" />
+                      <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9] leading-normal">
+                        <span className="font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">Algorithmic Trace: </span>
                         {step.reason ||
                           `Kahn's topological sort verified all prerequisites. Recommended to close high priority target competency.`}
                       </p>
                     </div>
 
                     {/* Footer Actions */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#DCD9D1] dark:border-[#292D33]">
                       <div className="flex items-center gap-2">
                         {step.learning_tips && (
-                          <span className="text-[11px] text-slate-500 dark:text-slate-400 italic">
+                          <span className="text-[10px] text-[#85827A] dark:text-[#7E7C77] italic">
                             Tip: {step.learning_tips}
                           </span>
                         )}
@@ -164,15 +164,15 @@ export default function Roadmap({ roadmap = [], onUpdate, onAssessment, learning
                           <button
                             type="button"
                             onClick={() => setActiveQuizStep(step)}
-                            className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-sm flex items-center gap-1.5 transition-colors"
+                            className="cf-btn-primary py-1 px-2.5 text-xs"
                           >
-                            <Target className="w-3.5 h-3.5" />
+                            <Target className="w-3 h-3" />
                             <span>Take Knowledge Quiz</span>
                           </button>
                           <button
                             type="button"
                             onClick={() => onUpdate(index, { status: 'completed' })}
-                            className="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition-colors"
+                            className="cf-btn-secondary py-1 px-2.5 text-xs"
                           >
                             Mark Completed
                           </button>

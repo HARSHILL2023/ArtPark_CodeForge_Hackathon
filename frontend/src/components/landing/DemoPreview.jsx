@@ -6,27 +6,25 @@ export default function DemoPreview() {
   const tabs = ['Skill DNA Profile', 'Job Readiness Dashboard', 'Simulation Studio'];
 
   return (
-    <section className="py-24 max-w-7xl mx-auto px-6 relative" id="demo">
-      <div className="absolute inset-0 bg-indigo-500/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
-      
-      <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-12">
-        <div className="flex items-center justify-center gap-2 text-indigo-500 font-bold uppercase tracking-widest text-xs mb-4">
-          <span>&mdash;</span> See It In Action
+    <section className="py-20 max-w-6xl mx-auto px-6 relative" id="demo">
+      <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.25 }} className="text-center mb-8">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-[11px] font-semibold uppercase tracking-wider mb-2.5">
+          <span>Interactive Preview</span>
         </div>
-        <h2 className="text-3xl md:text-5xl font-black mb-6" style={{ fontFamily: "'Syne', sans-serif" }}>
-          A Glimpse of Your Career Intelligence Dashboard
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA] mb-2">
+          Career Intelligence Workspace Preview
         </h2>
       </motion.div>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
+      <div className="flex flex-wrap justify-center gap-2 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-2.5 rounded-full border transition-all text-sm font-bold ${
+            className={`px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
               activeTab === tab 
-                ? 'bg-white/10 text-white border-white/20' 
-                : 'bg-transparent text-slate-400 border-white/5 hover:bg-white/5 hover:border-white/10'
+                ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] border-transparent' 
+                : 'bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
             }`}
           >
             {tab}
@@ -34,50 +32,75 @@ export default function DemoPreview() {
         ))}
       </div>
 
-      <motion.div layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="bg-[#0f111a] rounded-[24px] border border-white/10 overflow-hidden shadow-2xl relative min-h-[400px] flex items-center justify-center">
-        <div className="absolute top-0 w-full h-10 bg-[#0d0f1c] border-b border-white/5 flex items-center px-4 gap-2">
-          <div className="w-3 h-3 rounded-full bg-rose-500"></div>
-          <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-          <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+      <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="bg-[#FCFBF8] dark:bg-[#121416] rounded-2xl border border-[#DCD9D1] dark:border-[#292D33] overflow-hidden shadow-xs relative min-h-[360px] flex flex-col">
+        <div className="w-full h-8 bg-[#EEECE6] dark:bg-[#181B1F] border-b border-[#DCD9D1] dark:border-[#292D33] flex items-center px-4 gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#B33A3A] dark:bg-[#D96565]"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-[#9A6B00] dark:bg-[#D6A84F]"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-[#237A4B] dark:bg-[#4CAF7A]"></div>
         </div>
 
-        <div className="p-8 w-full">
+        <div className="p-6 w-full flex-1 flex items-center justify-center">
           {activeTab === 'Skill DNA Profile' && (
-            <div className="flex flex-col md:flex-row gap-6 max-w-4xl mx-auto mt-10">
-              <div className="flex-1 bg-white/5 border border-white/10 rounded-2xl p-6">
-                 <h3 className="text-xl font-bold mb-4" style={{ fontFamily: "'Syne', sans-serif" }}>Skill Distribution</h3>
-                 <div className="space-y-4">
-                   <div><div className="flex justify-between text-xs mb-1 font-bold text-slate-400"><span>FRONTEND (React, CSS)</span> <span className="text-emerald-400">MASTERED</span></div><div className="w-full bg-white/10 rounded-full h-2"><div className="bg-emerald-500 h-2 rounded-full w-[80%]"></div></div></div>
-                   <div><div className="flex justify-between text-xs mb-1 font-bold text-slate-400"><span>BACKEND (Node)</span> <span className="text-amber-400">EMERGING</span></div><div className="w-full bg-white/10 rounded-full h-2"><div className="bg-amber-500 h-2 rounded-full w-[40%]"></div></div></div>
+            <div className="flex flex-col md:flex-row gap-4 max-w-3xl w-full mx-auto">
+              <div className="flex-1 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl p-4">
+                 <h3 className="text-xs font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-3">Skill Distribution</h3>
+                 <div className="space-y-3">
+                   <div>
+                     <div className="flex justify-between text-[11px] mb-1 font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
+                       <span>FRONTEND (React, Next.js)</span> <span className="text-[#237A4B] dark:text-[#4CAF7A] font-bold">VERIFIED</span>
+                     </div>
+                     <div className="w-full bg-[#EEECE6] dark:bg-[#292D33] rounded-full h-1.5">
+                       <div className="bg-[#237A4B] dark:bg-[#4CAF7A] h-1.5 rounded-full w-[80%]"></div>
+                     </div>
+                   </div>
+                   <div>
+                     <div className="flex justify-between text-[11px] mb-1 font-semibold text-[#5E5C56] dark:text-[#B4B1A9]">
+                       <span>BACKEND (Node, Redis)</span> <span className="text-[#9A6B00] dark:text-[#D6A84F] font-bold">IN PROGRESS</span>
+                     </div>
+                     <div className="w-full bg-[#EEECE6] dark:bg-[#292D33] rounded-full h-1.5">
+                       <div className="bg-[#9A6B00] dark:bg-[#D6A84F] h-1.5 rounded-full w-[45%]"></div>
+                     </div>
+                   </div>
                  </div>
               </div>
-              <div className="flex-1 bg-gradient-to-br from-indigo-900/40 to-violet-900/40 border border-indigo-500/30 rounded-2xl p-6">
-                <h3 className="text-xl font-bold mb-2 text-indigo-100" style={{ fontFamily: "'Syne', sans-serif" }}>Target Role</h3>
-                <div className="text-3xl font-black text-white mb-4">Senior Frontend Developer</div>
-                <div className="inline-flex gap-2"><span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold rounded">25% READY</span></div>
+              <div className="flex-1 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl p-4">
+                <h3 className="text-xs font-bold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider mb-1">Target Benchmark</h3>
+                <div className="text-lg font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-3">Staff Software Engineer</div>
+                <div className="inline-flex gap-2">
+                  <span className="px-2 py-0.5 bg-[#237A4B]/10 text-[#237A4B] dark:bg-[#4CAF7A]/15 dark:text-[#4CAF7A] text-[11px] font-bold rounded font-mono">
+                    78% READINESS
+                  </span>
+                </div>
               </div>
             </div>
           )}
           
           {activeTab === 'Job Readiness Dashboard' && (
-            <div className="text-center mt-10">
-              <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent mb-4" style={{ fontFamily: "'Syne', sans-serif" }}>Senior Frontend Engineer &mdash; TechCorp Inc.</div>
-              <div className="w-32 h-32 rounded-full border-8 border-emerald-500/80 mx-auto flex flex-col items-center justify-center mb-6">
-                <div className="text-3xl font-black text-white" style={{ fontFamily: "'Syne', sans-serif" }}>67%</div>
-                <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Match Rate</div>
+            <div className="text-center max-w-lg mx-auto">
+              <div className="text-base sm:text-lg font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-3">
+                Senior Systems Engineer Target Alignment
               </div>
-              <p className="text-slate-400 max-w-lg mx-auto">ETA to readiness: 9 Weeks. Missing Key Tech: TypeScript Advanced, Webpack, Testing Library.</p>
+              <div className="w-24 h-24 rounded-full border-4 border-[#B88916] dark:border-[#D4A72C] mx-auto flex flex-col items-center justify-center mb-3">
+                <div className="text-xl font-bold text-[#1B1B19] dark:text-[#F2F0EA] font-mono">82%</div>
+                <div className="text-[8px] font-bold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider">Score</div>
+              </div>
+              <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed">
+                ETA to benchmark readiness: 6 Weeks. Identified milestones: Distributed Systems, Kafka Clustering, Observability.
+              </p>
             </div>
           )}
 
           {activeTab === 'Simulation Studio' && (
-            <div className="text-center mt-10 max-w-2xl mx-auto">
-              <div className="inline-flex gap-2 mb-6 text-xs font-bold uppercase tracking-widest text-violet-400 border border-violet-500/30 bg-violet-500/10 px-3 py-1 rounded">STUDIO MATRIX 3.5 &middot; PRODUCTION GRADE</div>
-              <h3 className="text-4xl font-black mb-6 text-white" style={{ fontFamily: "'Syne', sans-serif" }}>Engineering Simulation</h3>
-              <div className="flex justify-center gap-4">
-                <button className="px-6 py-3 bg-[#1a1a2e] text-white rounded-xl text-sm font-bold shadow-lg">Launch Q&A Matrix</button>
-                <button className="px-6 py-3 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-sm font-bold shadow-lg">Start Session</button>
+            <div className="text-center max-w-md mx-auto space-y-3">
+              <div className="inline-flex text-[10px] font-bold uppercase tracking-wider text-[#B88916] dark:text-[#D4A72C] border border-[#B88916]/25 bg-[#B88916]/10 px-2 py-0.5 rounded">
+                STUDIO ENGINE 3.5
               </div>
+              <h3 className="text-base sm:text-lg font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
+                Multi-Turn Architectural Interview Simulator
+              </h3>
+              <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9]">
+                Live technical evaluations with explainable scoring rubric and follow-up challenges.
+              </p>
             </div>
           )}
         </div>

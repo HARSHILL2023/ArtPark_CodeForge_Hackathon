@@ -323,31 +323,31 @@ export const getGapStatus = (skill) => {
 export const getGapColor = (status) => {
   switch (status) {
     case 'matched':
-      return { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', dot: 'bg-emerald-500' };
+      return { bg: 'bg-[#237A4B]/10 dark:bg-[#4CAF7A]/10', border: 'border-[#237A4B]/20 dark:border-[#4CAF7A]/25', text: 'text-[#237A4B] dark:text-[#4CAF7A]', dot: 'bg-[#237A4B] dark:bg-[#4CAF7A]' };
     case 'weak':
-      return { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700', dot: 'bg-amber-500' };
+      return { bg: 'bg-[#9A6B00]/10 dark:bg-[#D6A84F]/10', border: 'border-[#9A6B00]/20 dark:border-[#D6A84F]/25', text: 'text-[#9A6B00] dark:text-[#D6A84F]', dot: 'bg-[#9A6B00] dark:bg-[#D6A84F]' };
     case 'missing':
-      return { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-700', dot: 'bg-rose-500' };
+      return { bg: 'bg-[#B33A3A]/10 dark:bg-[#D96565]/10', border: 'border-[#B33A3A]/20 dark:border-[#D96565]/25', text: 'text-[#B33A3A] dark:text-[#D96565]', dot: 'bg-[#B33A3A] dark:bg-[#D96565]' };
     default:
-      return { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-700', dot: 'bg-slate-500' };
+      return { bg: 'bg-[#EEECE6] dark:bg-[#181B1F]', border: 'border-[#DCD9D1] dark:border-[#292D33]', text: 'text-[#5E5C56] dark:text-[#B4B1A9]', dot: 'bg-[#85827A]' };
   }
 };
 
 export const getPriorityColor = (priority) => {
   switch (priority) {
     case 'high':
-      return { bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200' };
+      return { bg: 'bg-[#B33A3A]/10 dark:bg-[#D96565]/10', text: 'text-[#B33A3A] dark:text-[#D96565]', border: 'border-[#B33A3A]/20 dark:border-[#D96565]/25' };
     case 'medium':
-      return { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200' };
+      return { bg: 'bg-[#9A6B00]/10 dark:bg-[#D6A84F]/10', text: 'text-[#9A6B00] dark:text-[#D6A84F]', border: 'border-[#9A6B00]/20 dark:border-[#D6A84F]/25' };
     case 'low':
-      return { bg: 'bg-sky-100', text: 'text-sky-700', border: 'border-sky-200' };
+      return { bg: 'bg-[#5A6B7C]/10 dark:bg-[#7E8B9B]/10', text: 'text-[#5A6B7C] dark:text-[#7E8B9B]', border: 'border-[#5A6B7C]/20 dark:border-[#7E8B9B]/25' };
     default:
-      return { bg: 'bg-slate-100', text: 'text-slate-700', border: 'border-slate-200' };
+      return { bg: 'bg-[#EEECE6] dark:bg-[#181B1F]', text: 'text-[#5E5C56] dark:text-[#B4B1A9]', border: 'border-[#DCD9D1] dark:border-[#292D33]' };
   }
 };
 
 export const getScoreColor = (score) => {
-  if (score >= 80) return { text: 'text-emerald-600', stroke: '#10b981', bg: 'from-emerald-500/20' };
-  if (score >= 60) return { text: 'text-amber-600', stroke: '#f59e0b', bg: 'from-amber-500/20' };
-  return { text: 'text-rose-600', stroke: '#f43f5e', bg: 'from-rose-500/20' };
+  if (score >= 80) return { text: 'text-[#237A4B] dark:text-[#4CAF7A]', stroke: '#4CAF7A', bg: 'from-[#4CAF7A]/20' };
+  if (score >= 60) return { text: 'text-[#B88916] dark:text-[#D4A72C]', stroke: '#D4A72C', bg: 'from-[#D4A72C]/20' };
+  return { text: 'text-[#B33A3A] dark:text-[#D96565]', stroke: '#D96565', bg: 'from-[#D96565]/20' };
 };

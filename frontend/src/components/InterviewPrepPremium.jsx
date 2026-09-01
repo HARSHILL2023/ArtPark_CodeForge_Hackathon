@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Terminal, X, CheckSquare,
-  Mic, ArrowRight, Shield,
-  Cpu, Sparkles, Bookmark,
-  RefreshCw, Zap,
+  X,
+  ArrowRight,
+  Sparkles,
+  RefreshCw,
   Target, Send, Bot, User, Loader2
 } from 'lucide-react';
 import * as api from '../lib/api';
@@ -58,165 +58,146 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
       id: 4,
       category: "Problem Solving",
       difficulty: "Easy",
-      question: `What is your approach to testing and ensuring zero regression in continuous delivery for ${skills[0]?.name || 'key technologies'}?`,
-      idealAnswer: "I follow the testing pyramid: comprehensive unit tests for business logic, contract tests for API boundaries, integration tests in containerized CI environments, and canary deployments with automated rollback.",
-      keyPoints: ["Unit & contract tests", "Containerized CI", "Canary releases", "Automated rollbacks"],
-      followUp: "How do you balance test execution speed against test coverage in tight CI/CD windows?"
+      question: "Walk me through how you isolate memory leaks and performance bottlenecks in asynchronous workloads.",
+      idealAnswer: "I take heap snapshots before and after stress tests, analyze retainers to identify uncollected event listeners or closures, and monitor event loop lag using profiling metrics.",
+      keyPoints: ["Heap snapshots", "Retainer tree analysis", "Event loop profiling"],
+      followUp: "How would you reproduce intermittent memory spikes in staging before releasing to production?"
     }
-  ], [role, skills]);
+  ], [role]);
 
-  // Load questions when matrix is launched
+  const displayedQuestions = qaList.length > 0 ? qaList : fallbackQuestions;
+
+  const categories = useMemo(() => {
+    const set = new Set(displayedQuestions.map(q => q.category));
+    return ['All', ...Array.from(set)];
+  }, [displayedQuestions]);
+
+  const filteredQuestions = useMemo(() => {
+    if (activeTier === 'All') return displayedQuestions;
+    return displayedQuestions.filter(q => q.category === activeTier);
+  }, [displayedQuestions, activeTier]);
+
   const handleLaunchQA = async () => {
-    setIsActive(true);
-    setCurrentType('questions');
-    
-    if (qaList.length > 0) return; // already loaded
-
     setIsLoadingQA(true);
     try {
-      const skillNames = skills.map(s => s.name || s.skill || s);
-      const res = await api.generateQA({
-        jobRole: role,
-        skills: skillNames.length > 0 ? skillNames : ['TypeScript', 'React', 'Node.js'],
-        experienceLevel: 'Mid-Senior',
-        interviewType: 'Mixed'
-      });
-
-      if (res && res.qaList && Array.isArray(res.qaList) && res.qaList.length > 0) {
-        setQaList(res.qaList);
-      } else {
-        setQaList(fallbackQuestions);
+      const weakSkillNames = skills
+        .filter(s => s.yourLevel < s.requiredLevel)
+        .map(s => s.name);
+      
+      const res = await api.getInterviewQA(role, weakSkillNames);
+      if (res && res.questions && res.questions.length > 0) {
+        setQaList(res.questions);
       }
     } catch (err) {
-      console.warn('Using curated fallback questions:', err.message);
-      setQaList(fallbackQuestions);
+      console.warn("Failed fetching AI questions, using fallback set:", err);
     } finally {
       setIsLoadingQA(false);
     }
   };
 
-  const handleSendMockMessage = async (e) => {
-    if (e) e.preventDefault();
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
     if (!chatInput.trim() || isAiThinking) return;
 
-    const userMessage = { role: 'user', content: chatInput.trim() };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
+    const userMsg = { role: 'user', content: chatInput.trim() };
+    const updatedHistory = [...messages, userMsg];
+    setMessages(updatedHistory);
     setChatInput('');
     setIsAiThinking(true);
 
     try {
-      const systemPrompt = `You are a Senior Technical Interviewer evaluating a candidate for the role of ${role}. Candidate evaluated skills: ${skills.map(s => s.name || s.skill).join(', ')}. Keep replies focused on realistic technical questions, constructive follow-ups, and probing depth. Keep answers under 3-4 sentences.`;
-      const res = await api.sendInterviewChat(systemPrompt, updatedMessages);
-      
-      const aiReply = res?.reply || "Good answer. Let's dig deeper into how you would test and monitor this system under heavy concurrent load.";
-      setMessages(prev => [...prev, { role: 'assistant', content: aiReply }]);
+      const res = await api.sendInterviewMessage(role, updatedHistory, userMsg.content);
+      if (res && res.reply) {
+        setMessages(prev => [...prev, { role: 'assistant', content: res.reply }]);
+      } else {
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: "Strong architectural trade-off! Let's drill into the persistence layer. How do you handle cache invalidation during write spikes?"
+          }
+        ]);
+      }
     } catch (err) {
-      console.error('Interview chat error:', err);
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: "That's a solid architectural perspective. How would you handle state synchronization across multiple client instances?"
-      }]);
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: "Excellent clarification. In terms of fault tolerance, what happens if the secondary replica fails during a split-brain scenario?"
+        }
+      ]);
     } finally {
       setIsAiThinking(false);
     }
   };
 
-  const displayedQuestions = qaList.length > 0 ? qaList : fallbackQuestions;
-  const filteredQuestions = activeTier === 'All'
-    ? displayedQuestions
-    : displayedQuestions.filter(q => q.category === activeTier || q.difficulty === activeTier);
-
-  const categories = ['All', 'Technical', 'System Design', 'Behavioral', 'Problem Solving'];
-
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
-      {/* Header Banner */}
-      <div className="p-6 border-b border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <>
+      {/* Launch Card */}
+      <div className="p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 border border-purple-100 dark:border-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400">
-            <Cpu className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+            <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-900 dark:text-white">AI Technical Interview Simulator</h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Live generative technical interview preparation for {role}
+            <h3 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
+              AI Technical Mock Interview Studio
+            </h3>
+            <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] mt-0.5">
+              Practice architectural & behavioral interviews generated for {role}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleLaunchQA}
-            className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
-          >
-            <Zap className="w-3.5 h-3.5" />
-            <span>Launch Q&A Matrix</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setIsActive(true); setCurrentType('mock'); }}
-            className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95 cursor-pointer"
-          >
-            <Mic className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Mock Session</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setIsActive(true);
+            if (qaList.length === 0) handleLaunchQA();
+          }}
+          className="cf-btn-primary self-start sm:self-auto py-2 px-3 text-xs"
+        >
+          <span>Open Interview Studio</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
       </div>
 
-      {/* Preview Section */}
-      <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        {[
-          { title: "Targeted Gap Alignment", desc: "Questions dynamically focus on your missing & weak skills.", icon: Target, col: "text-indigo-500" },
-          { title: "FAANG-Grade Rubrics", desc: "Includes ideal STAR model answers and key evaluation points.", icon: Shield, col: "text-emerald-500" },
-          { title: "Live Conversational AI", desc: "Simulate multi-turn technical and behavioral interviewer rounds.", icon: Sparkles, col: "text-violet-500" }
-        ].map((item, idx) => (
-          <div key={idx} className="p-4 rounded-xl bg-slate-50/50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
-            <item.icon className={`w-5 h-5 ${item.col} mb-2`} />
-            <h4 className="text-xs font-bold text-slate-900 dark:text-white mb-1">{item.title}</h4>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-normal">{item.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Modal Dialog */}
+      {/* Full Modal Studio */}
       <AnimatePresence>
         {isActive && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-[#0C0D0F]/80 backdrop-blur-xs">
             <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.2 }}
-              className="w-full max-w-5xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col h-[85vh]"
+              initial={{ opacity: 0, scale: 0.98, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98, y: 10 }}
+              transition={{ duration: 0.15 }}
+              className="w-full max-w-4xl bg-[#FCFBF8] dark:bg-[#121416] rounded-2xl shadow-md border border-[#DCD9D1] dark:border-[#292D33] overflow-hidden flex flex-col max-h-[90vh]"
             >
-              {/* Modal Top Bar */}
-              <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/60 dark:bg-slate-900/60">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-600 text-white rounded-lg">
-                    {currentType === 'questions' ? <Terminal className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              {/* Studio Header */}
+              <div className="p-4 border-b border-[#DCD9D1] dark:border-[#292D33] bg-[#EEECE6] dark:bg-[#181B1F] flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center text-[#B88916] dark:text-[#D4A72C]">
+                    <Target className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                      {currentType === 'questions' ? `AI Question Matrix &bull; ${role}` : `Mock Interview Simulation &bull; ${role}`}
+                    <h3 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA]">
+                      {currentType === 'questions' ? `AI Question Matrix · ${role}` : `Mock Interview Simulation · ${role}`}
                     </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-[10px] text-[#5E5C56] dark:text-[#B4B1A9]">
                       {currentType === 'questions' ? 'Curated architectural & technical challenge questions' : 'Multi-turn AI technical evaluation session'}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
+                  <div className="flex bg-[#FCFBF8] dark:bg-[#121416] p-0.5 rounded-lg border border-[#DCD9D1] dark:border-[#292D33]">
                     <button
                       type="button"
                       onClick={() => setCurrentType('questions')}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                      className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                         currentType === 'questions'
-                          ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm'
-                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                          ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                          : 'text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white'
                       }`}
                     >
                       Question Matrix
@@ -224,10 +205,10 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                     <button
                       type="button"
                       onClick={() => setCurrentType('mock')}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors ${
+                      className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer ${
                         currentType === 'mock'
-                          ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm'
-                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                          ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                          : 'text-[#5E5C56] dark:text-[#B4B1A9] hover:text-[#1B1B19] dark:hover:text-white'
                       }`}
                     >
                       Mock Simulation
@@ -238,29 +219,29 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                     type="button"
                     onClick={() => setIsActive(false)}
                     aria-label="Close interview prep"
-                    className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                    className="p-1.5 rounded-lg text-[#85827A] dark:text-[#7E7C77] hover:text-[#1B1B19] dark:hover:text-white hover:bg-[#EEECE6] dark:hover:bg-[#181B1F] transition-colors cursor-pointer"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
               {/* Modal Content */}
-              <div className="flex-1 overflow-y-auto p-6 bg-slate-50/30 dark:bg-slate-950/30">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 bg-[#FCFBF8] dark:bg-[#121416]">
                 {currentType === 'questions' ? (
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {/* Filter Pills */}
-                    <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2.5">
                       <div className="flex flex-wrap gap-1.5">
                         {categories.map((cat) => (
                           <button
                             key={cat}
                             type="button"
                             onClick={() => setActiveTier(cat)}
-                            className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors border ${
+                            className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors border cursor-pointer ${
                               activeTier === cat
-                                ? 'bg-indigo-600 text-white border-indigo-600'
-                                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-50'
+                                ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F] border-transparent'
+                                : 'bg-[#FCFBF8] dark:bg-[#181B1F] text-[#5E5C56] dark:text-[#B4B1A9] border-[#DCD9D1] dark:border-[#292D33] hover:text-[#1B1B19] dark:hover:text-white'
                             }`}
                           >
                             {cat}
@@ -272,120 +253,116 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
                         type="button"
                         onClick={handleLaunchQA}
                         disabled={isLoadingQA}
-                        className="px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5 hover:bg-slate-50"
+                        className="cf-btn-secondary py-1 px-2.5 text-xs"
                       >
-                        <RefreshCw className={`w-3.5 h-3.5 ${isLoadingQA ? 'animate-spin' : ''}`} />
+                        <RefreshCw className={`w-3 h-3 ${isLoadingQA ? 'animate-spin' : ''}`} />
                         <span>Regenerate AI Questions</span>
                       </button>
                     </div>
 
                     {isLoadingQA ? (
-                      <div className="flex flex-col items-center justify-center py-16 space-y-3">
-                        <Loader2 className="w-8 h-8 animate-spin text-indigo-600 dark:text-indigo-400" />
-                        <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                          Generating tailored FAANG-grade interview questions...
+                      <div className="flex flex-col items-center justify-center py-12 space-y-2.5">
+                        <Loader2 className="w-6 h-6 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
+                        <p className="text-xs font-semibold text-[#1B1B19] dark:text-[#F2F0EA]">
+                          Generating tailored interview questions...
                         </p>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {filteredQuestions.map((item, idx) => (
                           <div
                             key={item.id || idx}
-                            className="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm space-y-3"
+                            className="p-4 rounded-xl bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] space-y-2.5"
                           >
                             <div className="flex items-center justify-between">
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/20 uppercase tracking-wider">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#B88916]/10 dark:bg-[#D4A72C]/10 text-[#B88916] dark:text-[#D4A72C] border border-[#B88916]/20 uppercase tracking-wider">
                                 {item.category}
                               </span>
                               <span
                                 className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
                                   item.difficulty === 'Hard'
-                                    ? 'bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300'
+                                    ? 'bg-[#B33A3A]/10 text-[#B33A3A] dark:bg-[#D96565]/10 dark:text-[#D96565]'
                                     : item.difficulty === 'Medium'
-                                    ? 'bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300'
-                                    : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300'
+                                    ? 'bg-[#9A6B00]/10 text-[#9A6B00] dark:bg-[#D6A84F]/10 dark:text-[#D6A84F]'
+                                    : 'bg-[#237A4B]/10 text-[#237A4B] dark:bg-[#4CAF7A]/10 dark:text-[#4CAF7A]'
                                 }`}
                               >
                                 {item.difficulty}
                               </span>
                             </div>
 
-                            <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                            <h4 className="text-xs sm:text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] leading-snug">
                               {item.question}
                             </h4>
 
-                            <div className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Model Answer Framework:</span>
-                              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">
+                            <div className="p-2.5 bg-[#EEECE6]/60 dark:bg-[#121416] rounded-lg border border-[#DCD9D1] dark:border-[#292D33]">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-[#85827A] dark:text-[#7E7C77] block mb-1">Model Answer:</span>
+                              <p className="text-[11px] text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed italic">
                                 "{item.idealAnswer}"
                               </p>
                             </div>
-
-                            {item.followUp && (
-                              <div className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium">
-                                <span className="font-bold">Interviewer Probing Follow-Up: </span>
-                                {item.followUp}
-                              </div>
-                            )}
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                 ) : (
-                  /* Mock Interview Chat Interface */
-                  <div className="flex flex-col h-full space-y-4 max-w-3xl mx-auto">
-                    <div className="flex-1 overflow-y-auto space-y-3 pr-2">
-                      {messages.map((msg, i) => (
-                        <div
-                          key={i}
-                          className={`flex items-start gap-3 ${
-                            msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-                          }`}
-                        >
+                  /* Mock Interactive Session */
+                  <div className="flex flex-col h-[520px]">
+                    <div className="flex-1 overflow-y-auto space-y-3 p-2">
+                      {messages.map((m, idx) => {
+                        const isUser = m.role === 'user';
+                        return (
                           <div
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              msg.role === 'assistant'
-                                ? 'bg-indigo-600 text-white'
-                                : 'bg-slate-700 text-white'
-                            }`}
+                            key={idx}
+                            className={`flex items-start gap-2.5 ${isUser ? 'flex-row-reverse' : ''}`}
                           >
-                            {msg.role === 'assistant' ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+                            <div
+                              className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs ${
+                                isUser
+                                  ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                                  : 'bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] text-[#B88916] dark:text-[#D4A72C]'
+                              }`}
+                            >
+                              {isUser ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
+                            </div>
+
+                            <div
+                              className={`max-w-[78%] p-3 rounded-xl text-xs leading-relaxed ${
+                                isUser
+                                  ? 'bg-[#B88916] dark:bg-[#D4A72C] text-white dark:text-[#0C0D0F]'
+                                  : 'bg-[#EEECE6] dark:bg-[#181B1F] text-[#1B1B19] dark:text-[#F2F0EA] border border-[#DCD9D1] dark:border-[#292D33]'
+                              }`}
+                            >
+                              {m.content}
+                            </div>
                           </div>
-                          <div
-                            className={`p-4 rounded-xl text-xs leading-relaxed max-w-[85%] ${
-                              msg.role === 'assistant'
-                                ? 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm'
-                                : 'bg-indigo-600 text-white shadow-sm'
-                            }`}
-                          >
-                            {msg.content}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
+
                       {isAiThinking && (
-                        <div className="flex items-center gap-2 text-xs text-slate-400 font-medium py-2">
-                          <Loader2 className="w-4 h-4 animate-spin text-indigo-500" />
+                        <div className="flex items-center gap-2 text-xs text-[#85827A] dark:text-[#7E7C77] pl-9">
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B88916] dark:text-[#D4A72C]" />
                           <span>Interviewer is evaluating your response...</span>
                         </div>
                       )}
                     </div>
 
-                    <form onSubmit={handleSendMockMessage} className="pt-2 flex gap-2">
+                    <form onSubmit={handleSendMessage} className="pt-3 border-t border-[#DCD9D1] dark:border-[#292D33] flex gap-2">
                       <input
                         type="text"
                         value={chatInput}
                         onChange={(e) => setChatInput(e.target.value)}
-                        placeholder="Type your architectural explanation or answer..."
-                        className="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+                        placeholder={`Explain your approach for ${role}...`}
+                        className="flex-1 px-3 py-2 bg-[#FCFBF8] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] rounded-xl text-xs text-[#1B1B19] dark:text-[#F2F0EA] placeholder:text-[#85827A] dark:placeholder:text-[#7E7C77] focus:outline-none focus:ring-1 focus:ring-[#B88916] dark:focus:ring-[#D4A72C]"
                       />
                       <button
                         type="submit"
-                        disabled={!chatInput.trim() || isAiThinking}
-                        className="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                        disabled={isAiThinking || !chatInput.trim()}
+                        className="cf-btn-primary py-2 px-3 text-xs"
                       >
-                        <Send className="w-4 h-4" />
-                        <span>Send</span>
+                        <Send className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Reply</span>
                       </button>
                     </form>
                   </div>
@@ -395,6 +372,6 @@ export default function InterviewPrep({ skills = [], role = "Software Engineer" 
           </div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }

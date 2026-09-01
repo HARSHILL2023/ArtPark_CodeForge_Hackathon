@@ -5,11 +5,11 @@ import { ScanSearch, Target, Route, FileCheck2, MessagesSquare, GitBranch } from
 export default function FeaturesSection() {
   const container = {
     hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.06 } }
+    show: { opacity: 1, transition: { staggerChildren: 0.05 } }
   };
   const item = {
-    hidden: { opacity: 0, y: 16 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+    hidden: { opacity: 0, y: 12 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.25 } }
   };
 
   const features = [
@@ -60,15 +60,15 @@ export default function FeaturesSection() {
         whileInView="show"
         viewport={{ once: true }}
         variants={item}
-        className="text-center mb-12"
+        className="text-center mb-10"
       >
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[#252A31] bg-[#111418] text-[#A7AFBA] text-xs font-semibold uppercase tracking-wider mb-3">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border border-[#DCD9D1] dark:border-[#292D33] bg-[#FCFBF8] dark:bg-[#121416] text-[#5E5C56] dark:text-[#B4B1A9] text-[11px] font-semibold uppercase tracking-wider mb-2.5">
           <span>Platform Capabilities</span>
         </div>
-        <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#F5F7FA] mb-3">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1B1B19] dark:text-[#F2F0EA] mb-2.5">
           Engineered for Career Acceleration
         </h2>
-        <p className="text-xs sm:text-sm text-[#A7AFBA] max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-[#5E5C56] dark:text-[#B4B1A9] max-w-lg mx-auto">
           Combining vector similarity, deterministic graph theory, and generative AI to systematically bridge enterprise skill gaps.
         </p>
       </motion.div>
@@ -78,7 +78,7 @@ export default function FeaturesSection() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5"
       >
         {features.map((f, i) => {
           const Icon = f.icon;
@@ -86,21 +86,21 @@ export default function FeaturesSection() {
             <motion.div
               key={i}
               variants={item}
-              className={`flex flex-col p-6 rounded-2xl bg-[#111418] border border-[#252A31] hover:border-[#323842] transition-colors ${
+              className={`flex flex-col p-5 rounded-xl bg-[#FCFBF8] dark:bg-[#121416] border border-[#DCD9D1] dark:border-[#292D33] hover:border-[#C9C5BB] dark:hover:border-[#363B43] transition-colors ${
                 f.wide ? 'md:col-span-2' : ''
               }`}
             >
-              <div className="w-9 h-9 rounded-xl bg-[#171A1F] border border-[#252A31] flex items-center justify-center mb-4 text-[#6366F1]">
+              <div className="w-8 h-8 rounded-lg bg-[#EEECE6] dark:bg-[#181B1F] border border-[#DCD9D1] dark:border-[#292D33] flex items-center justify-center mb-3.5 text-[#B88916] dark:text-[#D4A72C]">
                 <Icon className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-bold text-[#F5F7FA] mb-2 tracking-tight">
+              <h3 className="text-sm font-bold text-[#1B1B19] dark:text-[#F2F0EA] mb-1.5 tracking-tight">
                 {f.title}
               </h3>
-              <p className="text-xs text-[#A7AFBA] leading-relaxed mb-4">
+              <p className="text-xs text-[#5E5C56] dark:text-[#B4B1A9] leading-relaxed mb-3.5">
                 {f.desc}
               </p>
               <div className="mt-auto self-start">
-                <span className="text-[10px] font-semibold text-[#737C88] uppercase tracking-wider block pt-2 border-t border-[#252A31]">
+                <span className="text-[9px] font-semibold text-[#85827A] dark:text-[#7E7C77] uppercase tracking-wider block pt-2 border-t border-[#DCD9D1] dark:border-[#292D33]">
                   {f.tag}
                 </span>
               </div>
