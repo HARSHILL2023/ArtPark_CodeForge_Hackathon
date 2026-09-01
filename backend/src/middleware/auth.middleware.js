@@ -22,8 +22,21 @@ const verifyToken = async (req, res, next) => {
       return sendError(res, 'Not authorized. Token missing.', 401);
     }
 
+    // Isolated sandbox identity for judge demo evaluations
+    if (token === 'demo_token_judge_12345') {
+      req.user = {
+        _id: '64f000000000000000000001',
+        id: 'DEMO_12345',
+        name: 'Judge Demo User',
+        email: 'judge@example.com',
+        role: 'judge_demo',
+        isDemo: true
+      };
+      return next();
+    }
+
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'codeforge_jwt_secret_dev');
 
     // Get user from token
     const user = await User.findById(decoded.id);

@@ -1,12 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, ShieldCheck, BrainCircuit, Route, Layers, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown, ShieldCheck, BrainCircuit, Route, Layers, Sparkles, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '../../lib/AuthContext';
 
-export default function Hero() {
+export default function Hero({ onOpenAuth }) {
+  const { isLoggedIn } = useAuth();
+
   return (
-    <section className="relative min-h-[88vh] flex items-center justify-center pt-28 pb-16 overflow-hidden">
-      <div className="max-w-5xl mx-auto px-6 text-center relative z-10 w-full">
+    <section className="relative min-h-[85vh] flex items-center justify-center pt-28 pb-16 overflow-hidden">
+      <div className="max-w-4xl mx-auto px-6 text-center relative z-10 w-full">
         {/* Top Tagline Pill */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -41,28 +44,40 @@ export default function Hero() {
           Upload your resume and target role. CodeForge performs semantic vector extraction, constructs a directed acyclic graph, and sequences an adaptive 5-phase learning pathway using Kahn's algorithm.
         </motion.p>
 
-        {/* Primary & Secondary Call to Actions */}
+        {/* Single Primary Action + Secondary Explore Action */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.15 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14"
         >
-          <Link
-            to="/upload"
-            className="w-full sm:w-auto px-6 py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl font-semibold shadow-xs flex items-center justify-center gap-2 text-sm transition-colors"
-          >
-            <span>Analyze My Profile</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              to="/dashboard"
+              className="w-full sm:w-auto px-7 py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl font-semibold shadow-xs flex items-center justify-center gap-2 text-sm transition-colors"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              <span>Go to Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={onOpenAuth}
+              className="w-full sm:w-auto px-8 py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl font-semibold shadow-xs flex items-center justify-center gap-2 text-sm transition-colors cursor-pointer"
+            >
+              <span>Sign In</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
 
-          <Link
-            to="/dashboard"
+          <a
+            href="#features"
             className="w-full sm:w-auto px-6 py-3 bg-[#111418] hover:bg-[#171A1F] border border-[#252A31] hover:border-[#323842] text-[#F5F7FA] rounded-xl font-semibold flex items-center justify-center gap-2 text-sm transition-colors"
           >
-            <Play className="w-3.5 h-3.5 text-[#6366F1] fill-[#6366F1]" />
-            <span>Interactive Demo Workspace</span>
-          </Link>
+            <span>Explore Platform</span>
+            <ChevronDown className="w-4 h-4 text-[#A7AFBA]" />
+          </a>
         </motion.div>
 
         {/* Metric Cards Grid */}

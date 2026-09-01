@@ -15,7 +15,7 @@ import {
   ArrowLeft,
   CheckCircle2
 } from 'lucide-react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import UploadForm from './components/UploadForm';
 import SkillTable from './components/SkillTable';
 import GapSummary from './components/GapSummary';
@@ -78,14 +78,22 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
 
   const { user, isLoggedIn, logout: authLogout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await authLogout();
+    setCurrentData(null);
+    setShowResults(false);
+    navigate('/');
+  };
 
   // Check URL query parameters for auth trigger
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    if (params.get('auth') === 'open') {
+    if (params.get('auth') === 'open' && !isLoggedIn) {
       setIsAuthModalOpen(true);
     }
-  }, [location.search]);
+  }, [location.search, isLoggedIn]);
 
   // Auto-seed data for Demo Judge user
   useEffect(() => {
@@ -243,8 +251,8 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
                   {user?.name}
                 </span>
                 <button
-                  onClick={authLogout}
-                  className="text-xs font-bold text-slate-500 hover:text-rose-500 transition-colors"
+                  onClick={handleLogout}
+                  className="text-xs font-bold text-slate-500 hover:text-rose-500 transition-colors cursor-pointer"
                 >
                   Sign Out
                 </button>
@@ -314,40 +322,18 @@ function DashboardWorkspace({ darkMode, toggleDarkMode }) {
               })}
             </div>
 
-            {/* Sign In Options */}
-            <div className="p-6 rounded-2xl bg-white dark:bg-[#111418] border border-slate-200 dark:border-[#252A31] shadow-sm space-y-4 text-center">
+            {/* Single Sign In Action */}
+            <div className="p-6 rounded-2xl bg-white dark:bg-[#111418] border border-slate-200 dark:border-[#252A31] shadow-xs space-y-3 text-center">
               <button
                 type="button"
-                onClick={() => {
-                  const fakeToken = 'demo_token_judge_12345';
-                  localStorage.setItem('artpark_token', fakeToken);
-                  window.location.reload();
-                }}
-                className="w-full py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl text-xs font-bold shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                onClick={() => setIsAuthModalOpen(true)}
+                className="w-full py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl text-xs font-semibold shadow-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
-                <Sparkles className="w-4 h-4" />
-                <span>1-Click Judge Demo Access (Instant Unlock)</span>
+                <span>Sign In to Access Workspace</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
-
-              <div className="flex items-center justify-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="flex-1 py-2.5 px-4 bg-slate-50 dark:bg-[#171A1F] hover:bg-slate-100 dark:hover:bg-[#1C2026] text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-[#252A31] rounded-xl text-xs font-semibold transition-colors"
-                >
-                  Sign In with Email
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsAuthModalOpen(true)}
-                  className="flex-1 py-2.5 px-4 bg-slate-50 dark:bg-[#171A1F] hover:bg-slate-100 dark:hover:bg-[#1C2026] text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-[#252A31] rounded-xl text-xs font-semibold transition-colors"
-                >
-                  Create Account
-                </button>
-              </div>
-
-              <p className="text-[11px] text-slate-400">
-                Hackathon evaluators can use 1-Click Judge Demo Access to immediately test all features.
+              <p className="text-[11px] text-slate-500 dark:text-[#737C88]">
+                Supports Google OAuth, Email/Password, and 1-Click Judge Demo Sandbox
               </p>
             </div>
           </div>

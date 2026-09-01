@@ -1,27 +1,60 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { ArrowRight, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '../../lib/AuthContext';
 
-export default function CTASection() {
+export default function CTASection({ onOpenAuth }) {
+  const { isLoggedIn } = useAuth();
+
   return (
-    <section className="py-32 relative text-center overflow-hidden">
-      <motion.div animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }} transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }} className="absolute inset-0 bg-indigo-500/20 blur-[150px] rounded-full -z-10 w-[800px] h-[800px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"></motion.div>
-
-      <div className="max-w-4xl mx-auto px-6 relative z-10">
-        <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-4xl md:text-6xl font-black mb-6 text-white leading-tight" style={{ fontFamily: "'Syne', sans-serif" }}>
-          Ready to Close Your Skill Gap?
+    <section className="py-24 relative text-center overflow-hidden border-t border-[#252A31]">
+      <div className="max-w-3xl mx-auto px-6 relative z-10">
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3 }}
+          className="text-3xl sm:text-4xl font-bold mb-4 text-[#F5F7FA] tracking-tight"
+        >
+          Ready to Close Your Career Gap?
         </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }} className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
-          Join job seekers, students, and teams already using the AI-Adaptive Onboarding Engine to bridge the gap between where they are and where they want to be.
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: 0.05 }}
+          className="text-sm text-[#A7AFBA] mb-8 max-w-xl mx-auto leading-relaxed"
+        >
+          Sign in to generate your topological learning roadmap, prepare with generative AI technical interviews, and optimize your resume for target positions.
         </motion.p>
 
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/upload" className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl text-white font-bold transition-all pulse-glow-btn flex items-center justify-center gap-2 group">
-            🚀 Start Free Analysis &rarr;
-          </Link>
-          <Link to="/dashboard" className="w-full sm:w-auto px-8 py-4 bg-transparent border border-slate-700 hover:border-indigo-500 hover:bg-slate-800/50 rounded-xl text-white font-bold transition-all flex items-center justify-center">
-            View Live Demo
-          </Link>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+          className="flex justify-center"
+        >
+          {isLoggedIn ? (
+            <Link
+              to="/dashboard"
+              className="px-8 py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl font-semibold shadow-xs flex items-center justify-center gap-2 text-sm transition-colors"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              <span>Go to Dashboard</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={onOpenAuth}
+              className="px-8 py-3 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-xl font-semibold shadow-xs flex items-center justify-center gap-2 text-sm transition-colors cursor-pointer"
+            >
+              <span>Sign In to CodeForge</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </motion.div>
       </div>
     </section>
